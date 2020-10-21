@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.mapper.ProjectMapper">
+
+    <resultMap id="projectEntity" type="com.example.test.bean.ProjectBean">
+        <id property="projectId" column="projectId"/>
+        <result property="projectName" column="projectName"/>
+        <result property="proManagerId" column="proManagerId"/>
+        <result property="projectDesc" column="projectDesc"/>
+        <result property="projectState" column="projetState"/>
+        <result property="projectStartTime" column="projectStartTime"/>
+        <result property="projectEndTime" column="projectEndTime"/>
+    </resultMap>
+
+    <select id="getProInfoByProId" parameterType="String" resultType="com.example.test.bean.ProjectBean">
+        SELECT *
+        FROM project
+        WHERE projectId = #{proId}
+    </select>
+
+    <select id="getProInfoByProName" parameterType="String" resultType="com.example.test.bean.ProjectBean">
+        select *
+        from project
+        where projectName = #{proName}
+    </select>
+
+    <select id="getProInfoByProManagerId" parameterType="String" resultType="com.example.test.bean.ProjectBean">
+        SELECT *
+        FROM project
+        WHERE project.`projectId` IN
+              (SELECT profinishinfo.`projectId`
+               FROM profinishinfo
+               WHERE profinishinfo.`empId` = #{proEmpId})
+    </select>
+
+    <select id="getProInfoAll" resultType="com.example.test.bean.ProjectBean">
+        SELECT *
+        FROM project
+    </select>
+
+    <select id="getProInfoByEmpIdDoing" parameterType="String" resultType="com.example.test.bean.ProjectBean">
+        SELECT *
+        FROM project
+        WHERE project.`projectId` IN
+              (SELECT taskfinishinfo.`projectId`
+               FROM taskfinishinfo
+               WHERE taskfinishinfo.`empId` = #{empId}
+                 AND taskfinishinfo.`subtaskId` IN
+                     (SELECT subtask.`subtaskId`
+                      FROM subtask
+                      WHERE subtask.`subtaskState` = 1) # 正在做
+              );
+    </select>
+
+    <select id="getProInfoByEmpHasDone" parameterType="String" resultType="com.example.test.bean.ProjectBean">
+        SELECT *
+        FROM project
+        WHERE project.`projectId` IN
+              (SELECT taskfinishinfo.`projectId`
+               FROM taskfinishinfo
+               WHERE taskfinishinfo.`empId` = #{empId}
+                 AND taskfinishinfo.`subtaskId` IN
+                     (SELECT subtask.`subtaskId`
+                      FROM subtask
+                      WHERE subtask.`subtaskState` = 2) # 已经做完
+              );
+    </select>
+
+    <insert id="insertProject">
+        insert into project (projectId, projectName, proManagerId, projectDesc, projetState,
+                             projectStartTime, projectEndTime)
+        values (#{projectId}, #{projectName}, #{proManagerId}, #{projectDesc},
+                #{projectState}, #{projectStartTime}, #{projectEndTime})
+    </insert>
+
+    <update id="updateProject">
+        update project
+        set projectName      = #{projectName},
+            proManagerId     = #{proManagerId},
+            projectDesc      = #{projectDesc},
+            projetState      = #{projectState},
+            projectStartTime = #{projectStartTime},
+            projectEndTime   = #{projectEndTime}
+        where projectId = #{projectId}
+    </update>
+
+    <delete id="deleteProject" parameterType="String">
+        delete
+        from project
+        where project.projectId = #{proId}
+    </delete>
+
+    <select id="getProInfoByEmpHasDone" parameterType="String" resultType="String">
+        SELECT filePath
+        FROM projectfilepath
+        WHERE projectfilepath.`project` = #{proId}
+    </select>
+
+</mapper>
