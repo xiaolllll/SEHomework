@@ -1,18 +1,18 @@
 package com.example.test.service;
 
 import com.example.test.bean.ProjectBean;
-import com.example.test.bean.UserBean;
+import com.example.test.bean.EmployeeBean;
 
 import java.util.ArrayList;
 
 public interface DataQueryService {
     /*员工信息查询*/
-    UserBean getEmployee(String empID);//查看单个员工信息
-    ArrayList<UserBean> getAllEmployee();//查看所有员工信息
-    ArrayList<UserBean> getSkillEmployee(int skillType);//查看具有技能的员工信息
-    ArrayList<UserBean> getProjectEmployee(String projectID);//查看一个项目的员工信息
-    UserBean getSubTaskEmployee(String subTaskId);//查看一个子任务的员工信息
-    UserBean getOutSourceTaskEmployee(String subTaskID);//查看一个子任务的外包员工信息
+    EmployeeBean getEmployee(String empID);//查看单个员工信息
+    ArrayList<EmployeeBean> getAllEmployee();//查看所有员工信息
+    ArrayList<EmployeeBean> getSkillEmployee(int skillType);//查看具有技能的员工信息
+    ArrayList<EmployeeBean> getProjectEmployee(String projectID);//查看一个项目的员工信息
+    EmployeeBean getSubTaskEmployee(String subTaskId);//查看一个子任务的员工信息
+    EmployeeBean getOutSourceTaskEmployee(String subTaskID);//查看一个子任务的外包员工信息
 
     /*项目信息查询*/
     ProjectBean getProject(String projectID);//查看单个项目时的信息
