@@ -14,6 +14,9 @@ public class NotifyInfoBean {
     private int notifyType;
     private boolean infoHasRead;
 
+    public NotifyInfoBean() {
+    }
+
     public NotifyInfoBean(String receiverId, String senderId, String info, int notifyType, boolean infoHasRead) {
         this.receiverId = receiverId;
         this.senderId = senderId;
