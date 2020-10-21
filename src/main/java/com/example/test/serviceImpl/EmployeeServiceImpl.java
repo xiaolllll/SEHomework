@@ -1,22 +1,44 @@
 package com.example.test.serviceImpl;
 
 import com.example.test.bean.EmployeeBean;
+import com.example.test.mapper.EmployeeMapper;
 import com.example.test.service.EmployeeService;
+import com.example.test.util.ServiceUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class EmployeeServiceImpl implements EmployeeService {
+    @Autowired
+    private EmployeeMapper employeeMapper;
     @Override
-    public boolean addEmp(EmployeeBean employeeBean) {
-
-        return false;
+    public String addEmp(EmployeeBean employeeBean) {
+        int result = employeeMapper.insertEmployee(employeeBean);
+        if(result==1){
+            return ServiceUtil.SUCESS;
+        }
+        else {
+            return ServiceUtil.FAILURE+"数据库插入失败";
+        }
     }
 
     @Override
-    public boolean deleteEmp(String EmpID) {
-        return false;
+    public String deleteEmp(String empID) {
+        int result = employeeMapper.deleteEmployee(empID);
+        if(result==1){
+            return ServiceUtil.SUCESS;
+        }
+        else {
+            return ServiceUtil.FAILURE+"数据库插入失败";
+        }
     }
 
     @Override
-    public boolean modifyEmp(EmployeeBean employeeBean) {
-        return false;
+    public String modifyEmp(EmployeeBean employeeBean) {
+        int result = employeeMapper.updateEmployee(employeeBean);
+        if(result==1){
+            return ServiceUtil.SUCESS;
+        }
+        else {
+            return ServiceUtil.FAILURE+"数据库插入失败";
+        }
     }
 }
