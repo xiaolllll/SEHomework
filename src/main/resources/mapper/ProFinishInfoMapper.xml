@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.mapper.ProFinishInfoMapper">
+
+    <resultMap id="proFinishInfoEntity" type="com.example.test.bean.ProFinishInfoBean">
+        <id property="empId" column="empId"/>
+        <result property="projectId" column="projectId"/>
+        <result property="empPosition" column="empPosition"/>
+    </resultMap>
+
+    <select id="getProjectInfo" parameterType="String" resultType="com.example.test.bean.ProFinishInfoBean">
+        SELECT *
+        FROM profinishinfo
+        WHERE projectId = #{projectID}
+    </select>
+
+</mapper>

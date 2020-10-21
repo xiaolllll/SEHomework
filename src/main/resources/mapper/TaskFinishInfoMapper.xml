@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.mapper.TaskFinishInfoMapper">
+
+    <resultMap id="subTaskEntity" type="com.example.test.bean.TaskFinishInfoBean">
+        <id property="empId" column="empId"/>
+        <result property="subTaskId" column="subTaskId"/>
+        <result property="projectId" column="projectId"/>
+        <result property="doType" column="doType"/>
+        <result property="totalFileCount" column="totalFileCount"/>
+        <result property="hasFinishFileCount" column="hasFinishFileCount"/>
+        <result property="subTaskOutSourceEndTime" column="subTaskOutSourceEndTime"/>
+    </resultMap>
+
+    <select id="getTaskInfoByProId" resultType="com.example.test.bean.TaskFinishInfoBean">
+        SELECT *
+        FROM taskfinishinfo
+        WHERE subtaskId = #{subTaskID} and empId = #{EmpID}
+    </select>
+
+</mapper>

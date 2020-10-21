@@ -17,6 +17,7 @@ public interface ProjectMapper {
     public List<ProjectBean> getProInfoByEmpIdDoing(String empId);
     //查询一个员工已完成的项目信息
     public List<ProjectBean> getProInfoByEmpHasDone(String empId);
+    public List<ProjectBean> getEmpProject(String empID);//查看一个员工参加的所有项目信息
     //插入数据
     public int insertProject(ProjectBean projectBean);
     //更新数据

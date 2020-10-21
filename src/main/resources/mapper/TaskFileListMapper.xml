@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.mapper.TaskFileListMapper">
+
+    <resultMap id="taskFileListEntity" type="com.example.test.bean.TaskFileListBean">
+        <result property="subTaskId" column="subTaskId"/>
+        <result property="filePath" column="filePath"/>
+    </resultMap>
+
+    <select id="getFileList" parameterType="String" resultType="com.example.test.bean.TaskFileListBean">
+        SELECT *
+        FROM taskfilelsit
+        WHERE subtaskId = #{taskId}
+    </select>
+
+    <insert id="addTaskFileList">
+        insert into taskfilelsit (subTaskId, filePath)
+        values (#{subTaskId}, #{filePath})
+    </insert>
+
+</mapper>

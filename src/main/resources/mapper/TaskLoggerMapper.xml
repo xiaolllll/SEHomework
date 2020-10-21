@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.mapper.TaskLoggerMapper">
+
+    <resultMap id="taskLoggerEntity" type="com.example.test.bean.TaskLoggerBean">
+        <result property="taskLoggerID" column="taskLoggerID"/>
+        <result property="subTaskId" column="subTaskId"/>
+        <result property="content" column="content"/>
+    </resultMap>
+
+    <select id="getLogger" parameterType="String" resultType="com.example.test.bean.TaskLoggerBean">
+        SELECT *
+        FROM tasklogger
+        WHERE subtaskId = #{taskId}
+    </select>
+
+    <select id="getAllLogger" parameterType="String" resultType="com.example.test.bean.TaskLoggerBean">
+        SELECT *
+        FROM tasklogger
+    </select>
+
+    <insert id="addLogger">
+        insert into tasklogger (subTaskId, content)
+        values (#{subTaskId}, #{content})
+    </insert>
+
+</mapper>

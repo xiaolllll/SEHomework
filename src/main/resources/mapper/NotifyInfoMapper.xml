@@ -10,6 +10,18 @@
         <result property="infoHasRead" column="infoHasRead"/>
     </resultMap>
 
+    <select id="getNotifyInfoBySenderID" parameterType="String" resultType="com.example.test.bean.NotifyInfoBean">
+        SELECT *
+        FROM notifyinfo
+        WHERE senderId = #{empID}
+    </select>
+
+    <select id="selectNotifyInfoByNotifyId" parameterType="int" resultType="com.example.test.bean.NotifyInfoBean">
+        SELECT *
+        FROM notifyinfo
+        WHERE notifyInfoId = #{notifyId}
+    </select>
+
     <select id="getNotifyInfoByReceiverID" parameterType="String" resultType="com.example.test.bean.NotifyInfoBean">
         SELECT *
         FROM notifyinfo

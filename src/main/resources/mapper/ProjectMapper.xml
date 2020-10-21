@@ -66,6 +66,13 @@
               );
     </select>
 
+    <select id="getEmpProject" parameterType="String" resultType="com.example.test.bean.ProjectBean">
+        SELECT *
+        FROM project, profinishinfo
+        WHERE project.`projectId` = profinishinfo.projectId
+        and profinishinfo.empId = #{empID}
+    </select>
+
     <insert id="insertProject">
         insert into project (projectId, projectName, proManagerId, projectDesc, projetState,
                              projectStartTime, projectEndTime)

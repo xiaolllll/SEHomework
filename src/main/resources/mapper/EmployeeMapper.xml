@@ -45,6 +45,20 @@
           AND employee.empId = taskfinishinfo.empId
     </select>
 
+    <select id="getSkillEmployee" parameterType="int" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee
+        WHERE employee.empSkilltype = #{skillType}
+    </select>
+
+    <select id="getOutSourceTaskEmployee" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee,
+             taskfinishinfo
+        WHERE taskfinishinfo.doType = 1 # 外包
+          AND employee.empId = taskfinishinfo.empId
+    </select>
+
     <insert id="insertEmployee">
         insert into employee (empId, empName, empPassword, empFinishProCount, empDoingProCount,
                               empSkilltype, empType)

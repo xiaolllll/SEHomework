@@ -31,6 +31,21 @@
         FROM subtask
     </select>
 
+    <select id="getProjectSubTask" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
+        SELECT *
+        FROM subtask, taskfinishinfo
+        where subtask.subtaskId = taskfinishinfo.subtaskId
+          and taskfinishinfo.projectId = #{projectID}
+    </select>
+
+    <select id="getProjectEmpSubTask" resultType="com.example.test.bean.SubTaskBean">
+        SELECT *
+        FROM subtask, taskfinishinfo
+        where subtask.subtaskId = taskfinishinfo.subtaskId
+          and taskfinishinfo.projectId = #{projectID}
+          and taskfinishinfo.empId = #{EmpID}
+    </select>
+
     <select id="getTaskInfoByEmpIdDoing" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
         SELECT *
         FROM subtask

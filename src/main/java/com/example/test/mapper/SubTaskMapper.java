@@ -1,6 +1,7 @@
 package com.example.test.mapper;
 
 import com.example.test.bean.SubTaskBean;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ public interface SubTaskMapper {
     public SubTaskBean getTaskInfoByProName(String subTaskName);
     //查看所有项目信息
     public List<SubTaskBean> getTaskInfoAll();
+    public List<SubTaskBean> getProjectSubTask(String projectID);//通过项目查看子任务信息
+    public List<SubTaskBean> getProjectEmpSubTask(@Param("projectID") String projectID, @Param("EmpID") String EmpID);//通过员工和项目查看子任务信息
     //查询一个员工正在进行的任务
     public List<SubTaskBean> getTaskInfoByEmpIdDoing(String empId);
     //查询一个员工已完成的任务信息
