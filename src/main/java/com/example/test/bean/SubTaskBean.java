@@ -27,6 +27,18 @@ public class SubTaskBean {
     private Date subTaskStartTime;
     private Date subTaskEndTime;
 
+    public SubTaskBean(String subTaskId, String subTaskName, String subTaskDesc, int subTaskCanOutSource, int subTaskSkillType, String subTaskInProjectId, int subTaskState, Date subTaskStartTime, Date subTaskEndTime) {
+        this.subTaskId = subTaskId;
+        this.subTaskName = subTaskName;
+        this.subTaskDesc = subTaskDesc;
+        SubTaskCanOutSource = subTaskCanOutSource;
+        this.subTaskSkillType = subTaskSkillType;
+        this.subTaskInProjectId = subTaskInProjectId;
+        this.subTaskState = subTaskState;
+        this.subTaskStartTime = subTaskStartTime;
+        this.subTaskEndTime = subTaskEndTime;
+    }
+
     public String getSubTaskId() {
         return subTaskId;
     }

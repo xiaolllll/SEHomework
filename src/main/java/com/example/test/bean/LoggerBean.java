@@ -8,6 +8,11 @@ public class LoggerBean {
     private String projectId;
     private String content;
 
+    public LoggerBean(String projectId, String content) {
+        this.projectId = projectId;
+        this.content = content;
+    }
+
     public String getProjectId() {
         return projectId;
     }

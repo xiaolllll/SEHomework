@@ -7,6 +7,8 @@ public class TaskFinishInfoBean {
     private String subTaskId;
     private String projectId;
     private int doType;
+    private int totalFileCount;
+    private int hasFinishFileCount;
     private Date subTaskOutSourceEndTime;
 
     public String getEmpId() {
@@ -47,5 +49,21 @@ public class TaskFinishInfoBean {
 
     public void setSubTaskOutSourceEndTime(Date subTaskOutSourceEndTime) {
         this.subTaskOutSourceEndTime = subTaskOutSourceEndTime;
+    }
+
+    public int getTotalFileCount() {
+        return totalFileCount;
+    }
+
+    public void setTotalFileCount(int totalFileCount) {
+        this.totalFileCount = totalFileCount;
+    }
+
+    public int getHasFinishFileCount() {
+        return hasFinishFileCount;
+    }
+
+    public void setHasFinishFileCount(int hasFinishFileCount) {
+        this.hasFinishFileCount = hasFinishFileCount;
     }
 }
