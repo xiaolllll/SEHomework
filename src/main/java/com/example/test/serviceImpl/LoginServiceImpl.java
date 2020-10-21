@@ -34,7 +34,7 @@ public class LoginServiceImpl implements LoginService {
                 return ServiceUtil.FAILURE+"更新数据库失败";
             }
             else
-                return ServiceUtil.SUCESS;
+                return ServiceUtil.SUCCESS;
         }
     }
 }

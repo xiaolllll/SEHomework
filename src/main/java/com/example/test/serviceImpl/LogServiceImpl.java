@@ -24,7 +24,7 @@ public class LogServiceImpl implements LogService {
         }
         loggerBean.setContent("操作者："+empName+"("+empID+")"+"\t操作："+content);
         /**
-         * 没写完
+         * 没写完需要插入Log
          */
     }
 }
