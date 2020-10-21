@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.mapper.EmployeeMapper">
+
+    <resultMap id="employeeEntity" type="com.example.test.bean.EmployeeBean">
+        <id property="empId" column="empId"/>
+        <result property="empName" column="empName"/>
+        <result property="empPassword" column="empPassword"/>
+        <result property="empFinishProCount" column="empFinishProCount"/>
+        <result property="empDoingProCount" column="empDoingProCount"/>
+        <result property="empSkillType" column="empSkilltype"/>
+        <result property="empType" column="empType"/>
+    </resultMap>
+
+    <select id="getEmpInfoByEmpId" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee
+        WHERE employee.empId = #{empId}
+    </select>
+
+    <select id="getEmpInfoByEmpName" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
+        select *
+        from employee
+        where employee.empName = #{empName}
+    </select>
+
+    <select id="getEmpInfoAll" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee
+    </select>
+
+    <select id="getEmpInfoByProId" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee,
+             profinishinfo
+        WHERE profinishinfo.projectId = #{proId}
+          AND employee.empId = profinishinfo.empId
+    </select>
+
+    <select id="getEmpInfoByTaskId" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee,
+             taskfinishinfo
+        WHERE taskfinishinfo.subtaskId = #{taskId}
+          AND employee.empId = taskfinishinfo.empId
+    </select>
+
+    <insert id="insertEmployee">
+        insert into employee (empId, empName, empPassword, empFinishProCount, empDoingProCount,
+                              empSkilltype, empType)
+        values (#{empId}, #{empName}, #{empPassword}, #{empFinishProCount},
+                #{empDoingProCount}, #{empSkillType}, #{empType})
+    </insert>
+
+    <update id="updateEmployee">
+        update employee
+        set empName           = #{empName},
+            empPassword       = #{empPassword},
+            empFinishProCount = #{empFinishProCount},
+            empDoingProCount  = #{empDoingProCount},
+            empSkilltype      = #{empSkillType},
+            empType           = #{empType}
+        where employee.empId = #{empId}
+    </update>
+
+    <delete id="deleteEmployee" parameterType="String">
+        delete
+        from employee
+        where employee.empId = #{empId}
+    </delete>
+
+</mapper>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.mapper.SubTaskMapper">
+
+    <resultMap id="subTaskEntity" type="com.example.test.bean.SubTaskBean">
+        <id property="subTaskId" column="subtaskId"/>
+        <result property="subTaskName" column="subtaskName"/>
+        <result property="subTaskDesc" column="subtaskDesc"/>
+        <result property="SubTaskCanOutSource" column="subtaskCanOutSource"/>
+        <result property="subTaskSkillType" column="subtaskSkillType"/>
+        <result property="subTaskInProjectId" column="subtaskInProject"/>
+        <result property="subTaskState" column="subtaskState"/>
+        <result property="subTaskStartTime" column="subtaskStartTime"/>
+        <result property="subTaskEndTime" column="subTaskEndTime"/>
+    </resultMap>
+
+    <select id="getTaskInfoByProId" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
+        SELECT *
+        FROM subtask
+        WHERE subtaskId = #{subTaskId}
+    </select>
+
+    <select id="getTaskInfoByProName" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
+        select *
+        from subtask
+        where subtaskName = #{subTaskName}
+    </select>
+
+    <select id="getTaskInfoAll" resultType="com.example.test.bean.SubTaskBean">
+        SELECT *
+        FROM subtask
+    </select>
+
+    <select id="getTaskInfoByEmpIdDoing" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
+        SELECT *
+        FROM subtask
+        WHERE subtask.`subtaskState` = 1
+          AND subtask.`subtaskId` IN (
+            SELECT taskfinishinfo.`subtaskId` FROM taskfinishinfo WHERE taskfinishinfo.`empId` = #{empId}
+        )
+    </select>
+
+    <select id="getTaskInfoByEmpHasDone" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
+        SELECT *
+        FROM subtask
+        WHERE subtask.`subtaskState` = 2
+          AND subtask.`subtaskId` IN (
+            SELECT taskfinishinfo.`subtaskId` FROM taskfinishinfo WHERE taskfinishinfo.`empId` = #{empId}
+        )
+    </select>
+
+    <select id="getNextTaskListByTaskId" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
+        SELECT *
+        FROM subtask, tasknext
+        WHERE tasknext.nextTaskId = subtask.subtaskId and
+            tasknext.subtaskId = #{taskId}
+    </select>
+
+    <insert id="insertSubTask">
+        insert into subtask (subTaskId, subTaskName, subTaskDesc, SubTaskCanOutSource, subTaskSkillType,
+                             subtaskInProject, subTaskState, subtaskStartTime, subTaskEndTime)
+        values (#{subTaskId}, #{subTaskName}, #{subTaskDesc}, #{SubTaskCanOutSource},
+                #{subTaskSkillType}, #{subTaskInProjectId}, #{subTaskState},
+                #{subTaskStartTime}, #{subTaskEndTime})
+    </insert>
+
+    <update id="updateSubTask">
+        update subtask
+        set subTaskName         = #{subTaskName},
+            subTaskDesc         = #{subTaskDesc},
+            SubTaskCanOutSource = #{SubTaskCanOutSource},
+            subTaskSkillType    = #{subTaskSkillType},
+            subtaskInProject    = #{subTaskInProjectId},
+            subTaskState        = #{subTaskState},
+            subtaskStartTime    = #{subTaskStartTime},
+            subTaskEndTime      = #{subTaskEndTime}
+        where subtask.subtaskId = #{subTaskId}
+    </update>
+
+    <delete id="deleteSubTask" parameterType="String">
+        delete
+        from subtask
+        where subtask.subtaskId = #{subTaskId}
+    </delete>
+
+</mapper>
