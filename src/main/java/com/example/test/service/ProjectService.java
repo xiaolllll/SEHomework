@@ -1,6 +1,6 @@
 package com.example.test.service;
 
-import com.example.test.bean.ProjectBean;
+import com.example.test.bean.*;
 
 import java.util.ArrayList;
 

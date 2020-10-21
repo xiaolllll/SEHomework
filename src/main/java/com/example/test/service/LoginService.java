@@ -1,8 +1,8 @@
 package com.example.test.service;
 
-import com.example.test.bean.UserBean;
+import com.example.test.bean.EmployeeBean;
 
 public interface LoginService {
-    UserBean loginIn(String ID, String password);
+    EmployeeBean loginIn(String ID, String password);
     boolean changePassword(String ID,String oldPassword,String newPassword);
 }

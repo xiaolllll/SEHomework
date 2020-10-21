@@ -1,7 +1,7 @@
 package com.example.test.service;
 
-import com.example.test.bean.ProjectBean;
-import com.example.test.bean.EmployeeBean;
+import com.example.test.bean.*;
+
 
 import java.util.ArrayList;
 
@@ -31,5 +31,13 @@ public interface DataQueryService {
     ArrayList<SubTaskBean> getProjectEmpSubTask(String projectID,String EmpID);//通过员工和项目查看子任务信息
 
     /*查看子任务参与信息*/
-    TaskFinishInfo getSubTaskInfo(String subTaskID,String EmpID);
+    TaskFinishInfoBean getSubTaskInfo(String subTaskID,String EmpID);
+
+    /*查看通知信息*/
+    NotifyInfoBean getNotifyInfo(String NotifyID);//查看单个通知信息
+    ArrayList<NotifyInfoBean> getEmpNotifyInfo(String empID);//查看员工通知信息
+
+    /*查询日志*/
+    ArrayList<LoggerBean> getLog(String projectID);
+
 }
