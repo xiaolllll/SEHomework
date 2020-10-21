@@ -11,6 +11,12 @@ public class ProFinishInfoBean {
     private String projectId;
     private String empPosition; //员工职位
 
+    public ProFinishInfoBean(String empId, String projectId, String empPosition) {
+        this.empId = empId;
+        this.projectId = projectId;
+        this.empPosition = empPosition;
+    }
+
     public String getEmpId() {
         return empId;
     }

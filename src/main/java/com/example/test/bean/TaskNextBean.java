@@ -4,6 +4,11 @@ public class TaskNextBean {
     private String subTaskId;
     private String nextTaskId;
 
+    public TaskNextBean(String subTaskId, String nextTaskId) {
+        this.subTaskId = subTaskId;
+        this.nextTaskId = nextTaskId;
+    }
+
     public String getSubTaskId() {
         return subTaskId;
     }
