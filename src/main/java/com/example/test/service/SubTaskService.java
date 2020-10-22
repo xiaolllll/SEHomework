@@ -1,9 +1,11 @@
 package com.example.test.service;
 
+import java.util.Date;
+
 public interface SubTaskService {
     /*外包任务*/
     String outSourcingApply(String ApplicantID,String HelpersID,String subTaskId);//申请外包
-    String outSourcingHandover(String ApplicantID,String HelpersID,String subTaskId);//外包信息交接
+    String outSourcingHandover(String ApplicantID, String HelpersID, String subTaskId, Date taskOutSourceEndTime);//外包信息交接
     String outSourcingRecovery(String ApplicantID,String HelpersID,String subTaskId);//外包回收
     /*完成子任务*/
     //boolean subTaskExecute(String subTaskID);//提交文件

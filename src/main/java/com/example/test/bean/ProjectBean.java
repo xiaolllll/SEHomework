@@ -12,6 +12,9 @@ public class ProjectBean {
     private Date projectStartTime;
     private Date projectEndTime;
 
+    public ProjectBean() {
+    }
+
     public ProjectBean(String projectId, String projectName, String proManagerId, String projectDesc,
                        int projectState, Date projectStartTime, Date projectEndTime) {
         this.projectId = projectId;

@@ -1,13 +1,18 @@
 package com.example.test.serviceImpl;
 
+import com.example.test.bean.ProFinishInfoBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.bean.TaskFinishInfoBean;
+import com.example.test.mapper.ProFinishInfoMapper;
 import com.example.test.mapper.SubTaskMapper;
 import com.example.test.mapper.TaskFinishInfoMapper;
 import com.example.test.service.SubTaskService;
+import com.example.test.util.ProjectUtil;
 import com.example.test.util.ServiceUtil;
+import com.example.test.util.SubTaskUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 public class SubTaskServiceImp implements SubTaskService {
@@ -16,8 +21,11 @@ public class SubTaskServiceImp implements SubTaskService {
     private SubTaskMapper subTaskMapper;
     @Autowired
     private TaskFinishInfoMapper taskFinishInfoMapper;
+    @Autowired
+    private ProFinishInfoMapper proFinishInfoMapper;
 
     @Override
+    //申请外包：判断有无申请者，判断
     public String outSourcingApply(String ApplicantID, String HelpersID, String subTaskId) {
         List<TaskFinishInfoBean> taskFinishInfoBeanApplicant = taskFinishInfoMapper.getSubTaskInfo(subTaskId, ApplicantID);
         if (taskFinishInfoBeanApplicant.size() == 0) { //没有申请者
@@ -35,13 +43,25 @@ public class SubTaskServiceImp implements SubTaskService {
     }
 
     @Override
-    public String outSourcingHandover(String ApplicantID, String HelpersID, String subTaskId) {
+    //外包信息交接
+    public String outSourcingHandover(String ApplicantID, String HelpersID, String subTaskId, Date taskOutSourceEndTime) {
         if (!outSourcingApply(ApplicantID, HelpersID, subTaskId).equals(ServiceUtil.SUCCESS)) {
             return outSourcingApply(ApplicantID, HelpersID, subTaskId);
         }
         SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskId);
-
-        return null;
+        TaskFinishInfoBean taskFinishInfoBean = new TaskFinishInfoBean();
+        taskFinishInfoBean.setEmpId(HelpersID);
+        taskFinishInfoBean.setSubTaskId(subTaskId);
+        taskFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProjectId());
+        taskFinishInfoBean.setSubTaskOutSourceEndTime(taskOutSourceEndTime);
+        taskFinishInfoBean.setDoType(SubTaskUtil.getTaskDoType(SubTaskUtil.DO_TYPE.OUT_SOURCE));
+        taskFinishInfoMapper.insertTaskFinishInfo(taskFinishInfoBean);
+        ProFinishInfoBean proFinishInfoBean = new ProFinishInfoBean();
+        proFinishInfoBean.setEmpId(HelpersID);
+        proFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProjectId());
+        proFinishInfoBean.setEmpPosition(ProjectUtil.getTaskDoType(ProjectUtil.EMP_POSITION.OUT_SOURCE_EMP));
+        proFinishInfoMapper.insertProjectInfo(proFinishInfoBean);
+        return ServiceUtil.SUCCESS;
     }
 
     /**

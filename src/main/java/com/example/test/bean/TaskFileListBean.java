@@ -4,6 +4,9 @@ public class TaskFileListBean {
     private String subTaskId;
     private String filePath;
 
+    public TaskFileListBean() {
+    }
+
     public TaskFileListBean(String subTaskId, String filePath) {
         this.subTaskId = subTaskId;
         this.filePath = filePath;

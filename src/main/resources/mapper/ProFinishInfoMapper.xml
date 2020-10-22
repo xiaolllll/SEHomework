@@ -5,7 +5,7 @@
     <resultMap id="proFinishInfoEntity" type="com.example.test.bean.ProFinishInfoBean">
         <id property="empId" column="empId"/>
         <result property="projectId" column="projectId"/>
-        <result property="empPosition" column="empPosition"/>
+        <result property="empPosition" column="empPostion"/>
     </resultMap>
 
     <select id="getProjectInfo" parameterType="String" resultType="com.example.test.bean.ProFinishInfoBean">
@@ -13,5 +13,10 @@
         FROM profinishinfo
         WHERE projectId = #{projectID}
     </select>
+
+    <insert id="insertProjectInfo">
+        insert into profinishinfo (empId, projectId, empPostion)
+        values (#{empId}, #{projectId}, #{empPosition})
+    </insert>
 
 </mapper>

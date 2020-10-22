@@ -4,6 +4,9 @@ public class ProjectFilePathBean {
     private String projectId;
     private String projectFilePath;
 
+    public ProjectFilePathBean() {
+    }
+
     public ProjectFilePathBean(String projectId, String projectFilePath) {
         this.projectId = projectId;
         this.projectFilePath = projectFilePath;
