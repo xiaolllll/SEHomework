@@ -2,7 +2,9 @@ package com.example.test;
 
 import com.example.test.bean.ProjectBean;
 import com.example.test.bean.UserBean;
+import com.example.test.service.EmployeeService;
 import com.example.test.service.UserService;
+import com.example.test.serviceImpl.EmployeeServiceImpl;
 import com.example.test.serviceImpl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,18 +19,18 @@ import java.util.List;
 public class TestApplicationTests {
 
     @Autowired
-    UserService userService = new UserServiceImpl();
+    EmployeeService employeeService = new EmployeeServiceImpl();
 
     @Test
     public void contextLoads() {
 
-        userService.insertProject();
-        System.out.println("该用户ID为：");
-        List<ProjectBean> userBean = userService.getProjectAll();
-        System.out.println(userBean.size());
-        for (ProjectBean p: userBean) {
-            System.out.println(p.getProjectId());
-        }
+        System.out.println(employeeService.deleteEmp("aaa"));
+//        System.out.println("该用户ID为：");
+//        List<ProjectBean> userBean = userService.getProjectAll();
+//        System.out.println(userBean.size());
+//        for (ProjectBean p: userBean) {
+//            System.out.println(p.getProjectId());
+//        }
     }
 
 }

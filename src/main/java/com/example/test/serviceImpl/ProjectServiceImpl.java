@@ -14,7 +14,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public String addSubTask(SubTaskBean taskBean, ArrayList<String> leadingPath, ArrayList<String> succeedingPath, boolean isChain) {
         for (String s:leadingPath){
-            
+
         }
         return null;
     }

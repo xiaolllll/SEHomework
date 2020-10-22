@@ -97,10 +97,10 @@
         where project.projectId = #{proId}
     </delete>
 
-    <select id="getProInfoByEmpHasDone" parameterType="String" resultType="String">
-        SELECT filePath
-        FROM projectfilepath
-        WHERE projectfilepath.`project` = #{proId}
-    </select>
+<!--    <select id="getProInfoByEmpHasDone" parameterType="String" resultType="String">-->
+<!--        SELECT filePath-->
+<!--        FROM projectfilepath-->
+<!--        WHERE projectfilepath.`project` = #{proId}-->
+<!--    </select>-->
 
 </mapper>

@@ -5,7 +5,9 @@ import com.example.test.mapper.EmployeeMapper;
 import com.example.test.service.EmployeeService;
 import com.example.test.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeMapper employeeMapper;
