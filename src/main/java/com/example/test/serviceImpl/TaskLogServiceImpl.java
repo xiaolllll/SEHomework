@@ -20,9 +20,7 @@ public class TaskLogServiceImpl implements TaskLogService {
     @Override
     public String addTaskLog(String subTaskID, String empID, String content) {
         TaskLoggerBean taskLoggerBean = new TaskLoggerBean();
-        /**
-         * 不正确需要无参构造
-         */
+
         taskLoggerBean.setSubTaskId(subTaskID);
 
         EmployeeBean employeeBean = employeeMapper.getEmpInfoByEmpId(empID);
