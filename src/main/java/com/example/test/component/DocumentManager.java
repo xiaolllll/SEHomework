@@ -13,9 +13,6 @@ public class DocumentManager {
 
     /**
      * 等待补全参数
-     * @param projectID
-     * @param subTaskID
-     * @return
      */
     boolean uploadDocument(String projectID,String subTaskID){
         return false;
