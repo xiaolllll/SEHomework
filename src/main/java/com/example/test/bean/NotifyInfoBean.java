@@ -8,6 +8,7 @@ package com.example.test.bean;
  *   `infoHasRead` int(32) DEFAULT 0
  */
 public class NotifyInfoBean {
+    private int notifyInfoId;
     private String receiverId;
     private String senderId;
     private String Info;
@@ -15,6 +16,14 @@ public class NotifyInfoBean {
     private boolean infoHasRead;
 
     public NotifyInfoBean() {
+    }
+
+    public int getNotifyInfoId() {
+        return notifyInfoId;
+    }
+
+    public void setNotifyInfoId(int notifyInfoId) {
+        this.notifyInfoId = notifyInfoId;
     }
 
     public NotifyInfoBean(String receiverId, String senderId, String info, int notifyType, boolean infoHasRead) {
