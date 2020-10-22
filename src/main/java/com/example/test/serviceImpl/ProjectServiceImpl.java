@@ -2,13 +2,20 @@ package com.example.test.serviceImpl;
 
 import com.example.test.bean.ProjectBean;
 import com.example.test.bean.SubTaskBean;
+import com.example.test.mapper.SubTaskMapper;
 import com.example.test.service.ProjectService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 
 public class ProjectServiceImpl implements ProjectService {
+    @Autowired
+    private SubTaskMapper subTaskMapper;
     @Override
     public String addSubTask(SubTaskBean taskBean, ArrayList<String> leadingPath, ArrayList<String> succeedingPath, boolean isChain) {
+        for (String s:leadingPath){
+            
+        }
         return null;
     }
 
