@@ -17,5 +17,5 @@ public interface NotifyInfoMapper {
 
     public int updateNotifyInfo(NotifyInfoBean notifyInfoBean);
 
-    public int deleteNotifyInfoAllBySenderID(String senderID);
+    public int deleteNotifyInfoAllByReceiverID(String receiverID);
 }
