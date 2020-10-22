@@ -47,7 +47,7 @@
     <delete id="deleteNotifyInfoAllBySenderID" parameterType="String">
         delete
         from notifyinfo
-        where notifyinfo.senderId = #{senderID}
+        where notifyinfo.receiverId = #{receiverId}
     </delete>
 
 </mapper>

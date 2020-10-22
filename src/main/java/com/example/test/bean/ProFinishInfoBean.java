@@ -9,9 +9,12 @@ package com.example.test.bean;
 public class ProFinishInfoBean {
     private String empId;
     private String projectId;
-    private String empPosition; //员工职位
+    private int empPosition; //员工职位
 
-    public ProFinishInfoBean(String empId, String projectId, String empPosition) {
+    public ProFinishInfoBean() {
+    }
+
+    public ProFinishInfoBean(String empId, String projectId, int empPosition) {
         this.empId = empId;
         this.projectId = projectId;
         this.empPosition = empPosition;
@@ -33,11 +36,11 @@ public class ProFinishInfoBean {
         this.projectId = projectId;
     }
 
-    public String getEmpPosition() {
+    public int getEmpPosition() {
         return empPosition;
     }
 
-    public void setEmpPosition(String empPosition) {
+    public void setEmpPosition(int empPosition) {
         this.empPosition = empPosition;
     }
 }

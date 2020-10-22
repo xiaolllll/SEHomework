@@ -5,6 +5,9 @@ public class TaskLoggerBean {
     private String subTaskId;
     private String content;
 
+    public TaskLoggerBean() {
+    }
+
     public TaskLoggerBean(String subTaskId, String content) {
         this.subTaskId = subTaskId;
         this.content = content;

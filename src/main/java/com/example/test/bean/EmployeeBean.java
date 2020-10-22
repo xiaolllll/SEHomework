@@ -18,6 +18,9 @@ public class EmployeeBean {
     private int empSkillType;
     private int empType; // 员工为1，管理员为0
 
+    public EmployeeBean() {
+    }
+
     public EmployeeBean(String empId, String empName, String empPassword, int empFinishProCount, int empDoingProCount, int empSkillType, int empType) {
         this.empId = empId;
         this.empName = empName;

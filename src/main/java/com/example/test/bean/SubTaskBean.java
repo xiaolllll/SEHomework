@@ -29,6 +29,9 @@ public class SubTaskBean {
     private int totalFileCount;
     private int hasFinishFileCount;
 
+    public SubTaskBean() {
+    }
+
     public SubTaskBean(String subTaskId, String subTaskName, String subTaskDesc, int subTaskCanOutSource, int subTaskSkillType, String subTaskInProjectId, int subTaskState, Date subTaskStartTime, Date subTaskEndTime) {
         this.subTaskId = subTaskId;
         this.subTaskName = subTaskName;

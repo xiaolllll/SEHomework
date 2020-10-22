@@ -9,6 +9,9 @@ public class TaskFinishInfoBean {
     private int doType; //0为外包，1为非外包
     private Date subTaskOutSourceEndTime;
 
+    public TaskFinishInfoBean() {
+    }
+
     public TaskFinishInfoBean(String empId, String subTaskId,
                               String projectId, int doType, Date subTaskOutSourceEndTime) {
         this.empId = empId;
