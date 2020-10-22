@@ -3,6 +3,7 @@ package com.example.test.serviceImpl;
 import com.example.test.bean.NotifyInfoBean;
 import com.example.test.mapper.NotifyInfoMapper;
 import com.example.test.service.NotifyService;
+import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -29,8 +30,29 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    public String handleNotify(String notifyInfoID) {
-        //NotifyInfoBean=notifyInfoMapper
+    public String handleNotify(int notifyInfoID) {
+        NotifyInfoBean notifyInfoBean=notifyInfoMapper.selectNotifyInfoByNotifyId(notifyInfoID);
+        if(notifyInfoBean==null){
+            return ServiceUtil.FAILURE+"数据库未找到通知信息";
+        }else {
+            switch (notifyInfoBean.getNotifyType()){
+                case NotifyUtil.NO_REPLY:
+                    notifyInfoBean.setInfoHasRead(true);
+
+                    break;
+                default:
+                    notifyInfoBean.setInfoHasRead(true);
+                    return ServiceUtil.FAILURE+"出现未知类型的通知";
+
+            }
+
+            int result = notifyInfoMapper.updateNotifyInfo(notifyInfoBean);
+            if(result!=1){
+                return ServiceUtil.FAILURE+"数据库回写通知失败";
+            }
+
+            return ServiceUtil.SUCCESS;
+        }
         /**
          * 没写完需要查询单个Notify
          */

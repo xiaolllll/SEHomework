@@ -14,4 +14,13 @@ public interface NotifyInfoMapper {
 
     //添加新的信息
     public int insertNotifyInfo(NotifyInfoBean notifyInfoBean);
+
+    /**
+     * todo
+     * @param notifyInfoBean
+     * @return
+     */
+    //修改已有的信息
+    public int updateNotifyInfo(NotifyInfoBean notifyInfoBean);
+
 }
