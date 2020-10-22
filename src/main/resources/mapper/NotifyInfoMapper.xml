@@ -3,6 +3,7 @@
 <mapper namespace="com.example.test.mapper.NotifyInfoMapper">
 
     <resultMap id="notifyInfoEntity" type="com.example.test.bean.NotifyInfoBean">
+        <id property="notifyInfoId" column="notifyInfoId"/>
         <result property="receiverId" column="receiverId"/>
         <result property="senderId" column="senderId"/>
         <result property="Info" column="info"/>
@@ -32,5 +33,21 @@
         insert into notifyinfo (receiverId, senderId, info, notifyType, infoHasRead)
         values (#{receiverId}, #{senderId}, #{Info}, #{notifyType},#{infoHasRead})
     </insert>
+
+    <update id="updateNotifyInfo">
+        update notifyinfo
+        set receiverId         = #{receiverId},
+            senderId         = #{senderId},
+            info = #{info},
+            notifyType    = #{notifyType},
+            infoHasRead    = #{infoHasRead}
+        where notifyinfo.notifyInfoId = #{notifyInfoId}
+    </update>
+
+    <delete id="deleteNotifyInfoAllBySenderID" parameterType="String">
+        delete
+        from notifyinfo
+        where notifyinfo.senderId = #{senderID}
+    </delete>
 
 </mapper>

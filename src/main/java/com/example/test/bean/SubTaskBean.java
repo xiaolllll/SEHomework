@@ -20,12 +20,14 @@ public class SubTaskBean {
     private String subTaskId;
     private String subTaskName;
     private String subTaskDesc;
-    private int SubTaskCanOutSource;
+    private int SubTaskCanOutSource; //不能外包为0，可以外包为1
     private int subTaskSkillType;
     private String subTaskInProjectId;
     private int subTaskState;
     private Date subTaskStartTime;
     private Date subTaskEndTime;
+    private int totalFileCount;
+    private int hasFinishFileCount;
 
     public SubTaskBean(String subTaskId, String subTaskName, String subTaskDesc, int subTaskCanOutSource, int subTaskSkillType, String subTaskInProjectId, int subTaskState, Date subTaskStartTime, Date subTaskEndTime) {
         this.subTaskId = subTaskId;
@@ -37,6 +39,21 @@ public class SubTaskBean {
         this.subTaskState = subTaskState;
         this.subTaskStartTime = subTaskStartTime;
         this.subTaskEndTime = subTaskEndTime;
+    }
+
+    public SubTaskBean(String subTaskId, String subTaskName, String subTaskDesc,
+                       int subTaskCanOutSource, int subTaskSkillType, String subTaskInProjectId, int subTaskState, Date subTaskStartTime, Date subTaskEndTime, int totalFileCount, int hasFinishFileCount) {
+        this.subTaskId = subTaskId;
+        this.subTaskName = subTaskName;
+        this.subTaskDesc = subTaskDesc;
+        SubTaskCanOutSource = subTaskCanOutSource;
+        this.subTaskSkillType = subTaskSkillType;
+        this.subTaskInProjectId = subTaskInProjectId;
+        this.subTaskState = subTaskState;
+        this.subTaskStartTime = subTaskStartTime;
+        this.subTaskEndTime = subTaskEndTime;
+        this.totalFileCount = totalFileCount;
+        this.hasFinishFileCount = hasFinishFileCount;
     }
 
     public String getSubTaskId() {
@@ -109,5 +126,21 @@ public class SubTaskBean {
 
     public void setSubTaskEndTime(Date subTaskEndTime) {
         this.subTaskEndTime = subTaskEndTime;
+    }
+
+    public int getTotalFileCount() {
+        return totalFileCount;
+    }
+
+    public void setTotalFileCount(int totalFileCount) {
+        this.totalFileCount = totalFileCount;
+    }
+
+    public int getHasFinishFileCount() {
+        return hasFinishFileCount;
+    }
+
+    public void setHasFinishFileCount(int hasFinishFileCount) {
+        this.hasFinishFileCount = hasFinishFileCount;
     }
 }

@@ -12,6 +12,8 @@
         <result property="subTaskState" column="subtaskState"/>
         <result property="subTaskStartTime" column="subtaskStartTime"/>
         <result property="subTaskEndTime" column="subTaskEndTime"/>
+        <result property="totalFileCount" column="totalFileCount"/>
+        <result property="hasFinishFileCount" column="hasFinishFileCount"/>
     </resultMap>
 
     <select id="getTaskInfoByProId" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
@@ -33,14 +35,16 @@
 
     <select id="getProjectSubTask" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
         SELECT *
-        FROM subtask, taskfinishinfo
+        FROM subtask,
+             taskfinishinfo
         where subtask.subtaskId = taskfinishinfo.subtaskId
           and taskfinishinfo.projectId = #{projectID}
     </select>
 
     <select id="getProjectEmpSubTask" resultType="com.example.test.bean.SubTaskBean">
         SELECT *
-        FROM subtask, taskfinishinfo
+        FROM subtask,
+             taskfinishinfo
         where subtask.subtaskId = taskfinishinfo.subtaskId
           and taskfinishinfo.projectId = #{projectID}
           and taskfinishinfo.empId = #{EmpID}
@@ -66,17 +70,19 @@
 
     <select id="getNextTaskListByTaskId" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
         SELECT *
-        FROM subtask, tasknext
-        WHERE tasknext.nextTaskId = subtask.subtaskId and
-            tasknext.subtaskId = #{taskId}
+        FROM subtask,
+             tasknext
+        WHERE tasknext.nextTaskId = subtask.subtaskId
+          and tasknext.subtaskId = #{taskId}
     </select>
 
     <insert id="insertSubTask">
         insert into subtask (subTaskId, subTaskName, subTaskDesc, SubTaskCanOutSource, subTaskSkillType,
-                             subtaskInProject, subTaskState, subtaskStartTime, subTaskEndTime)
+                             subtaskInProject, subTaskState, subtaskStartTime, subTaskEndTime, totalFileCount,
+                             hasFinishFileCount)
         values (#{subTaskId}, #{subTaskName}, #{subTaskDesc}, #{SubTaskCanOutSource},
                 #{subTaskSkillType}, #{subTaskInProjectId}, #{subTaskState},
-                #{subTaskStartTime}, #{subTaskEndTime})
+                #{subTaskStartTime}, #{subTaskEndTime}, #{totalFileCount}, #{hasFinishFileCount})
     </insert>
 
     <update id="updateSubTask">
@@ -88,7 +94,9 @@
             subtaskInProject    = #{subTaskInProjectId},
             subTaskState        = #{subTaskState},
             subtaskStartTime    = #{subTaskStartTime},
-            subTaskEndTime      = #{subTaskEndTime}
+            subTaskEndTime      = #{subTaskEndTime},
+            totalFileCount      = #{totalFileCount},
+            hasFinishFileCount  = #{hasFinishFileCount}
         where subtask.subtaskId = #{subTaskId}
     </update>
 

@@ -15,17 +15,7 @@ public interface NotifyInfoMapper {
     //添加新的信息
     public int insertNotifyInfo(NotifyInfoBean notifyInfoBean);
 
-    /**
-     * todo
-     * @param notifyInfoBean
-     * @return
-     */
-    //修改已有的信息
     public int updateNotifyInfo(NotifyInfoBean notifyInfoBean);
 
-    /**
-     * to do
-     */
-    //删除删除特定的empID对应的已读信息
-    public int deleteNotifyInfoByReceiverID(String receiverId);
+    public int deleteNotifyInfoAllBySenderID(String senderID);
 }
