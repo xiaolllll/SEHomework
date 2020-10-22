@@ -54,7 +54,7 @@ public class NotifyServiceImpl implements NotifyService {
             return ServiceUtil.SUCCESS;
         }
         /**
-         * 没写完需要查询单个Notify
+         * 没写完需要根据信息更新
          */
     }
 
@@ -63,5 +63,7 @@ public class NotifyServiceImpl implements NotifyService {
         /**
          * 没写完需要删除特定的empID对应的已读信息
          */
+        notifyInfoMapper.deleteNotifyInfoByReceiverID(empID);
+        return ServiceUtil.SUCCESS;
     }
 }

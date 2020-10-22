@@ -27,7 +27,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return ServiceUtil.SUCCESS;
         }
         else {
-            return ServiceUtil.FAILURE+"数据库插入失败";
+            return ServiceUtil.FAILURE+"数据库删除失败";
         }
     }
 
@@ -38,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             return ServiceUtil.SUCCESS;
         }
         else {
-            return ServiceUtil.FAILURE+"数据库插入失败";
+            return ServiceUtil.FAILURE+"数据库更新失败";
         }
     }
 }

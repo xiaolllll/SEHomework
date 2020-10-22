@@ -2,36 +2,41 @@ package com.example.test.serviceImpl;
 
 import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.LoggerBean;
+import com.example.test.bean.SubTaskBean;
+import com.example.test.bean.TaskLoggerBean;
 import com.example.test.mapper.EmployeeMapper;
-import com.example.test.mapper.LoggerMapper;
-import com.example.test.service.LogService;
-import com.example.test.service.LoginService;
+import com.example.test.mapper.TaskLoggerMapper;
+import com.example.test.service.TaskLogService;
 import com.example.test.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.SimpleDateFormat;
 
-public class LogServiceImpl implements LogService {
+public class TaskLogServiceImpl implements TaskLogService {
+
     @Autowired
     private EmployeeMapper employeeMapper;
-    private LoggerMapper loggerMapper;
+    private TaskLoggerMapper taskLoggerMapper;
     @Override
-    public String addLog(String projectID, String empID, String content) {
-        LoggerBean loggerBean = new LoggerBean();
-        loggerBean.setProjectId(projectID);
+    public String addTaskLog(String subTaskID, String empID, String content) {
+        TaskLoggerBean taskLoggerBean = new TaskLoggerBean();
+        /**
+         * 不正确需要无参构造
+         */
+        taskLoggerBean.setSubTaskId(subTaskID);
 
         EmployeeBean employeeBean = employeeMapper.getEmpInfoByEmpId(empID);
         String empName="";
         if(employeeBean!=null){
-            System.out.println("LogServiceImpl addLog 找不到操作人");
+            System.out.println("TaskLogServiceImpl addTaskLog 找不到操作人");
             empName = employeeBean.getEmpName();
         }
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String time=simpleDateFormat.format(System.currentTimeMillis());
 
-        loggerBean.setContent("时间："+time+"\t操作者："+empName+"("+empID+")"+"\t操作："+content);
-        int result=loggerMapper.addLogger(loggerBean);
+        taskLoggerBean.setContent("时间："+time+"\t操作者："+empName+"("+empID+")"+"\t操作："+content);
+        int result=taskLoggerMapper.addLogger(taskLoggerBean);
         if(result!=1){
             return ServiceUtil.FAILURE+"数据库插入项目日志失败";
         }
