@@ -6,10 +6,17 @@ public class TaskFinishInfoBean {
     private String empId;
     private String subTaskId;
     private String projectId;
-    private int doType;
-    private int totalFileCount;
-    private int hasFinishFileCount;
+    private int doType; //0为外包，1为非外包
     private Date subTaskOutSourceEndTime;
+
+    public TaskFinishInfoBean(String empId, String subTaskId,
+                              String projectId, int doType, Date subTaskOutSourceEndTime) {
+        this.empId = empId;
+        this.subTaskId = subTaskId;
+        this.projectId = projectId;
+        this.doType = doType;
+        this.subTaskOutSourceEndTime = subTaskOutSourceEndTime;
+    }
 
     public String getEmpId() {
         return empId;
@@ -49,21 +56,5 @@ public class TaskFinishInfoBean {
 
     public void setSubTaskOutSourceEndTime(Date subTaskOutSourceEndTime) {
         this.subTaskOutSourceEndTime = subTaskOutSourceEndTime;
-    }
-
-    public int getTotalFileCount() {
-        return totalFileCount;
-    }
-
-    public void setTotalFileCount(int totalFileCount) {
-        this.totalFileCount = totalFileCount;
-    }
-
-    public int getHasFinishFileCount() {
-        return hasFinishFileCount;
-    }
-
-    public void setHasFinishFileCount(int hasFinishFileCount) {
-        this.hasFinishFileCount = hasFinishFileCount;
     }
 }

@@ -14,4 +14,8 @@ public interface NotifyInfoMapper {
 
     //添加新的信息
     public int insertNotifyInfo(NotifyInfoBean notifyInfoBean);
+
+    public int updateNotifyInfo(NotifyInfoBean notifyInfoBean);
+
+    public int deleteNotifyInfoAllBySenderID(String senderID);
 }

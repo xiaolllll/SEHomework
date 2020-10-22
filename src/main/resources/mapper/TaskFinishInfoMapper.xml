@@ -7,15 +7,35 @@
         <result property="subTaskId" column="subTaskId"/>
         <result property="projectId" column="projectId"/>
         <result property="doType" column="doType"/>
-        <result property="totalFileCount" column="totalFileCount"/>
-        <result property="hasFinishFileCount" column="hasFinishFileCount"/>
         <result property="subTaskOutSourceEndTime" column="subTaskOutSourceEndTime"/>
     </resultMap>
 
-    <select id="getTaskInfoByProId" resultType="com.example.test.bean.TaskFinishInfoBean">
+    <select id="getSubTaskInfo" resultType="com.example.test.bean.TaskFinishInfoBean">
         SELECT *
         FROM taskfinishinfo
-        WHERE subtaskId = #{subTaskID} and empId = #{EmpID}
+        WHERE subtaskId = #{subTaskID}
+          and empId = #{EmpID}
     </select>
+
+    <insert id="insertTaskFinishInfo">
+        insert into taskfinishinfo (subTaskId, projectId, doType,
+                                    subTaskOutSourceEndTime)
+        values (#{subTaskId}, #{projectId}, #{doType}, #{subTaskOutSourceEndTime})
+    </insert>
+
+    <update id="updateTaskFinishInfo">
+        update taskfinishinfo
+        set projectId               = #{projectId},
+            doType                  = #{doType},
+            subTaskOutSourceEndTime = #{subTaskOutSourceEndTime}
+        where taskfinishinfo.subtaskId = #{subTaskId}
+    </update>
+
+    <delete id="deleteSubTask" parameterType="String">
+        delete
+        from subtask
+        where subtask.subtaskId = #{subTaskId}
+    </delete>
+
 
 </mapper>
