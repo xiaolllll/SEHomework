@@ -6,7 +6,9 @@ import com.example.test.service.NotifyService;
 import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class NotifyServiceImpl implements NotifyService {
     @Autowired
     private NotifyInfoMapper notifyInfoMapper;

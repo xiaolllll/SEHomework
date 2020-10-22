@@ -9,9 +9,10 @@ import com.example.test.mapper.TaskLoggerMapper;
 import com.example.test.service.TaskLogService;
 import com.example.test.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-
+@Service
 public class TaskLogServiceImpl implements TaskLogService {
 
     @Autowired

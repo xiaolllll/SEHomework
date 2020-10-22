@@ -11,10 +11,11 @@ import com.example.test.util.ProjectUtil;
 import com.example.test.util.ServiceUtil;
 import com.example.test.util.SubTaskUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-
+@Service
 public class SubTaskServiceImp implements SubTaskService {
 
     @Autowired

@@ -5,9 +5,10 @@ import com.example.test.bean.SubTaskBean;
 import com.example.test.mapper.SubTaskMapper;
 import com.example.test.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-
+@Service
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private SubTaskMapper subTaskMapper;

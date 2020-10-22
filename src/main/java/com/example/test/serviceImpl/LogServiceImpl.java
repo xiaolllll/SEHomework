@@ -8,9 +8,10 @@ import com.example.test.service.LogService;
 import com.example.test.service.LoginService;
 import com.example.test.util.ServiceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-
+@Service
 public class LogServiceImpl implements LogService {
     @Autowired
     private EmployeeMapper employeeMapper;
