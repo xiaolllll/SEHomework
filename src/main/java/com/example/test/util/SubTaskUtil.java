@@ -8,10 +8,10 @@ public class SubTaskUtil {
     }
 
     public enum TASK_STATE {
-        UNDONE,
-        OUT_SOURCE,
-        TO_BE_CHECKED,
-        HAS_FINISH
+        UNDONE, //未完成
+        OUT_SOURCE, //外包
+        TO_BE_CHECKED, //待验收
+        HAS_FINISH //已完成
     }
 
     public static int getTaskDoType(DO_TYPE do_type) {
@@ -24,4 +24,18 @@ public class SubTaskUtil {
         }
         return 0;
     }
+
+    public static int getTaskState(TASK_STATE task_state) {
+        if (task_state.equals(TASK_STATE.UNDONE)) {
+            return 0;
+        } else if (task_state.equals(TASK_STATE.OUT_SOURCE)) {
+            return 1;
+        } else if (task_state.equals(TASK_STATE.TO_BE_CHECKED)) {
+            return 2;
+        } else if (task_state.equals(TASK_STATE.HAS_FINISH)) {
+            return 3;
+        }
+        return 0;
+    }
+
 }

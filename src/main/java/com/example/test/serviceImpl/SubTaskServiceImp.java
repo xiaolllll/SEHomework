@@ -1,8 +1,10 @@
 package com.example.test.serviceImpl;
 
+import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.ProFinishInfoBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.bean.TaskFinishInfoBean;
+import com.example.test.mapper.EmployeeMapper;
 import com.example.test.mapper.ProFinishInfoMapper;
 import com.example.test.mapper.SubTaskMapper;
 import com.example.test.mapper.TaskFinishInfoMapper;
@@ -24,6 +26,8 @@ public class SubTaskServiceImp implements SubTaskService {
     private TaskFinishInfoMapper taskFinishInfoMapper;
     @Autowired
     private ProFinishInfoMapper proFinishInfoMapper;
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     @Override
     //申请外包：判断有无申请者，判断
@@ -32,13 +36,21 @@ public class SubTaskServiceImp implements SubTaskService {
         if (taskFinishInfoBeanApplicant.size() == 0) { //没有申请者
             return ServiceUtil.FAILURE+"无此申请者用户";
         }
-        List<TaskFinishInfoBean> taskFinishInfoBeanHelper = taskFinishInfoMapper.getSubTaskInfo(subTaskId, HelpersID);
-        if (taskFinishInfoBeanHelper.size() == 0) {//没有外包者
+        EmployeeBean employeeBean = employeeMapper.getEmpInfoByEmpId(HelpersID);
+//        List<TaskFinishInfoBean> taskFinishInfoBeanHelper = taskFinishInfoMapper.getSubTaskInfo(subTaskId, HelpersID);
+        if (employeeBean == null) {//没有外包者
             return ServiceUtil.FAILURE+"无此外包者用户";
         }
         SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskId);
         if (subTaskBean.getSubTaskCanOutSource() == 0) { //不能外包
             return ServiceUtil.FAILURE+"此任务不允许外包，请自己一个人努力完成啊~";
+        }
+        if (subTaskBean.getSubTaskState() == SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH)) {
+            return ServiceUtil.FAILURE + "此任务已完成";
+        }
+//        EmployeeBean employeeBean = employeeMapper.getEmpInfoByEmpId(HelpersID);
+        if (!employeeBean.hasSkill(subTaskBean.getSubTaskSkillType())) {
+            return ServiceUtil.FAILURE + "该员工没有这个任务所需的技能";
         }
         return ServiceUtil.SUCCESS;
     }
@@ -50,6 +62,7 @@ public class SubTaskServiceImp implements SubTaskService {
             return outSourcingApply(ApplicantID, HelpersID, subTaskId);
         }
         SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskId);
+        System.out.println("test id " + subTaskBean.getSubTaskId());
         TaskFinishInfoBean taskFinishInfoBean = new TaskFinishInfoBean();
         taskFinishInfoBean.setEmpId(HelpersID);
         taskFinishInfoBean.setSubTaskId(subTaskId);
@@ -62,11 +75,23 @@ public class SubTaskServiceImp implements SubTaskService {
         proFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProjectId());
         proFinishInfoBean.setEmpPosition(ProjectUtil.getTaskDoType(ProjectUtil.EMP_POSITION.OUT_SOURCE_EMP));
         proFinishInfoMapper.insertProjectInfo(proFinishInfoBean);
+        SubTaskBean subTaskBeanUpdated = new SubTaskBean();
+        subTaskBeanUpdated.setSubTaskId(subTaskBean.getSubTaskId());
+        subTaskBeanUpdated.setSubTaskName(subTaskBean.getSubTaskName());
+        subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
+        subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
+        subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
+        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.OUT_SOURCE));
+        subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
+        subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
+        subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
+        subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
+        subTaskMapper.updateSubTask(subTaskBean);
         return ServiceUtil.SUCCESS;
     }
 
     /**
-     * 外包回收：删除外包员工ID所对应的记录
      * @param ApplicantID 申请外包员工ID
      * @param HelpersID 外包任务员工ID
      * @param subTaskId 任务ID
@@ -74,22 +99,86 @@ public class SubTaskServiceImp implements SubTaskService {
      */
     @Override
     public String outSourcingRecovery(String ApplicantID, String HelpersID, String subTaskId) {
-
-        return null;
+        TaskFinishInfoBean taskFinishInfoBean = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(
+                subTaskId, HelpersID, SubTaskUtil.getTaskDoType(SubTaskUtil.DO_TYPE.OUT_SOURCE));
+        TaskFinishInfoBean taskFinishInfoBeanUpdate = new TaskFinishInfoBean();
+        taskFinishInfoBeanUpdate.setEmpId(taskFinishInfoBean.getEmpId());
+        taskFinishInfoBeanUpdate.setSubTaskId(taskFinishInfoBean.getSubTaskId());
+        taskFinishInfoBeanUpdate.setProjectId(taskFinishInfoBean.getProjectId());
+        taskFinishInfoBeanUpdate.setDoType(SubTaskUtil.getTaskDoType(SubTaskUtil.DO_TYPE.OUT_SOURCE_END));
+        taskFinishInfoBeanUpdate.setSubTaskOutSourceEndTime(taskFinishInfoBean.getSubTaskOutSourceEndTime());
+        taskFinishInfoMapper.updateTaskFinishInfo(taskFinishInfoBeanUpdate);
+        SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskId);
+        SubTaskBean subTaskBeanUpdated = new SubTaskBean();
+        subTaskBeanUpdated.setSubTaskId(subTaskBean.getSubTaskId());
+        subTaskBeanUpdated.setSubTaskName(subTaskBean.getSubTaskName());
+        subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
+        subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
+        subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
+        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.UNDONE));
+        subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
+        subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
+        subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
+        subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
+        subTaskMapper.updateSubTask(subTaskBean);
+        return ServiceUtil.SUCCESS;
     }
 
     @Override
     public String subTaskCompleteApply(String subTaskID) {
-        return null;
+        SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskID);
+        SubTaskBean subTaskBeanUpdated = new SubTaskBean();
+        subTaskBeanUpdated.setSubTaskId(subTaskBean.getSubTaskId());
+        subTaskBeanUpdated.setSubTaskName(subTaskBean.getSubTaskName());
+        subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
+        subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
+        subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
+        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.TO_BE_CHECKED));
+        subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
+        subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
+        subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
+        subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
+        subTaskMapper.updateSubTask(subTaskBean);
+        return ServiceUtil.SUCCESS;
     }
 
     @Override
     public String subTaskCompleteConclusion(String subTaskID) {
-        return null;
+        SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskID);
+        SubTaskBean subTaskBeanUpdated = new SubTaskBean();
+        subTaskBeanUpdated.setSubTaskId(subTaskBean.getSubTaskId());
+        subTaskBeanUpdated.setSubTaskName(subTaskBean.getSubTaskName());
+        subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
+        subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
+        subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
+        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH));
+        subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
+        subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
+        subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
+        subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
+        subTaskMapper.updateSubTask(subTaskBean);
+        return ServiceUtil.SUCCESS;
     }
 
     @Override
     public String subTaskCompleteRejection(String subTaskID) {
-        return null;
+        SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskID);
+        SubTaskBean subTaskBeanUpdated = new SubTaskBean();
+        subTaskBeanUpdated.setSubTaskId(subTaskBean.getSubTaskId());
+        subTaskBeanUpdated.setSubTaskName(subTaskBean.getSubTaskName());
+        subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
+        subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
+        subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
+        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.UNDONE));
+        subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
+        subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
+        subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
+        subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
+        subTaskMapper.updateSubTask(subTaskBean);
+        return ServiceUtil.SUCCESS;
     }
 }

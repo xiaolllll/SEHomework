@@ -1,16 +1,23 @@
 package com.example.test.mapper;
 
 import com.example.test.bean.TaskFinishInfoBean;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
+@Mapper
 public interface TaskFinishInfoMapper {
-    public List<TaskFinishInfoBean> getSubTaskInfo(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID);
+    List<TaskFinishInfoBean> getSubTaskInfo(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID);
 
-    public int insertTaskFinishInfo(TaskFinishInfoBean taskFinishInfoBean);
+    TaskFinishInfoBean getSubTaskInfoByTaskIdEmpIdDoType(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID,
+                                                         @Param("doType") int doType);
 
-    public int updateTaskFinishInfo(TaskFinishInfoBean taskFinishInfoBean);
+    int insertTaskFinishInfo(TaskFinishInfoBean taskFinishInfoBean);
 
-    public int deleteTaskFinishInfo(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID, @Param("doType") String doType);
+    int updateTaskFinishInfo(TaskFinishInfoBean taskFinishInfoBean);
+
+    int deleteTaskFinishInfo(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID, @Param("doType") String doType);
 }

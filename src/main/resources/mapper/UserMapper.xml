@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.test.mapper.UserMapper">
 
-    <select id="getInfo" parameterType="String" resultType="com.example.test.bean.UserBean">
-        SELECT * FROM user WHERE name = #{name} AND password = #{password}
+    <select id="getProInfoByProId" parameterType="String" resultType="com.example.test.bean.ProjectBean">
+        SELECT * FROM project WHERE projectId = #{proId}
     </select>
 
 </mapper>

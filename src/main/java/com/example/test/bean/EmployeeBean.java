@@ -71,13 +71,13 @@ public class EmployeeBean {
         this.empDoingProCount = empDoingProCount;
     }
 
-    public int getEmpSkillType() {
-        return empSkillType;
-    }
+//    public int getEmpSkillType() {
+//        return empSkillType;
+//    }
 
-    public void setEmpSkillType(int empSkillType) {
-        this.empSkillType = empSkillType;
-    }
+//    public void setEmpSkillType(int empSkillType) {
+//        this.empSkillType = empSkillType;
+//    }
 
     public int getEmpType() {
         return empType;
@@ -86,4 +86,24 @@ public class EmployeeBean {
     public void setEmpType(int empType) {
         this.empType = empType;
     }
+
+    public boolean hasSkill(int skill) {
+        return (skill&this.empSkillType)!=0;
+    }
+
+    public int setSkill(int skill) {
+        if (hasSkill(skill)) {
+            return empSkillType;
+        }
+        return (empSkillType | skill);
+    }
+
+    public int removeSkill(int skill) {
+        if (!hasSkill(skill)) {
+            return empSkillType;
+        }
+        return (empSkillType &=~(skill));
+    }
+
+
 }
