@@ -17,6 +17,7 @@ public class TaskLogServiceImpl implements TaskLogService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+    @Autowired
     private TaskLoggerMapper taskLoggerMapper;
     @Override
     public String addTaskLog(String subTaskID, String empID, String content) {

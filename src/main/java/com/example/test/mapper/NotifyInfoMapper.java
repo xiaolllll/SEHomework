@@ -1,21 +1,24 @@
 package com.example.test.mapper;
 
 import com.example.test.bean.NotifyInfoBean;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+@Repository
+@Mapper
+ public interface NotifyInfoMapper {
 
-public interface NotifyInfoMapper {
-
-    public NotifyInfoBean selectNotifyInfoByNotifyId(int notifyId);
+    NotifyInfoBean selectNotifyInfoByNotifyId(int notifyId);
     //根据接受者Id查询信息
-    public NotifyInfoBean getNotifyInfoByReceiverID(String receiverId);
+     NotifyInfoBean getNotifyInfoByReceiverID(String receiverId);
 
-    public List<NotifyInfoBean> getNotifyInfoBySenderID(String empID);//查看员工通知信息
+     List<NotifyInfoBean> getNotifyInfoBySenderID(String empID);//查看员工通知信息
 
     //添加新的信息
-    public int insertNotifyInfo(NotifyInfoBean notifyInfoBean);
+     int insertNotifyInfo(NotifyInfoBean notifyInfoBean);
 
-    public int updateNotifyInfo(NotifyInfoBean notifyInfoBean);
+     int updateNotifyInfo(NotifyInfoBean notifyInfoBean);
 
-    public int deleteNotifyInfoAllByReceiverID(String receiverID);
+     int deleteNotifyInfoAllByReceiverID(String receiverID);
 }

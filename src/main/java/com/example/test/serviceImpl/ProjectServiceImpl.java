@@ -3,10 +3,12 @@ package com.example.test.serviceImpl;
 import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.ProjectBean;
 import com.example.test.bean.SubTaskBean;
+import com.example.test.bean.TaskFinishInfoBean;
 import com.example.test.component.DocumentManager;
 import com.example.test.component.OIDGenerator;
 import com.example.test.mapper.EmployeeMapper;
 import com.example.test.mapper.SubTaskMapper;
+import com.example.test.mapper.TaskFinishInfoMapper;
 import com.example.test.service.ProjectService;
 import com.example.test.util.ServiceUtil;
 import com.example.test.util.SubTaskUtil;
@@ -23,6 +25,8 @@ public class ProjectServiceImpl implements ProjectService {
     private SubTaskMapper subTaskMapper;
     @Autowired
     private EmployeeMapper employeeMapper;
+    @Autowired
+    private TaskFinishInfoMapper taskFinishInfoMapper;
     @Autowired
     private SubTaskServiceImp subTaskServiceImp;
     @Override
@@ -54,7 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
         DocumentManager documentManager = new DocumentManager();
         if(!documentManager.createSubTaskFolder(taskBean.getSubTaskInProjectId(),taskBean.getSubTaskId())){
             return ServiceUtil.FAILURE+"创建子文件夹失败";
-        };
+        }
 
         if(isChain){
             for (String s:succeedingPath){
@@ -92,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService {
         DocumentManager documentManager = new DocumentManager();
         if(!documentManager.deleteSubTaskFolder(subTaskBean.getSubTaskInProjectId(),subTaskBean.getSubTaskId())){
             return ServiceUtil.FAILURE+"删除子文件夹失败";
-        };
+        }
         return ServiceUtil.SUCCESS;
     }
 
@@ -181,7 +185,39 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"未找到标号为"+empID+"的员工";
         }
 
-        return null;
+        if (!employeeBean.hasSkill(subTaskBean.getSubTaskSkillType())) {
+            return ServiceUtil.FAILURE + "该员工没有这个任务所需的技能";
+        }
+
+        if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.TO_BE_CHECKED.ordinal()||
+                subTaskBean.getSubTaskState()==SubTaskUtil.TASK_STATE.HAS_FINISH.ordinal()){
+            return ServiceUtil.FAILURE + "当前子任务不能更改人员";
+        }
+
+        /**
+         * 没写完需要查询任务的负责人和外包人员
+         if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.OUT_SOURCE.ordinal()){
+         EmployeeBean applicant = employeeMapper.
+         String applicantID =
+         subTaskServiceImp.outSourcingRecovery()
+         }**/
+
+        /**
+         * 没写完需要查询人物的负责人员
+         */
+
+        TaskFinishInfoBean taskFinishInfoBean = new TaskFinishInfoBean();
+        taskFinishInfoBean.setEmpId(employeeBean.getEmpId());
+        taskFinishInfoBean.setSubTaskId(subTaskBean.getSubTaskId());
+        taskFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProjectId());
+        taskFinishInfoBean.setDoType(SubTaskUtil.DO_TYPE.DO_BY_SELF.ordinal());
+
+        int result = taskFinishInfoMapper.insertTaskFinishInfo(taskFinishInfoBean);
+        if(result!=1){
+            return ServiceUtil.FAILURE+"数据库写入新的员工参与信息失败";
+        }
+
+        return ServiceUtil.SUCCESS;
     }
 
     @Override

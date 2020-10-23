@@ -19,6 +19,7 @@ public class UserServiceImpl implements UserService {
     //将DAO注入Service层
     @Autowired
     private UserMapper userMapper;
+    @Autowired
     private ProjectMapper projectMapper;
 
     @Override

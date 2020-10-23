@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 public class LogServiceImpl implements LogService {
     @Autowired
     private EmployeeMapper employeeMapper;
+    @Autowired
     private LoggerMapper loggerMapper;
     @Override
     public String addLog(String projectID, String empID, String content) {

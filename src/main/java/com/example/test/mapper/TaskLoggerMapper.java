@@ -1,16 +1,19 @@
 package com.example.test.mapper;
 
 import com.example.test.bean.TaskLoggerBean;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
+@Mapper
 public interface TaskLoggerMapper {
     //根据项目查询日志
-    public List<String> getLogger(String taskId);
+     List<String> getLogger(String taskId);
 
     //添加日志
-    public int addLogger(TaskLoggerBean logger);
+     int addLogger(TaskLoggerBean logger);
 
     //获取所有日志
-    public List<String> getAllLogger();
+     List<String> getAllLogger();
 }

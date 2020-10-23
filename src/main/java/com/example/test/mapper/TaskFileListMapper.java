@@ -1,13 +1,16 @@
 package com.example.test.mapper;
 
 import com.example.test.bean.TaskFileListBean;
+import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
+@Mapper
 public interface TaskFileListMapper {
     //查询
-    public List<String> getFileList(String taskId);
+     List<String> getFileList(String taskId);
 
     //添加
-    public int addTaskFileList(TaskFileListBean taskFileListBean);
+     int addTaskFileList(TaskFileListBean taskFileListBean);
 }
