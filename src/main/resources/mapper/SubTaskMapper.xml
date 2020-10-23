@@ -53,7 +53,7 @@
     <select id="getTaskInfoByEmpIdDoing" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
         SELECT *
         FROM subtask
-        WHERE subtask.`subtaskState` = 1
+        WHERE subtask.`subtaskState` = 0
           AND subtask.`subtaskId` IN (
             SELECT taskfinishinfo.`subtaskId` FROM taskfinishinfo WHERE taskfinishinfo.`empId` = #{empId}
         )
@@ -62,7 +62,7 @@
     <select id="getTaskInfoByEmpHasDone" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
         SELECT *
         FROM subtask
-        WHERE subtask.`subtaskState` = 2
+        WHERE subtask.`subtaskState` = 3
           AND subtask.`subtaskId` IN (
             SELECT taskfinishinfo.`subtaskId` FROM taskfinishinfo WHERE taskfinishinfo.`empId` = #{empId}
         )
