@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public interface ProjectService {
     /*子任务管理*/
     String addSubTask(SubTaskBean taskBean, ArrayList<String> leadingPath,ArrayList<String> succeedingPath,boolean isChain);//增加子任务
-    String deleteSubTask(String SubTaskID,boolean isChain);//删除子任务
+    String deleteSubTask(String SubTaskID);//删除子任务
     String modifySubTask(SubTaskBean taskBean);//修改子任务信息
     String restartSubTask(String SubTaskID,boolean isChain);//重启子任务,将任务置为未完成状态，同时可以选择是否重启关联的之后任务
     String forceCompleteSubTask(String SubTaskID);//强制完成子任务

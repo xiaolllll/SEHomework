@@ -24,7 +24,7 @@ public class SubTaskBean {
     private int subTaskSkillType;
     private String subTaskInProjectId;
     private int subTaskState;
-    private Date subTaskStartTime;
+    private Date subTaskStartTime;//开始时间由创建时来决定
     private Date subTaskEndTime;
     private int totalFileCount;
     private int hasFinishFileCount;
