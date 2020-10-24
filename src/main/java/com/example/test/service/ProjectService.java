@@ -3,6 +3,7 @@ package com.example.test.service;
 import com.example.test.bean.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface ProjectService {
     /*子任务管理*/
@@ -16,12 +17,12 @@ public interface ProjectService {
     /*项目管理*/
     String projectCompleteApply(String projectID);//申请结项
     String createProject(ProjectBean projectBean);//创建项目
-    String storageProject(String projectID);//暂存项目
-    String restartProject(String projectID);//启动项目
+    String enableProject(String projectID);//启动项目
+    String restartProject(String projectID);//重启项目
     String abandonProject(String projectID);//废弃项目
     String completeProject(String projectID);//完成项目
-    String modifyProject(String projectID);//修改项目信息
+    String modifyProject(ProjectBean projectBean);//修改项目信息
     String setProjectManager(String projectID,String empID);//项目管理员设置
-    String addProjectPerson(String projectID,String empID);//增加项目成员
+    String addProjectPerson(String projectID, List<String> empIDs);//增加项目成员
     String deleteProjectPerson(String projectID,String empID);//删除项目成员
 }

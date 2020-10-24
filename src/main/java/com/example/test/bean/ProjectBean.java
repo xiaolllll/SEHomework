@@ -5,12 +5,12 @@ import java.util.Date;
 
 public class ProjectBean {
     private String projectId;
-    private String projectName;
+    private String projectName;//名字
     private String proManagerId;
-    private String projectDesc;
+    private String projectDesc;//描述
     private int projectState;
     private Date projectStartTime;
-    private Date projectEndTime;
+    private Date projectEndTime;//结束时间
 
     public ProjectBean() {
     }

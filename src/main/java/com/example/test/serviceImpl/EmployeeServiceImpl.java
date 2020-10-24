@@ -23,17 +23,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public String deleteEmp(String empID) {
-        int result = employeeMapper.deleteEmployee(empID);
-        if(result==1){
-            return ServiceUtil.SUCCESS;
-        }
-        else {
-            return ServiceUtil.FAILURE+"数据库删除失败";
-        }
-    }
-
-    @Override
     public String modifyEmp(EmployeeBean employeeBean) {
         int result = employeeMapper.updateEmployee(employeeBean);
         if(result==1){

@@ -1,6 +1,13 @@
 package com.example.test.util;
 
 public class ProjectUtil {
+    public enum PROJECT_STATE{
+        NOT_ENABLED,
+        NOT_FINISHED,
+        TO_BE_CHECKED,
+        HAS_FINISHED,
+        FAIL
+    }
     public enum EMP_POSITION {
         MANAGER,
         NORMAL_EMP,
