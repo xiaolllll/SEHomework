@@ -63,6 +63,15 @@ public class SubTaskServiceImp implements SubTaskService {
         }
         SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskId);
         System.out.println("test id " + subTaskBean.getSubTaskId());
+        System.out.println("test state " + subTaskBean.getSubTaskState());
+        System.out.println("test out source " + subTaskBean.getSubTaskCanOutSource());
+        System.out.println("test desc " + subTaskBean.getSubTaskDesc());
+        System.out.println("test name " + subTaskBean.getSubTaskName());
+        System.out.println("test skill type " + subTaskBean.getSubTaskSkillType());
+        System.out.println("test finish count " + subTaskBean.getHasFinishFileCount());
+        System.out.println("test total count " + subTaskBean.getTotalFileCount());
+        System.out.println("test end time" + subTaskBean.getSubTaskEndTime());
+        System.out.println("test id " + subTaskBean.getSubTaskInProjectId());
         TaskFinishInfoBean taskFinishInfoBean = new TaskFinishInfoBean();
         taskFinishInfoBean.setEmpId(HelpersID);
         taskFinishInfoBean.setSubTaskId(subTaskId);
@@ -159,7 +168,7 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
         subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
         subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
-        subTaskMapper.updateSubTask(subTaskBean);
+        subTaskMapper.updateSubTask(subTaskBeanUpdated);
         return ServiceUtil.SUCCESS;
     }
 
@@ -178,7 +187,7 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
         subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
         subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
-        subTaskMapper.updateSubTask(subTaskBean);
+        subTaskMapper.updateSubTask(subTaskBeanUpdated);
         return ServiceUtil.SUCCESS;
     }
 }

@@ -24,7 +24,7 @@ public class TestApplicationTests {
     @Test
     public void contextLoads() {
 
-        System.out.println(employeeService.deleteEmp("aaa"));
+//        System.out.println(employeeService.deleteEmp("aaa"));
 //        System.out.println("该用户ID为：");
 //        List<ProjectBean> userBean = userService.getProjectAll();
 //        System.out.println(userBean.size());

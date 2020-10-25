@@ -22,7 +22,7 @@ public class SubTaskBean {
     private String subTaskDesc;
     private int SubTaskCanOutSource; //不能外包为0，可以外包为1
     private int subTaskSkillType;
-    private String subTaskInProjectId;
+    private String subTaskInProject;
     private int subTaskState;
     private Date subTaskStartTime;//开始时间由创建时来决定
     private Date subTaskEndTime;
@@ -38,7 +38,7 @@ public class SubTaskBean {
         this.subTaskDesc = subTaskDesc;
         SubTaskCanOutSource = subTaskCanOutSource;
         this.subTaskSkillType = subTaskSkillType;
-        this.subTaskInProjectId = subTaskInProjectId;
+        this.subTaskInProject = subTaskInProjectId;
         this.subTaskState = subTaskState;
         this.subTaskStartTime = subTaskStartTime;
         this.subTaskEndTime = subTaskEndTime;
@@ -51,7 +51,7 @@ public class SubTaskBean {
         this.subTaskDesc = subTaskDesc;
         SubTaskCanOutSource = subTaskCanOutSource;
         this.subTaskSkillType = subTaskSkillType;
-        this.subTaskInProjectId = subTaskInProjectId;
+        this.subTaskInProject = subTaskInProjectId;
         this.subTaskState = subTaskState;
         this.subTaskStartTime = subTaskStartTime;
         this.subTaskEndTime = subTaskEndTime;
@@ -100,11 +100,11 @@ public class SubTaskBean {
     }
 
     public String getSubTaskInProjectId() {
-        return subTaskInProjectId;
+        return subTaskInProject;
     }
 
     public void setSubTaskInProjectId(String subTaskInProjectId) {
-        this.subTaskInProjectId = subTaskInProjectId;
+        this.subTaskInProject = subTaskInProjectId;
     }
 
     public int getSubTaskState() {

@@ -8,7 +8,7 @@
         <result property="subTaskDesc" column="subtaskDesc"/>
         <result property="SubTaskCanOutSource" column="subtaskCanOutSource"/>
         <result property="subTaskSkillType" column="subtaskSkillType"/>
-        <result property="subTaskInProjectId" column="subtaskInProject"/>
+        <result property="subTaskInProject" column="subtaskInProject"/>
         <result property="subTaskState" column="subtaskState"/>
         <result property="subTaskStartTime" column="subtaskStartTime"/>
         <result property="subTaskEndTime" column="subTaskEndTime"/>
@@ -81,13 +81,14 @@
                              subtaskInProject, subTaskState, subtaskStartTime, subTaskEndTime, totalFileCount,
                              hasFinishFileCount)
         values (#{subTaskId}, #{subTaskName}, #{subTaskDesc}, #{SubTaskCanOutSource},
-                #{subTaskSkillType}, #{subTaskInProjectId}, #{subTaskState},
+                #{subTaskSkillType}, #{subTaskInProject}, #{subTaskState},
                 #{subTaskStartTime}, #{subTaskEndTime}, #{totalFileCount}, #{hasFinishFileCount})
     </insert>
 
     <update id="updateSubTask">
         update subtask
-        set subTaskName         = #{subTaskName},
+        <set>
+            subTaskName         = #{subTaskName},
             subTaskDesc         = #{subTaskDesc},
             SubTaskCanOutSource = #{SubTaskCanOutSource},
             subTaskSkillType    = #{subTaskSkillType},
@@ -97,6 +98,7 @@
             subTaskEndTime      = #{subTaskEndTime},
             totalFileCount      = #{totalFileCount},
             hasFinishFileCount  = #{hasFinishFileCount}
+        </set>
         where subtask.subtaskId = #{subTaskId}
     </update>
 
