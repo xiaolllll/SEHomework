@@ -16,6 +16,10 @@ public interface EmployeeMapper {
     List<EmployeeBean> getEmpInfoAll();
     //根据项目Id查询员工信息
     List<EmployeeBean> getEmpInfoByProId(String proId);
+    //根据任务Id查询自己做的员工信息
+    EmployeeBean getEmpInfoByTaskIdDoSelf(String taskId);
+    //根据任务Id查询自己做的员工信息
+    EmployeeBean getEmpInfoByTaskIdOutSource(String taskId);
     //根据任务Id查询员工信息
     List<EmployeeBean> getEmpInfoByTaskId(String taskId);
     //插入数据

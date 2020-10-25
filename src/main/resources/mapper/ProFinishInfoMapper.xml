@@ -11,12 +11,29 @@
     <select id="getProjectInfo" parameterType="String" resultType="com.example.test.bean.ProFinishInfoBean">
         SELECT *
         FROM profinishinfo
-        WHERE projectId = #{projectID}
+        WHERE projectId = #{projectId}
+            and empId = #{empId}
     </select>
 
     <insert id="insertProjectInfo">
         insert into profinishinfo (empId, projectId, empPostion)
         values (#{empId}, #{projectId}, #{empPosition})
     </insert>
+
+    <delete id="deleteProjectInfoManager" parameterType="String">
+        delete
+        from profinishinfo
+        WHERE projectId = #{projectId}
+          and empId = #{empId}
+            and empPostion = 0
+    </delete>
+
+    <delete id="deleteProjectInfoEmp" parameterType="String">
+        delete
+        from profinishinfo
+        WHERE projectId = #{projectId}
+          and empId = #{empId}
+          and empPostion = 1
+    </delete>
 
 </mapper>

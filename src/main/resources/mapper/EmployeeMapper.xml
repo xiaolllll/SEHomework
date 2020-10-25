@@ -37,6 +37,25 @@
           AND employee.empId = profinishinfo.empId
     </select>
 
+    <select id="getEmpInfoByTaskIdDoSelf" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee,
+             taskfinishinfo
+        WHERE taskfinishinfo.subtaskId = #{taskId}
+          AND employee.empId = taskfinishinfo.empId
+            and taskfinishinfo.doType = 0
+    </select>
+
+    <select id="getEmpInfoByTaskIdOutSource" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee,
+             taskfinishinfo
+        WHERE taskfinishinfo.subtaskId = #{taskId}
+          AND employee.empId = taskfinishinfo.empId
+          and taskfinishinfo.doType = 1
+    </select>
+
+
     <select id="getEmpInfoByTaskId" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
         SELECT *
         FROM employee,

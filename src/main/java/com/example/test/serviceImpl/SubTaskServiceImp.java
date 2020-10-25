@@ -1,13 +1,7 @@
 package com.example.test.serviceImpl;
 
-import com.example.test.bean.EmployeeBean;
-import com.example.test.bean.ProFinishInfoBean;
-import com.example.test.bean.SubTaskBean;
-import com.example.test.bean.TaskFinishInfoBean;
-import com.example.test.mapper.EmployeeMapper;
-import com.example.test.mapper.ProFinishInfoMapper;
-import com.example.test.mapper.SubTaskMapper;
-import com.example.test.mapper.TaskFinishInfoMapper;
+import com.example.test.bean.*;
+import com.example.test.mapper.*;
 import com.example.test.service.SubTaskService;
 import com.example.test.util.ProjectUtil;
 import com.example.test.util.ServiceUtil;
