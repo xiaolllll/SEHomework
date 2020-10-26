@@ -1,6 +1,5 @@
 package com.example.test.controller;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JSONResult {
@@ -12,15 +11,13 @@ public class JSONResult {
     private Integer status;
 
     // 响应消息
-    private String msg;
+    private String message;
 
     // 响应中的数据
     private Object data;
 
-    private String ok;    // 不使用
-
-    public static JSONResult build(Integer status, String msg, Object data) {
-        return new JSONResult(status, msg, data);
+    public static JSONResult build(Integer status, String message, Object data) {
+        return new JSONResult(status, message, data);
     }
 
     public static JSONResult ok(Object data) {
@@ -31,35 +28,35 @@ public class JSONResult {
         return new JSONResult(null);
     }
 
-    public static JSONResult errorMsg(String msg) {
-        return new JSONResult(500, msg, null);
+    public static JSONResult errorMessage(String message) {
+        return new JSONResult(500, message, null);
     }
 
     public static JSONResult errorMap(Object data) {
         return new JSONResult(501, "error", data);
     }
 
-    public static JSONResult errorTokenMsg(String msg) {
-        return new JSONResult(502, msg, null);
+    public static JSONResult errorTokenMessage(String message) {
+        return new JSONResult(502, message, null);
     }
 
-    public static JSONResult errorException(String msg) {
-        return new JSONResult(555, msg, null);
+    public static JSONResult errorException(String message) {
+        return new JSONResult(555, message, null);
     }
 
     public JSONResult() {
 
     }
 
-    public JSONResult(Integer status, String msg, Object data) {
+    public JSONResult(Integer status, String message, Object data) {
         this.status = status;
-        this.msg = msg;
+        this.message = message;
         this.data = data;
     }
 
     public JSONResult(Object data) {
         this.status = 200;
-        this.msg = "SUCCESS";
+        this.message = "SUCCESS";
         this.data = data;
     }
 
@@ -75,12 +72,12 @@ public class JSONResult {
         this.status = status;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public Object getData() {
@@ -89,15 +86,6 @@ public class JSONResult {
 
     public void setData(Object data) {
         this.data = data;
-    }
-
-
-    public String getOk() {
-        return ok;
-    }
-
-    public void setOk(String ok) {
-        this.ok = ok;
     }
 
 }
