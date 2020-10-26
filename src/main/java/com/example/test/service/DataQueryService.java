@@ -28,14 +28,16 @@ public interface DataQueryService {
     /*查看子任务信息*/
     SubTaskBean getSubTask(String subTaskID);//查看单个子任务信息
     List<SubTaskBean> getProjectSubTask(String projectID);//通过项目查看子任务信息
-    List<SubTaskBean> getEmpSubTask(String EmpID);//通过员工查看子任务信息
+    List<SubTaskBean> getTaskInfoByEmpIdDoing(String EmpID);//通过员工查看子任务信息
+    //查询一个员工已完成的任务信息
+    List<SubTaskBean> getTaskInfoByEmpHasDone(String empId);
     List<SubTaskBean> getProjectEmpSubTask(String projectID,String EmpID);//通过员工和项目查看子任务信息
 
     /*查看子任务参与信息*/
-    TaskFinishInfoBean getSubTaskInfo(String subTaskID,String EmpID);
+    List<TaskFinishInfoBean> getSubTaskInfo(String subTaskID,String EmpID);
 
     /*查看通知信息*/
-    NotifyInfoBean getNotifyInfo(String NotifyID);//查看单个通知信息
+    NotifyInfoBean getNotifyInfo(int NotifyID);//查看单个通知信息
     List<NotifyInfoBean> getEmpNotifyInfo(String empID);//查看员工通知信息
 
     /*查询日志*/
