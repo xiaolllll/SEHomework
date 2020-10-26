@@ -1,10 +1,10 @@
 package com.example.test;
 
+import com.example.test.bean.EmployeeBean;
+import com.example.test.mapper.TaskLoggerMapper;
 import com.example.test.service.EmployeeService;
 import com.example.test.service.SubTaskService;
-import com.example.test.serviceImpl.EmployeeServiceImpl;
-import com.example.test.serviceImpl.LoginServiceImpl;
-import com.example.test.serviceImpl.SubTaskServiceImp;
+import com.example.test.serviceImpl.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,11 @@ import java.util.Date;
 public class TestNextTests {
 
     @Autowired
-    LoginServiceImpl loginService = new LoginServiceImpl();
+    TaskLogServiceImpl logService = new TaskLogServiceImpl();
 
     @Test
     public void contextLoads() {
-        loginService.loginIn("", "");
+        System.out.println(logService.addTaskLog("1-1", "1", "员工1完成了任务1"));
 //        //申请外包成功
 //        System.out.println(subTaskService.outSourcingApply(
 //                "1", "2", "1-1"));

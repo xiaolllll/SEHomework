@@ -18,7 +18,7 @@ public interface EmployeeMapper {
     List<EmployeeBean> getEmpInfoByProId(String proId);
     //根据任务Id查询自己做的员工信息
     EmployeeBean getEmpInfoByTaskIdDoSelf(String taskId);
-    //根据任务Id查询自己做的员工信息
+    //根据任务Id查询外包的员工信息
     EmployeeBean getEmpInfoByTaskIdOutSource(String taskId);
     //根据任务Id查询员工信息
     List<EmployeeBean> getEmpInfoByTaskId(String taskId);

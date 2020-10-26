@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.test.mapper.LoggerMapper">
+
+    <resultMap id="loggerEntity" type="com.example.test.bean.LoggerBean">
+        <id property="loggerId" column="loggerId"/>
+        <result property="projectId" column="projectId"/>
+        <result property="content" column="content"/>
+    </resultMap>
+
+    <select id="getLogger" parameterType="String" resultType="com.example.test.bean.LoggerBean">
+        SELECT *
+        FROM logger
+        WHERE projectId = #{projectId}
+    </select>
+
+    <insert id="addLogger">
+        insert into logger (projectId, content)
+        values (#{projectId}, #{content})
+    </insert>
+
+</mapper>
