@@ -4,41 +4,28 @@ import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.UserBean;
 import com.example.test.service.LoginService;
 import com.example.test.service.UserService;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@CrossOrigin
 public class LoginController {
 
     //将Service注入Web层
     @Autowired
     LoginService loginService;
 
-    @RequestMapping("/login")
-    public String show(){
-        return "login";
-    }
 
     @RequestMapping("/loginIn")
-    @ResponseBody
-    public JSONResult login(@RequestBody EmployeeBean employeeBean){
-        System.out.println("test");
-        System.out.println(employeeBean.getEmpId());
-        System.out.println(employeeBean.getEmpPassword());
-        EmployeeBean employeeBean1 =loginService.loginIn(employeeBean.getEmpId(), employeeBean.getEmpPassword());
-        if(employeeBean1 == null){
+    public JSONResult login(String name,String password){
+        EmployeeBean employeeBean=loginService.loginIn(name,password);
+        if(employeeBean == null){
             return JSONResult.errorMsg("用户名或密码错误");
         }
         else {
-            return JSONResult.ok(employeeBean1);
+            return JSONResult.ok(employeeBean);
         }
     }
 
