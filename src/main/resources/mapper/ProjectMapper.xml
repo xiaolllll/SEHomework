@@ -39,31 +39,19 @@
     </select>
 
     <select id="getProInfoByEmpIdDoing" parameterType="String" resultType="com.example.test.bean.ProjectBean">
-        SELECT *
-        FROM project
-        WHERE project.`projectId` IN
-              (SELECT taskfinishinfo.`projectId`
-               FROM taskfinishinfo
-               WHERE taskfinishinfo.`empId` = #{empId}
-                 AND taskfinishinfo.`subtaskId` IN
-                     (SELECT subtask.`subtaskId`
-                      FROM subtask
-                      WHERE subtask.`subtaskState` = 1) # 正在做
-              );
+        SELECT * FROM project, taskfinishinfo, subtask
+        WHERE project.`projectId` = subtask.`subtaskInProject`
+          AND subtask.subtaskid = taskfinishinfo.`subtaskId`
+          AND taskfinishinfo.`empId` = #{empId}
+          AND subtask.`subtaskState` = 0
     </select>
 
     <select id="getProInfoByEmpHasDone" parameterType="String" resultType="com.example.test.bean.ProjectBean">
-        SELECT *
-        FROM project
-        WHERE project.`projectId` IN
-              (SELECT taskfinishinfo.`projectId`
-               FROM taskfinishinfo
-               WHERE taskfinishinfo.`empId` = #{empId}
-                 AND taskfinishinfo.`subtaskId` IN
-                     (SELECT subtask.`subtaskId`
-                      FROM subtask
-                      WHERE subtask.`subtaskState` = 2) # 已经做完
-              );
+        SELECT * FROM project, taskfinishinfo, subtask
+        WHERE project.`projectId` = subtask.`subtaskInProject`
+          AND subtask.subtaskid = taskfinishinfo.`subtaskId`
+          AND taskfinishinfo.`empId` = #{empId}
+          AND subtask.`subtaskState` = 3
     </select>
 
     <select id="getEmpProject" parameterType="String" resultType="com.example.test.bean.ProjectBean">

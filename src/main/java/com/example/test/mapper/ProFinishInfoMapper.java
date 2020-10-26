@@ -11,7 +11,7 @@ import java.util.List;
 @Mapper
 public interface ProFinishInfoMapper {
      /*查看项目参与信息*/
-     List<ProFinishInfoBean> getProjectInfo(@Param("projectId") String projectId, @Param("empId") String empId);
+     ProFinishInfoBean getProjectInfo(@Param("projectId") String projectId, @Param("empId") String empId);
 
      int insertProjectInfo(ProFinishInfoBean proFinishInfoBean);
 

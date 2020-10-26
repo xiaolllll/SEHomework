@@ -564,6 +564,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    //TODO 从项目中移除员工
     public String deleteProjectPerson(String projectID, String empID) {
         return null;
     }
