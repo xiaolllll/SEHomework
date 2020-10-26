@@ -62,9 +62,6 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public String deleteHasRead(String empID) {
-        /**
-         * 没写完需要删除特定的empID对应的已读信息
-         */
         notifyInfoMapper.deleteNotifyInfoAllByReceiverID(empID);
         return ServiceUtil.SUCCESS;
     }

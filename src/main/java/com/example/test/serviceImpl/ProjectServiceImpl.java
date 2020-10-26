@@ -28,6 +28,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private ProFinishInfoMapper proFinishInfoMapper;
     @Autowired
+    private TaskNextMapper taskNextMapper;
+    @Autowired
     private SubTaskServiceImp subTaskServiceImp;
     @Override
     public String addSubTask(SubTaskBean taskBean, ArrayList<String> leadingPath, ArrayList<String> succeedingPath, boolean isChain) {
@@ -62,9 +64,28 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"向数据库插入新的子任务失败";
         }
 
-        /**
-         * 没写完需要taskNextBean的插入函数
-         */
+        for (String s:leadingPath){
+            TaskNextBean t1 = new TaskNextBean();
+            t1.setSubTaskId(s);
+            t1.setNextTaskId(taskBean.getSubTaskId());
+
+            result = taskNextMapper.insertTaskNext(t1);
+            if(result != 1){
+                return ServiceUtil.FAILURE+"向数据库中插入子任务之间的联系失败";
+            }
+        }
+
+        for (String s:succeedingPath){
+            TaskNextBean t2 = new TaskNextBean();
+            t2.setSubTaskId(taskBean.getSubTaskId());
+            t2.setNextTaskId(s);
+
+            result = taskNextMapper.insertTaskNext(t2);
+            if(result != 1){
+                return ServiceUtil.FAILURE+"向数据库中插入子任务之间的联系失败";
+            }
+        }
+
 
         DocumentManager documentManager = new DocumentManager();
         if(!documentManager.createSubTaskFolder(taskBean.getSubTaskInProjectId(),taskBean.getSubTaskId())){
@@ -100,13 +121,20 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"当前项目状态不支持删除子任务";
         }
 
-        /**
-         * 没写完需要查询任务的负责人和外包人员
+
         if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.OUT_SOURCE.ordinal()){
-            EmployeeBean applicant = employeeMapper.
-            String applicantID =
-            subTaskServiceImp.outSourcingRecovery()
-        }**/
+            EmployeeBean applicant = employeeMapper.getEmpInfoByTaskIdDoSelf(subTaskBean.getSubTaskId());
+            String applicantID = applicant.getEmpId();
+
+            EmployeeBean helper = employeeMapper.getEmpInfoByTaskIdOutSource(subTaskBean.getSubTaskId());
+            String helperID = helper.getEmpId();
+            String temp = subTaskServiceImp.outSourcingRecovery(applicantID,helperID,subTaskBean.getSubTaskId());
+            if(temp.contains(ServiceUtil.FAILURE)){
+                return ServiceUtil.FAILURE+"外包回收失败 失败原因"+temp;
+            }
+
+        }
+
         /**
          * 没写完想要连锁删除
          */
@@ -204,13 +232,18 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"当前项目状态不支持强制完成子任务";
         }
 
-        /**
-         * 没写完需要查询任务的负责人和外包人员
-         if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.OUT_SOURCE.ordinal()){
-         EmployeeBean applicant = employeeMapper.
-         String applicantID =
-         subTaskServiceImp.outSourcingRecovery()
-         }**/
+        if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.OUT_SOURCE.ordinal()){
+            EmployeeBean applicant = employeeMapper.getEmpInfoByTaskIdDoSelf(subTaskBean.getSubTaskId());
+            String applicantID = applicant.getEmpId();
+
+            EmployeeBean helper = employeeMapper.getEmpInfoByTaskIdOutSource(subTaskBean.getSubTaskId());
+            String helperID = helper.getEmpId();
+            String temp = subTaskServiceImp.outSourcingRecovery(applicantID,helperID,subTaskBean.getSubTaskId());
+            if(temp.contains(ServiceUtil.FAILURE)){
+                return ServiceUtil.FAILURE+"外包回收失败 失败原因"+temp;
+            }
+
+        }
 
         if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.TO_BE_CHECKED.ordinal()||
                 subTaskBean.getSubTaskState()==SubTaskUtil.TASK_STATE.UNDONE.ordinal()){
@@ -254,17 +287,26 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE + "当前子任务不能更改人员";
         }
 
-        /**
-         * 没写完需要查询任务的负责人和外包人员
-         if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.OUT_SOURCE.ordinal()){
-         EmployeeBean applicant = employeeMapper.
-         String applicantID =
-         subTaskServiceImp.outSourcingRecovery()
-         }**/
+        if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.OUT_SOURCE.ordinal()){
+            EmployeeBean applicant = employeeMapper.getEmpInfoByTaskIdDoSelf(subTaskBean.getSubTaskId());
+            String applicantID = applicant.getEmpId();
 
-        /**
-         * 没写完需要查询人物的负责人员
-         */
+            EmployeeBean helper = employeeMapper.getEmpInfoByTaskIdOutSource(subTaskBean.getSubTaskId());
+            String helperID = helper.getEmpId();
+            String temp = subTaskServiceImp.outSourcingRecovery(applicantID,helperID,subTaskBean.getSubTaskId());
+            if(temp.contains(ServiceUtil.FAILURE)){
+                return ServiceUtil.FAILURE+"外包回收失败 失败原因"+temp;
+            }
+
+        }
+
+        EmployeeBean deleteEmployee = employeeMapper.getEmpInfoByTaskIdDoSelf(subTaskBean.getSubTaskId());
+        if(deleteEmployee!=null){
+            int r=taskFinishInfoMapper.deleteTaskFinishInfo(subTaskBean.getSubTaskId(),deleteEmployee.getEmpId(),SubTaskUtil.DO_TYPE.DO_BY_SELF.ordinal());
+            if(r!=1){
+                return ServiceUtil.FAILURE+"数据库删除任务参与信息失败";
+            }
+        }
 
         TaskFinishInfoBean taskFinishInfoBean = new TaskFinishInfoBean();
         taskFinishInfoBean.setEmpId(employeeBean.getEmpId());
@@ -461,9 +503,10 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         if(projectBean.getProManagerId()!=null){
-            /**
-             * 没写完需要删除项目参与信息的函数
-             */
+            result = proFinishInfoMapper.deleteProjectInfoManager(projectBean.getProjectId(),projectBean.getProManagerId());
+            if(result!=1){
+                return ServiceUtil.FAILURE+"从数据库中删除管理者参与信息失败";
+            }
         }
 
         ProFinishInfoBean p2 = new ProFinishInfoBean();
