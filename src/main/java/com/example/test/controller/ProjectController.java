@@ -179,13 +179,13 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.projectCompleteApply(projectID);
         if(result.contains(ServiceUtil.SUCCESS)){
-            String MId=dataQueryService.getProject(projectID).getProManagerId();
-           notifyService.addNotify(MId,userId,"项目"+projectID+"申请结项",NotifyUtil.NO_REPLY);
-            try {
-                WebSocketServer.sendInfo("updateNotify",MId);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            String MId=dataQueryService.getProject(projectID).getProManagerId();
+//           notifyService.addNotify(MId,userId,"项目"+projectID+"申请结项",NotifyUtil.NO_REPLY);
+//            try {
+//                WebSocketServer.sendInfo("updateNotify",MId);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             return JSONResult.build(200,result,null);
         }else {
             System.out.println(result);
