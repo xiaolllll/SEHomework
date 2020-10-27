@@ -27,14 +27,16 @@ public class SubTaskUtil {
     }
 
     public static int getTaskState(TASK_STATE task_state) {
-        if (task_state.equals(TASK_STATE.UNDONE)) {
+        if (task_state.equals(TASK_STATE.NOT_ENABLED)) {
             return 0;
-        } else if (task_state.equals(TASK_STATE.OUT_SOURCE)) {
+        } else if (task_state.equals(TASK_STATE.UNDONE)) {
             return 1;
-        } else if (task_state.equals(TASK_STATE.TO_BE_CHECKED)) {
+        } else if (task_state.equals(TASK_STATE.OUT_SOURCE)) {
             return 2;
-        } else if (task_state.equals(TASK_STATE.HAS_FINISH)) {
+        } else if (task_state.equals(TASK_STATE.TO_BE_CHECKED)) {
             return 3;
+        } else if (task_state.equals(TASK_STATE.HAS_FINISH)) {
+            return 4;
         }
         return 0;
     }

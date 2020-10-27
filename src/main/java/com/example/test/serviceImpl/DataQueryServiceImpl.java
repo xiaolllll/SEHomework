@@ -98,7 +98,7 @@ public class DataQueryServiceImpl implements DataQueryService {
     }
 
     @Override
-    public ProFinishInfoBean getProjectInfo(String projectID, String empId) {
+    public List<ProFinishInfoBean> getProjectInfo(String projectID, String empId) {
         return proFinishInfoMapper.getProjectInfo(projectID, empId);
     }
 

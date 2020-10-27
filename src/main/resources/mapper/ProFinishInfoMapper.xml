@@ -15,6 +15,14 @@
             and empId = #{empId}
     </select>
 
+    <select id="getProjectInfoEmpPos" parameterType="String" resultType="com.example.test.bean.ProFinishInfoBean">
+        SELECT *
+        FROM profinishinfo
+        WHERE projectId = #{projectId}
+            and empId = #{empId}
+            and empPosition = #{empPosition}
+    </select>
+
     <insert id="insertProjectInfo">
         insert into profinishinfo (empId, projectId, empPosition)
         values (#{empId}, #{projectId}, #{empPosition})

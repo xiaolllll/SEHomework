@@ -1,15 +1,15 @@
 package com.example.test.communication;
 
 public class setSubTaskPersonBean {
-    String SubTaskID;
+    String subTaskID;
     String empID;
 
     public String getSubTaskID() {
-        return SubTaskID;
+        return subTaskID;
     }
 
     public void setSubTaskID(String subTaskID) {
-        SubTaskID = subTaskID;
+        this.subTaskID = subTaskID;
     }
 
     public String getEmpID() {

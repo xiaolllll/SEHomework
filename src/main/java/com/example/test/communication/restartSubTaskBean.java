@@ -1,15 +1,15 @@
 package com.example.test.communication;
 
 public class restartSubTaskBean {
-    String SubTaskID;
+    String subTaskID;
     boolean isChain;
 
     public String getSubTaskID() {
-        return SubTaskID;
+        return subTaskID;
     }
 
     public void setSubTaskID(String subTaskID) {
-        SubTaskID = subTaskID;
+        this.subTaskID = subTaskID;
     }
 
     public boolean isChain() {

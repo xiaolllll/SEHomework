@@ -62,7 +62,7 @@
     </select>
 
     <insert id="insertProject">
-        insert into project (projectId, projectName, proManagerId, projectDesc, projetState,
+        insert into project (projectId, projectName, proManagerId, projectDesc, projectState,
                              projectStartTime, projectEndTime)
         values (#{projectId}, #{projectName}, #{proManagerId}, #{projectDesc},
                 #{projectState}, #{projectStartTime}, #{projectEndTime})
@@ -73,7 +73,7 @@
         set projectName      = #{projectName},
             proManagerId     = #{proManagerId},
             projectDesc      = #{projectDesc},
-            projetState      = #{projectState},
+            projectState      = #{projectState},
             projectStartTime = #{projectStartTime},
             projectEndTime   = #{projectEndTime}
         where projectId = #{projectId}

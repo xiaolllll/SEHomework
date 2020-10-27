@@ -49,18 +49,21 @@ public class ProjectController {
 
     @RequestMapping("/deleteSubTask")
     @ResponseBody
-    public JSONResult deleteSubTask(HttpServletRequest request, @RequestBody String SubTaskID) {
+    public JSONResult deleteSubTask(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
+        System.out.println(subTaskBean.getSubTaskId());
         String userId = JwtUtils.analysis(request);
-        String result=projectService.deleteSubTask(SubTaskID);
-        if(result.contains(ServiceUtil.SUCCESS)){
-            String PId=dataQueryService.getSubTask(SubTaskID).getSubTaskInProject();
-            logService.addLog(PId,userId,"删除了子任务"+SubTaskID);
+        String PId=dataQueryService.getSubTask(subTaskBean.getSubTaskId()).getSubTaskInProject();
+        String result=projectService.deleteSubTask(subTaskBean.getSubTaskId());
 
-            EmployeeBean employeeBean=dataQueryService.getSubTaskEmployeeDoSelf(SubTaskID);
+        if(result.contains(ServiceUtil.SUCCESS)){
+
+            logService.addLog(PId,userId,"删除了子任务"+subTaskBean.getSubTaskId());
+
+            EmployeeBean employeeBean=dataQueryService.getSubTaskEmployeeDoSelf(subTaskBean.getSubTaskId());
             if(employeeBean!=null){
-                notifyService.addNotify(employeeBean.getEmpId(),userId,"负责的子任务"+SubTaskID+"已被删除", NotifyUtil.NO_REPLY);
+                notifyService.addNotify(employeeBean.getEmpId(),userId,"负责的子任务"+subTaskBean.getSubTaskId()+"已被删除", NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("负责的子任务"+SubTaskID+"已被删除",employeeBean.getEmpId());
+                    WebSocketServer.sendInfo("负责的子任务"+subTaskBean.getSubTaskId()+"已被删除",employeeBean.getEmpId());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -99,9 +102,11 @@ public class ProjectController {
         }
     }
 
+    //TODO
     @RequestMapping("/restartSubTask")
     @ResponseBody
     public JSONResult restartSubTask(HttpServletRequest request, @RequestBody restartSubTaskBean data) {
+        System.out.println(data.getSubTaskID());
         String userId = JwtUtils.analysis(request);
         String result=projectService.restartSubTask(data.getSubTaskID(),data.isChain());
         if(result.contains(ServiceUtil.SUCCESS)){
@@ -129,19 +134,19 @@ public class ProjectController {
 
     @RequestMapping("/forceCompleteSubTask")
     @ResponseBody
-    public JSONResult forceCompleteSubTask(HttpServletRequest request, @RequestBody String SubTaskID) {
+    public JSONResult forceCompleteSubTask(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
         String userId = JwtUtils.analysis(request);
-        String result=projectService.forceCompleteSubTask(SubTaskID);
+        String result=projectService.forceCompleteSubTask(subTaskBean.getSubTaskId());
         if(result.contains(ServiceUtil.SUCCESS)){
-            String PId=dataQueryService.getSubTask(SubTaskID).getSubTaskInProject();
-            logService.addLog(PId,userId,"强制结束了任务"+SubTaskID);
-            taskLogService.addTaskLog(SubTaskID,userId,"被强制结束");
+            String PId=dataQueryService.getSubTask(subTaskBean.getSubTaskId()).getSubTaskInProject();
+            logService.addLog(PId,userId,"强制结束了任务"+subTaskBean.getSubTaskId());
+            taskLogService.addTaskLog(subTaskBean.getSubTaskId(),userId,"被强制结束");
 
-            EmployeeBean employeeBean=dataQueryService.getSubTaskEmployeeDoSelf(SubTaskID);
+            EmployeeBean employeeBean=dataQueryService.getSubTaskEmployeeDoSelf(subTaskBean.getSubTaskId());
             if(employeeBean!=null){
-                notifyService.addNotify(employeeBean.getEmpId(),userId,"负责的子任务"+SubTaskID+"已强制结束", NotifyUtil.NO_REPLY);
+                notifyService.addNotify(employeeBean.getEmpId(),userId,"负责的子任务"+subTaskBean.getSubTaskId()+"已强制结束", NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("负责的子任务"+SubTaskID+"已强制结束",employeeBean.getEmpId());
+                    WebSocketServer.sendInfo("负责的子任务"+subTaskBean.getSubTaskId()+"已强制结束",employeeBean.getEmpId());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -172,15 +177,15 @@ public class ProjectController {
 
     @RequestMapping("/projectCompleteApply")
     @ResponseBody
-    public JSONResult projectCompleteApply(HttpServletRequest request, @RequestBody String projectID) {
+    public JSONResult projectCompleteApply(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
         String userId = JwtUtils.analysis(request);
-        String result=projectService.projectCompleteApply(projectID);
+        String result=projectService.projectCompleteApply(projectBean.getProjectId());
         if(result.contains(ServiceUtil.SUCCESS)){
             List<EmployeeBean> MList=dataQueryService.getManagerInfo();
             for(EmployeeBean manager:MList){
-                notifyService.addNotify(manager.getEmpId(),userId,"项目"+projectID+"申请结项",NotifyUtil.NO_REPLY);
+                notifyService.addNotify(manager.getEmpId(),userId,"项目"+projectBean.getProjectId()+"申请结项",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("项目"+projectID+"申请结项",manager.getEmpId());
+                    WebSocketServer.sendInfo("项目"+projectBean.getProjectId()+"申请结项",manager.getEmpId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -209,16 +214,16 @@ public class ProjectController {
 
     @RequestMapping("/enableProject")
     @ResponseBody
-    public JSONResult enableProject(HttpServletRequest request, @RequestBody String projectID) {
+    public JSONResult enableProject(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
         String userId = JwtUtils.analysis(request);
-        String result=projectService.enableProject(projectID);
+        String result=projectService.enableProject(projectBean.getProjectId());
         if(result.contains(ServiceUtil.SUCCESS)){
-            logService.addLog(projectID,userId,"项目启动");
-            String managerID=dataQueryService.getProject(projectID).getProManagerId();
+            logService.addLog(projectBean.getProjectId(),userId,"项目启动");
+            String managerID=dataQueryService.getProject(projectBean.getProjectId()).getProManagerId();
             if(managerID!=null){
-                notifyService.addNotify(managerID,userId,"负责的项目"+projectID+"已启动",NotifyUtil.NO_REPLY);
+                notifyService.addNotify(managerID,userId,"负责的项目"+projectBean.getProjectId()+"已启动",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("负责的项目"+projectID+"已启动",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectBean.getProjectId()+"已启动",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -232,16 +237,16 @@ public class ProjectController {
 
     @RequestMapping("/restartProject")
     @ResponseBody
-    public JSONResult restartProject(HttpServletRequest request, @RequestBody String projectID) {
+    public JSONResult restartProject(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
         String userId = JwtUtils.analysis(request);
-        String result=projectService.restartProject(projectID);
+        String result=projectService.restartProject(projectBean.getProjectId());
         if(result.contains(ServiceUtil.SUCCESS)){
-            logService.addLog(projectID,userId,"项目重启");
-            String managerID=dataQueryService.getProject(projectID).getProManagerId();
+            logService.addLog(projectBean.getProjectId(),userId,"项目重启");
+            String managerID=dataQueryService.getProject(projectBean.getProjectId()).getProManagerId();
             if(managerID!=null){
-                notifyService.addNotify(managerID,userId,"负责的项目"+projectID+"已重启",NotifyUtil.NO_REPLY);
+                notifyService.addNotify(managerID,userId,"负责的项目"+projectBean.getProjectId()+"已重启",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("负责的项目"+projectID+"已重启",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectBean.getProjectId()+"已重启",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -255,16 +260,16 @@ public class ProjectController {
 
     @RequestMapping("/abandonProject")
     @ResponseBody
-    public JSONResult abandonProject(HttpServletRequest request, @RequestBody String projectID) {
+    public JSONResult abandonProject(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
         String userId = JwtUtils.analysis(request);
-        String result=projectService.abandonProject(projectID);
+        String result=projectService.abandonProject(projectBean.getProjectId());
         if(result.contains(ServiceUtil.SUCCESS)){
-            logService.addLog(projectID,userId,"项目废弃");
-            String managerID=dataQueryService.getProject(projectID).getProManagerId();
+            logService.addLog(projectBean.getProjectId(),userId,"项目废弃");
+            String managerID=dataQueryService.getProject(projectBean.getProjectId()).getProManagerId();
             if(managerID!=null){
-                notifyService.addNotify(managerID,userId,"负责的项目"+projectID+"已废弃",NotifyUtil.NO_REPLY);
+                notifyService.addNotify(managerID,userId,"负责的项目"+projectBean.getProjectId()+"已废弃",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("负责的项目"+projectID+"已废弃",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectBean.getProjectId()+"已废弃",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -278,16 +283,16 @@ public class ProjectController {
 
     @RequestMapping("/completeProject")
     @ResponseBody
-    public JSONResult completeProject(HttpServletRequest request, @RequestBody String projectID) {
+    public JSONResult completeProject(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
         String userId = JwtUtils.analysis(request);
-        String result=projectService.completeProject(projectID);
+        String result=projectService.completeProject(projectBean.getProjectId());
         if(result.contains(ServiceUtil.SUCCESS)){
-            logService.addLog(projectID,userId,"项目已完成");
-            String managerID=dataQueryService.getProject(projectID).getProManagerId();
+            logService.addLog(projectBean.getProjectId(),userId,"项目已完成");
+            String managerID=dataQueryService.getProject(projectBean.getProjectId()).getProManagerId();
             if(managerID!=null){
-                notifyService.addNotify(managerID,userId,"负责的项目"+projectID+"已完成",NotifyUtil.NO_REPLY);
+                notifyService.addNotify(managerID,userId,"负责的项目"+projectBean.getProjectId()+"已完成",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("负责的项目"+projectID+"已完成",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectBean.getProjectId()+"已完成",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

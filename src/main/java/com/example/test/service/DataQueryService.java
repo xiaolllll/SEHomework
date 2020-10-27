@@ -24,7 +24,7 @@ public interface DataQueryService {
     List<ProjectBean> getCompletedProject(String empID);//查看一个员工已完成的项目信息
 
     /*查看项目参与信息*/
-    ProFinishInfoBean getProjectInfo(String projectID,String empId);
+    List<ProFinishInfoBean> getProjectInfo(String projectID,String empId);
 
     /*查看子任务信息*/
     SubTaskBean getSubTask(String subTaskID);//查看单个子任务信息

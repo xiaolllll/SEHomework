@@ -162,18 +162,13 @@ public class ProjectServiceImpl implements ProjectService {
         if(result!=1){
             return ServiceUtil.FAILURE+"从数据库中删除子任务失败";
         }
-        result = taskFinishInfoMapper.deleteTaskAllInfo(SubTaskID);
-        if (result!=1) {
-            return ServiceUtil.FAILURE+"从数据库中删除任务参与信息失败";
-        }
-        result = taskNextMapper.deleteTaskId(SubTaskID);
-        if (result!=1) {
-            return ServiceUtil.FAILURE+"从数据库中删除任务信息失败";
-        }
-        result = taskNextMapper.deleteTaskNextId(SubTaskID);
-        if (result!=1) {
-            return ServiceUtil.FAILURE+"从数据库中删除任务信息失败";
-        }
+
+        taskFinishInfoMapper.deleteTaskAllInfo(SubTaskID);
+
+        taskNextMapper.deleteTaskId(SubTaskID);
+
+        taskNextMapper.deleteTaskNextId(SubTaskID);
+
 
         //todo
         for(SubTaskBean bean:beans){
@@ -297,9 +292,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         }
 
-        if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.TO_BE_CHECKED.ordinal()||
-                subTaskBean.getSubTaskState()==SubTaskUtil.TASK_STATE.UNDONE.ordinal()||
-                subTaskBean.getSubTaskState()==SubTaskUtil.TASK_STATE.NOT_ENABLED.ordinal()){
+        if(subTaskBean.getSubTaskState()!=SubTaskUtil.TASK_STATE.HAS_FINISH.ordinal()){
 
                 subTaskBean.setSubTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH.ordinal());
                 int result = subTaskMapper.updateSubTask(subTaskBean);
@@ -482,7 +475,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"数据库更新项目数据失败";
         }
 
-        return ServiceUtil.FAILURE;
+        return ServiceUtil.SUCCESS;
     }
 
     @Override
@@ -572,9 +565,13 @@ public class ProjectServiceImpl implements ProjectService {
         p1.setProjectId(projectID);
         p1.setEmpPosition(ProjectUtil.EMP_POSITION.NORMAL_EMP.ordinal());
 
-        int result = proFinishInfoMapper.insertProjectInfo(p1);
-        if(result!=1){
-            return ServiceUtil.FAILURE+"数据库项目参与信息插入失败";
+        int result;
+
+        if(proFinishInfoMapper.getProjectInfoEmpPos(empID,projectID,ProjectUtil.EMP_POSITION.NORMAL_EMP.ordinal())==null) {
+            result = proFinishInfoMapper.insertProjectInfo(p1);
+            if (result != 1) {
+                return ServiceUtil.FAILURE + "数据库项目参与信息插入失败";
+            }
         }
 
         if(projectBean.getProManagerId()!=null){
@@ -585,9 +582,9 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         ProFinishInfoBean p2 = new ProFinishInfoBean();
-        p1.setEmpId(empID);
-        p1.setProjectId(projectID);
-        p1.setEmpPosition(ProjectUtil.EMP_POSITION.MANAGER.ordinal());
+        p2.setEmpId(empID);
+        p2.setProjectId(projectID);
+        p2.setEmpPosition(ProjectUtil.EMP_POSITION.MANAGER.ordinal());
 
         result = proFinishInfoMapper.insertProjectInfo(p2);
         if(result!=1){
@@ -641,6 +638,32 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     //TODO 待完善
     public String deleteProjectPerson(String projectID, String empID) {
+        ProjectBean projectBean = projectMapper.getProInfoByProId(projectID);
+        if(projectBean == null){
+            return ServiceUtil.FAILURE+"未找到编号为"+projectID+"的项目";
+        }
+
+        if(projectBean.getProjectState()!=ProjectUtil.PROJECT_STATE.NOT_ENABLED.ordinal()&&
+                projectBean.getProjectState()!=ProjectUtil.PROJECT_STATE.NOT_FINISHED.ordinal()){
+            return ServiceUtil.FAILURE+"当前项目状态不能移除成员";
+        }
+
+        EmployeeBean employeeBean = employeeMapper.getEmpInfoByEmpId(empID);
+        if(employeeBean == null){
+            return ServiceUtil.FAILURE+"未找到编号为"+empID+"的员工";
+        }
+
+        proFinishInfoMapper.deleteProjectInfoManager(projectID,empID);
+        proFinishInfoMapper.deleteProjectInfoEmp(projectID,empID);
+
+        if(projectBean.getProManagerId()!=null&&projectBean.getProManagerId().equals(empID)){
+            projectBean.setProManagerId(null);
+            int result=projectMapper.updateProject(projectBean);
+            if(result!=1){
+                return ServiceUtil.FAILURE+"数据库更新项目信息失败";
+            }
+        }
+
         proFinishInfoMapper.deleteProjectInfoEmp(projectID, empID);
         return ServiceUtil.SUCCESS;
     }
