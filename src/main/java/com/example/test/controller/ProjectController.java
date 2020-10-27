@@ -33,6 +33,8 @@ public class ProjectController {
     private DataQueryService dataQueryService;
     @Autowired
     private NotifyService notifyService;
+    @Autowired
+    private SubTaskService subTaskService;
     @RequestMapping("/addSubTask")
     @ResponseBody
     public JSONResult addSubTask(HttpServletRequest request, @RequestBody addSubTaskBean data) {
@@ -68,6 +70,7 @@ public class ProjectController {
                     e.printStackTrace();
                 }
             }
+
 
             return JSONResult.build(200,result,null);
         }else {
@@ -149,6 +152,7 @@ public class ProjectController {
                     e.printStackTrace();
                 }
             }
+
 
             return JSONResult.build(200,result,null);
         }else {

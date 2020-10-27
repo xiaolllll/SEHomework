@@ -4,13 +4,17 @@ import com.example.test.bean.*;
 import com.example.test.component.DocumentManager;
 import com.example.test.component.OIDGenerator;
 import com.example.test.mapper.*;
+import com.example.test.service.NotifyService;
 import com.example.test.service.ProjectService;
+import com.example.test.util.NotifyUtil;
 import com.example.test.util.ProjectUtil;
 import com.example.test.util.ServiceUtil;
 import com.example.test.util.SubTaskUtil;
+import com.example.test.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +35,8 @@ public class ProjectServiceImpl implements ProjectService {
     private TaskNextMapper taskNextMapper;
     @Autowired
     private SubTaskServiceImp subTaskServiceImp;
+    @Autowired
+    private NotifyService notifyService;
     @Override
     public String addSubTask(SubTaskBean taskBean, List<String> leadingPath, List<String> succeedingPath, boolean isChain) {
         String projectID=taskBean.getSubTaskInProjectId();
@@ -57,7 +63,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         taskBean.setSubTaskId(OIDGenerator.getInstance().createSubTaskID());
         taskBean.setSubTaskStartTime(new Date());
-        taskBean.setSubTaskState(SubTaskUtil.TASK_STATE.UNDONE.ordinal());
+        taskBean.setSubTaskState(SubTaskUtil.TASK_STATE.NOT_ENABLED.ordinal());
         taskBean.setHasFinishFileCount(0);
 
         int result = subTaskMapper.insertSubTask(taskBean);
@@ -87,11 +93,18 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
 
-
-        DocumentManager documentManager = new DocumentManager();
-        if(!documentManager.createSubTaskFolder(taskBean.getSubTaskInProjectId(),taskBean.getSubTaskId())){
-            return ServiceUtil.FAILURE+"创建子任务文件夹失败";
+        if(subTaskServiceImp.judgeBeforeAllTaskHasDone(taskBean.getSubTaskId())){
+            taskBean.setSubTaskState(SubTaskUtil.TASK_STATE.UNDONE.ordinal());
+            result = subTaskMapper.updateSubTask(taskBean);
+            if(result!=1){
+                return ServiceUtil.FAILURE+"向数据库更新子任务失败";
+            }
         }
+
+//        DocumentManager documentManager = new DocumentManager();
+//        if(!documentManager.createSubTaskFolder(taskBean.getSubTaskInProjectId(),taskBean.getSubTaskId())){
+//            return ServiceUtil.FAILURE+"创建子任务文件夹失败";
+//        }
 
         if(isChain){
             for (String s:succeedingPath){
@@ -136,6 +149,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         }
 
+        List<SubTaskBean> beans=subTaskMapper.getNextTaskListByTaskId(SubTaskID);
         /**
          * 没写完想要连锁删除
          */
@@ -155,10 +169,30 @@ public class ProjectServiceImpl implements ProjectService {
         if (result!=1) {
             return ServiceUtil.FAILURE+"从数据库中删除任务信息失败";
         }
-        DocumentManager documentManager = new DocumentManager();
-        if(!documentManager.deleteSubTaskFolder(subTaskBean.getSubTaskInProjectId(),subTaskBean.getSubTaskId())){
-            return ServiceUtil.FAILURE+"删除子任务文件夹失败";
+
+        for(SubTaskBean bean:beans){
+            if(subTaskServiceImp.judgeBeforeAllTaskHasDone(bean.getSubTaskId())){
+                bean.setSubTaskState(SubTaskUtil.TASK_STATE.UNDONE.ordinal());
+                result = subTaskMapper.updateSubTask(bean);
+                if(result!=1){
+                    return ServiceUtil.FAILURE+"向数据库更新子任务失败";
+                }
+                EmployeeBean employeeBean=employeeMapper.getEmpInfoByTaskIdDoSelf(bean.getSubTaskId());
+                if(employeeBean!=null) {
+                    notifyService.addNotify(employeeBean.getEmpId(),null,"子任务"+bean.getSubTaskId()+"可以执行", NotifyUtil.NO_REPLY);
+                    try {
+                        WebSocketServer.sendInfo("updateNotify",bean.getSubTaskId());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
+
+//        DocumentManager documentManager = new DocumentManager();
+//        if(!documentManager.deleteSubTaskFolder(subTaskBean.getSubTaskInProjectId(),subTaskBean.getSubTaskId())){
+//            return ServiceUtil.FAILURE+"删除子任务文件夹失败";
+//        }
         return ServiceUtil.SUCCESS;
     }
 
@@ -259,11 +293,32 @@ public class ProjectServiceImpl implements ProjectService {
 
         if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.TO_BE_CHECKED.ordinal()||
                 subTaskBean.getSubTaskState()==SubTaskUtil.TASK_STATE.UNDONE.ordinal()){
+
                 subTaskBean.setSubTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH.ordinal());
                 int result = subTaskMapper.updateSubTask(subTaskBean);
                 if(result!=1){
                     return ServiceUtil.FAILURE+"数据库更新子任务状态失败";
                 }
+        }
+
+        List<SubTaskBean> beans=subTaskMapper.getNextTaskListByTaskId(SubTaskID);
+        for(SubTaskBean bean:beans){
+            if(subTaskServiceImp.judgeBeforeAllTaskHasDone(bean.getSubTaskId())){
+                bean.setSubTaskState(SubTaskUtil.TASK_STATE.UNDONE.ordinal());
+                int result = subTaskMapper.updateSubTask(bean);
+                if(result!=1){
+                    return ServiceUtil.FAILURE+"向数据库更新子任务失败";
+                }
+                EmployeeBean employeeBean=employeeMapper.getEmpInfoByTaskIdDoSelf(bean.getSubTaskId());
+                if(employeeBean!=null) {
+                    notifyService.addNotify(employeeBean.getEmpId(),null,"子任务"+bean.getSubTaskId()+"可以执行", NotifyUtil.NO_REPLY);
+                    try {
+                        WebSocketServer.sendInfo("updateNotify",bean.getSubTaskId());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }
 
         return ServiceUtil.SUCCESS;
@@ -281,7 +336,8 @@ public class ProjectServiceImpl implements ProjectService {
         if(projectBean == null){
             return ServiceUtil.FAILURE+"未找到子任务所属的项目";
         }
-        if(projectBean.getProjectState()!=ProjectUtil.PROJECT_STATE.NOT_FINISHED.ordinal()){
+        if(projectBean.getProjectState()!=ProjectUtil.PROJECT_STATE.NOT_FINISHED.ordinal()&&
+                projectBean.getProjectState()!=ProjectUtil.PROJECT_STATE.NOT_ENABLED.ordinal()){
             return ServiceUtil.FAILURE+"当前项目状态不支持分配子任务人员";
         }
 
@@ -369,10 +425,10 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"数据库插入项目信息失败";
         }
 
-        DocumentManager documentManager = new DocumentManager();
-        if(!documentManager.createProjectFolder(projectBean.getProjectId())){
-            return ServiceUtil.FAILURE+"创建项目文件夹文件夹失败";
-        }
+//        DocumentManager documentManager = new DocumentManager();
+//        if(!documentManager.createProjectFolder(projectBean.getProjectId())){
+//            return ServiceUtil.FAILURE+"创建项目文件夹文件夹失败";
+//        }
 
         return ServiceUtil.SUCCESS+projectBean.getProjectId();
     }
