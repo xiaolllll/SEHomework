@@ -5,7 +5,9 @@ import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.context.annotation.Bean;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.Map;
 
@@ -62,4 +64,13 @@ public class JwtUtils {
         return new JwtUtils();
     }
 
+    public static String analysis(HttpServletRequest request){
+        String authorization = request.getHeader("Authorization");
+        if (StringUtils.isEmpty(authorization)) {
+            System.out.println("系统未捕捉到请求头信息");
+        }
+        Claims claims = new JwtUtils().parseJwt(authorization);
+        String userId = claims.getId();
+        return userId;
+    }
 }
