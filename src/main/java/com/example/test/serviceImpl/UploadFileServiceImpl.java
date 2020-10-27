@@ -19,7 +19,8 @@ import java.io.IOException;
 public class UploadFileServiceImpl implements UploadFileService {
 
     @Override
-    public int uploadFile(MultipartFile zipFile) {
+    public String uploadFile(MultipartFile zipFile) {
+        System.out.println("test");
         String targetFilePath = "D:\\test";
         String fileName = UUID.randomUUID().toString().replace("-", "");
         File targetFile = new File(targetFilePath + File.separator + fileName);
@@ -38,6 +39,6 @@ public class UploadFileServiceImpl implements UploadFileService {
                 e.printStackTrace();
             }
         }
-        return 1;
+        return fileName;
     }
 }

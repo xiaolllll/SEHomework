@@ -564,8 +564,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    //TODO 从项目中移除员工
+    //TODO 待完善
     public String deleteProjectPerson(String projectID, String empID) {
-        return null;
+        proFinishInfoMapper.deleteProjectInfoEmp(projectID, empID);
+        return ServiceUtil.SUCCESS;
     }
 }
