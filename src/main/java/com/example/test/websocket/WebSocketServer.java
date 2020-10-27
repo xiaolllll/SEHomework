@@ -9,12 +9,15 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-@ServerEndpoint("/imserver/{userId}")
 @Component
+@ServerEndpoint(value = "/webSocket/{userId}", configurator = MySpringConfigurator.class)
 public class WebSocketServer {
+
 
     /**静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。*/
     private static int onlineCount = 0;
@@ -28,9 +31,10 @@ public class WebSocketServer {
     /**
      * 连接建立成功调用的方法*/
     @OnOpen
-    public void onOpen(Session session,@PathParam("userId") String userId) {
+    public void onOpen(Session session,@PathParam("userId") String userId) throws IOException {
         this.session = session;
         this.userId=userId;
+        System.out.println(userId);
         if(webSocketMap.containsKey(userId)){
             webSocketMap.remove(userId);
             webSocketMap.put(userId,this);
@@ -41,6 +45,7 @@ public class WebSocketServer {
             addOnlineCount();
             //在线数加1
         }
+        sendInfo("为五彩",userId);
     }
 
     /**

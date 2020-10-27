@@ -1,20 +1,22 @@
 package com.example.test.controller;
 
+import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.UserBean;
 import com.example.test.service.LoginService;
 import com.example.test.service.UserService;
-import org.json.JSONException;
-import org.json.JSONObject;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import sun.security.util.PendingException;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
-@RestController
+@Controller
 @CrossOrigin
 public class LoginController {
 
@@ -29,34 +31,44 @@ public class LoginController {
 
     @RequestMapping("/loginIn")
     @ResponseBody
-    public JSONResult login(@RequestBody EmployeeBean employeeBean){
-        System.out.println("test");
-        System.out.println(employeeBean.getEmpId());
-        System.out.println(employeeBean.getEmpPassword());
-        EmployeeBean employeeBean1 =loginService.loginIn(employeeBean.getEmpId(), employeeBean.getEmpPassword());
-        if(employeeBean1 == null){
+    public JSONResult login(@RequestBody EmployeeBean e){
+        System.out.println(e.getEmpId()+e.getEmpPassword());
+        EmployeeBean employeeBean=loginService.loginIn(e.getEmpId(),e.getEmpPassword());
+        if(employeeBean == null){
             return JSONResult.errorMessage("用户名或密码错误");
         }
         else {
-            return JSONResult.ok(employeeBean1);
+            String token = new JwtUtils().createJwt(employeeBean.getEmpId());
+            return JSONResult.build(200,token,employeeBean);
         }
     }
 
-    @RequestMapping("/")
-    @ResponseBody
-    public JSONResult changePwd(@RequestBody EmployeeBean employeeBean){
-        System.out.println("test change pwd");
-        System.out.println(employeeBean.getEmpId());
-        System.out.println(employeeBean.getEmpPassword());
-        EmployeeBean employeeBean1 =loginService.loginIn(employeeBean.getEmpId(), employeeBean.getEmpPassword());
-        if(employeeBean1 == null){
-            return JSONResult.errorMessage("用户名或密码错误");
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    public JSONResult profile(HttpServletRequest request) throws PendingException, Exception {
+
+        /**
+         * 从请求头信息中获取token数据
+         *   1.获取请求头信息：名称=Authorization(前后端约定)
+         *   2.替换Bearer+空格
+         *   3.解析token
+         *   4.获取claims
+         */
+        //1.获取请求头信息：名称=Authorization(前后端约定)
+        String authorization = request.getHeader("Authorization");
+        if (StringUtils.isEmpty(authorization)) {
+//            throw new PendingException(ResCode.UNAUTHENTICATED);
+            //系统未捕捉到请求头信息
+            System.out.println("系统未捕捉到请求头信息");
         }
-        else {
-            return JSONResult.ok(employeeBean1);
-        }
+        //2.替换Bearer+空格
+        String token = authorization.replace("Bearer ", "");
+
+        //3.解析token
+        Claims claims = new JwtUtils().parseJwt(token);
+        //4.获取claims
+        String userId = claims.getId();
+
+        //  String userId = "U01";
+        return null;
     }
-
-
-
 }
