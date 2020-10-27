@@ -6,6 +6,8 @@ import com.example.test.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @CrossOrigin
@@ -25,6 +27,18 @@ public class EmployeeController {
             return JSONResult.errorMessage("无此用户名");
         } else {
             return JSONResult.ok(employeeBean1);
+        }
+    }
+
+    @RequestMapping(value = "/getAllEmpInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONResult getAllEmpInfo() {
+        System.out.println("test");
+        List<EmployeeBean> list = dataQueryService.getAllEmployee();
+        if (list == null) {
+            return JSONResult.errorMessage("无此用户名");
+        } else {
+            return JSONResult.ok(list);
         }
     }
 }
