@@ -5,12 +5,8 @@ import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.communication.addSubTaskBean;
 import com.example.test.communication.setSubTaskPersonBean;
-import com.example.test.mapper.ProjectMapper;
-import com.example.test.mapper.SubTaskMapper;
-import com.example.test.service.DataQueryService;
 import com.example.test.service.LogService;
 import com.example.test.service.ProjectService;
-import com.example.test.service.TaskLogService;
 import com.example.test.util.ServiceUtil;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +23,7 @@ public class ProjectController {
     private ProjectService projectService;
     @Autowired
     private LogService logService;
-    @Autowired
-    private TaskLogService taskLogService;
-    @Autowired
-    private DataQueryService dataQueryService;
+
     @RequestMapping("/addSubTask")
     @ResponseBody
     public JSONResult addSubTask(HttpServletRequest request, @RequestBody addSubTaskBean data) {
@@ -38,9 +31,7 @@ public class ProjectController {
         String result=projectService.addSubTask(data.getTaskBean(),data.getLeadingPath(),data.getSucceedingPath(),data.isChain());
         if(result.contains(ServiceUtil.SUCCESS)){
             String PId=data.getTaskBean().getSubTaskInProjectId();
-            String TId=data.getTaskBean().getSubTaskId();
-            logService.addLog(PId,userId,"新增了子任务"+data.getTaskBean().getSubTaskId());
-            taskLogService.addTaskLog(TId,userId,"任务创建");
+            logService.addLog(PId,userId,"新增了子任务"+PId);
             return JSONResult.build(200,result,null);
         }else {
             System.out.println(result);
@@ -54,9 +45,7 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.deleteSubTask(SubTaskID);
         if(result.contains(ServiceUtil.SUCCESS)){
-            String PId=dataQueryService.getSubTask(SubTaskID).getSubTaskInProjectId();
-
-            logService.addLog(PId,userId,"删除了子任务"+SubTaskID);
+            logService.addLog(SubTaskID,userId,"删除了子任务"+SubTaskID);
             return JSONResult.build(200,result,null);
         }else {
             System.out.println(result);
@@ -70,8 +59,7 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.modifySubTask(subTaskBean);
         if(result.contains(ServiceUtil.SUCCESS)){
-            logService.addLog(subTaskBean.getSubTaskInProjectId(),userId,"修改了子任务"+subTaskBean.getSubTaskId());
-            taskLogService.addTaskLog(subTaskBean.getSubTaskId(),userId,"修改了此任务");
+            logService.addLog(subTaskBean.getSubTaskInProjectId(),userId,"修改了子任务"+subTaskBean.getSubTaskInProjectId());
             return JSONResult.build(200,result,null);
         }else {
             System.out.println(result);
