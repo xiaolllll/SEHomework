@@ -32,7 +32,7 @@ public class NotifyServiceImpl implements NotifyService {
     }
 
     @Override
-    public String handleNotify(int notifyInfoID) {
+    public String handleNotify(int notifyInfoID,boolean isOK) {
         NotifyInfoBean notifyInfoBean=notifyInfoMapper.selectNotifyInfoByNotifyId(notifyInfoID);
         if(notifyInfoBean==null){
             return ServiceUtil.FAILURE+"数据库未找到通知信息";
@@ -40,12 +40,10 @@ public class NotifyServiceImpl implements NotifyService {
             switch (notifyInfoBean.getNotifyType()){
                 case NotifyUtil.NO_REPLY:
                     notifyInfoBean.setInfoHasRead(true);
-
                     break;
                 default:
                     notifyInfoBean.setInfoHasRead(true);
                     return ServiceUtil.FAILURE+"出现未知类型的通知";
-
             }
 
             int result = notifyInfoMapper.updateNotifyInfo(notifyInfoBean);
