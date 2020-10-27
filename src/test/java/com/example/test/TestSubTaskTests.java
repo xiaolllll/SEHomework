@@ -5,6 +5,7 @@ import com.example.test.bean.ProFinishInfoBean;
 import com.example.test.bean.ProjectBean;
 import com.example.test.bean.TaskFinishInfoBean;
 import com.example.test.service.EmployeeService;
+import com.example.test.service.ProjectService;
 import com.example.test.service.SubTaskService;
 import com.example.test.serviceImpl.DataQueryServiceImpl;
 import com.example.test.serviceImpl.EmployeeServiceImpl;
@@ -27,15 +28,17 @@ public class TestSubTaskTests {
     DataQueryServiceImpl subTaskService = new DataQueryServiceImpl();
     @Autowired
     LoginServiceImpl loginService = new LoginServiceImpl();
-
-
+    @Autowired
+    ProjectService projectService;
     @Test
     public void contextLoads() {
-        EmployeeBean employeeBean = loginService.loginIn("2", "123456");
-        if (employeeBean != null) {
-            System.out.println(employeeBean.getEmpName());
-        } else
-            System.out.println("null");
+
+        //System.out.println(projectService.addSubTask());
+//        EmployeeBean employeeBean = loginService.loginIn("2", "123456");
+//        if (employeeBean != null) {
+//            System.out.println(employeeBean.getEmpName());
+//        } else
+//            System.out.println("null");
 ////        //申请外包成功
 //        ProFinishInfoBean taskFinishInfoBean = subTaskService.getProjectInfo("1", "1");
 //        System.out.println(taskFinishInfoBean.getEmpId());

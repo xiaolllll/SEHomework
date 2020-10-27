@@ -81,4 +81,10 @@ public class NotifyServiceImpl implements NotifyService {
         notifyInfoMapper.deleteNotifyInfoAllByReceiverID(empID);
         return ServiceUtil.SUCCESS;
     }
+
+    @Override
+    public String deleteNotify(int NotifyID) {
+        return null;
+    }
+
 }

@@ -181,7 +181,7 @@ public class ProjectServiceImpl implements ProjectService {
                 if(employeeBean!=null) {
                     notifyService.addNotify(employeeBean.getEmpId(),null,"子任务"+bean.getSubTaskId()+"可以执行", NotifyUtil.NO_REPLY);
                     try {
-                        WebSocketServer.sendInfo("updateNotify",bean.getSubTaskId());
+                        WebSocketServer.sendInfo("子任务"+bean.getSubTaskId()+"可以执行",bean.getSubTaskId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -292,7 +292,8 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         if(subTaskBean.getSubTaskState()== SubTaskUtil.TASK_STATE.TO_BE_CHECKED.ordinal()||
-                subTaskBean.getSubTaskState()==SubTaskUtil.TASK_STATE.UNDONE.ordinal()){
+                subTaskBean.getSubTaskState()==SubTaskUtil.TASK_STATE.UNDONE.ordinal()||
+                subTaskBean.getSubTaskState()==SubTaskUtil.TASK_STATE.NOT_ENABLED.ordinal()){
 
                 subTaskBean.setSubTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH.ordinal());
                 int result = subTaskMapper.updateSubTask(subTaskBean);
@@ -313,7 +314,7 @@ public class ProjectServiceImpl implements ProjectService {
                 if(employeeBean!=null) {
                     notifyService.addNotify(employeeBean.getEmpId(),null,"子任务"+bean.getSubTaskId()+"可以执行", NotifyUtil.NO_REPLY);
                     try {
-                        WebSocketServer.sendInfo("updateNotify",bean.getSubTaskId());
+                        WebSocketServer.sendInfo("子任务"+bean.getSubTaskId()+"可以执行",bean.getSubTaskId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

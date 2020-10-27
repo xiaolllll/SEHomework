@@ -65,7 +65,7 @@ public class ProjectController {
             if(employeeBean!=null){
                 notifyService.addNotify(employeeBean.getEmpId(),userId,"负责的子任务"+SubTaskID+"已被删除", NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",employeeBean.getEmpId());
+                    WebSocketServer.sendInfo("负责的子任务"+SubTaskID+"已被删除",employeeBean.getEmpId());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -92,7 +92,7 @@ public class ProjectController {
             if(employeeBean!=null){
                 notifyService.addNotify(employeeBean.getEmpId(),userId,"负责的子任务"+subTaskBean.getSubTaskId()+"已被修改", NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",employeeBean.getEmpId());
+                    WebSocketServer.sendInfo("负责的子任务"+subTaskBean.getSubTaskId()+"已被修改",employeeBean.getEmpId());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -119,7 +119,7 @@ public class ProjectController {
             if(employeeBean!=null){
                 notifyService.addNotify(employeeBean.getEmpId(),userId,"负责的子任务"+data.getSubTaskID()+"已被重启", NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",employeeBean.getEmpId());
+                    WebSocketServer.sendInfo("负责的子任务"+data.getSubTaskID()+"已被重启",employeeBean.getEmpId());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -147,7 +147,7 @@ public class ProjectController {
             if(employeeBean!=null){
                 notifyService.addNotify(employeeBean.getEmpId(),userId,"负责的子任务"+SubTaskID+"已强制结束", NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",employeeBean.getEmpId());
+                    WebSocketServer.sendInfo("负责的子任务"+SubTaskID+"已强制结束",employeeBean.getEmpId());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -223,7 +223,7 @@ public class ProjectController {
             if(managerID!=null){
                 notifyService.addNotify(managerID,userId,"负责的项目"+projectID+"已启动",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectID+"已启动",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -246,7 +246,7 @@ public class ProjectController {
             if(managerID!=null){
                 notifyService.addNotify(managerID,userId,"负责的项目"+projectID+"已重启",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectID+"已重启",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -269,7 +269,7 @@ public class ProjectController {
             if(managerID!=null){
                 notifyService.addNotify(managerID,userId,"负责的项目"+projectID+"已废弃",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectID+"已废弃",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -292,7 +292,7 @@ public class ProjectController {
             if(managerID!=null){
                 notifyService.addNotify(managerID,userId,"负责的项目"+projectID+"已完成",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectID+"已完成",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -315,7 +315,7 @@ public class ProjectController {
             if(managerID!=null){
                 notifyService.addNotify(managerID,userId,"负责的项目"+projectBean.getProjectId()+"已修改",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",managerID);
+                    WebSocketServer.sendInfo("负责的项目"+projectBean.getProjectId()+"已修改",managerID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -336,7 +336,7 @@ public class ProjectController {
             logService.addLog(data.getProjectID(),userId,"项目已修改被交给"+data.getEmpID());
                 notifyService.addNotify(data.getEmpID(),userId,"被任命为"+data.getEmpID()+"的负责人",NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify",data.getEmpID());
+                    WebSocketServer.sendInfo("被任命为"+data.getEmpID()+"的负责人",data.getEmpID());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -357,7 +357,7 @@ public class ProjectController {
                 logService.addLog(data.getProjectID(), userId, EmpID + "加入项目");
                 notifyService.addNotify(EmpID, userId, "你已加入到项目" + data.getProjectID(), NotifyUtil.NO_REPLY);
                 try {
-                    WebSocketServer.sendInfo("updateNotify", EmpID);
+                    WebSocketServer.sendInfo("你已加入到项目" + data.getProjectID(), EmpID);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -378,7 +378,7 @@ public class ProjectController {
             logService.addLog(data.getProjectID(),userId,data.getEmpID()+"被移除项目");
             notifyService.addNotify(data.getEmpID(),userId,"你已经被移出项目"+data.getProjectID(),NotifyUtil.NO_REPLY);
             try {
-                WebSocketServer.sendInfo("updateNotify",data.getEmpID());
+                WebSocketServer.sendInfo("你已经被移出项目"+data.getProjectID(),data.getEmpID());
             } catch (IOException e) {
                 e.printStackTrace();
             }
