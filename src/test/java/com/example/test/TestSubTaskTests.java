@@ -9,8 +9,7 @@ import com.example.test.service.ProjectService;
 import com.example.test.service.SubTaskService;
 import com.example.test.serviceImpl.DataQueryServiceImpl;
 import com.example.test.serviceImpl.EmployeeServiceImpl;
-import com.example.test.serviceImpl.LoginServiceImpl;
-import com.example.test.serviceImpl.SubTaskServiceImp;
+import com.example.test.serviceImpl.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +20,21 @@ import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TestSubTaskTests {
 
     @Autowired
     DataQueryServiceImpl subTaskService = new DataQueryServiceImpl();
     @Autowired
     LoginServiceImpl loginService = new LoginServiceImpl();
+    ProjectServiceImpl projectService = new ProjectServiceImpl();
     @Autowired
-    ProjectService projectService;
+    DataQueryServiceImpl dataQueryService = new DataQueryServiceImpl();
+    @Autowired
+    NotifyServiceImpl notifyService = new NotifyServiceImpl();
     @Test
     public void contextLoads() {
-
+        System.out.println(notifyService.deleteHasRead("1"));
         //System.out.println(projectService.addSubTask());
 //        EmployeeBean employeeBean = loginService.loginIn("2", "123456");
 //        if (employeeBean != null) {

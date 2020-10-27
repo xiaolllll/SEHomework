@@ -34,7 +34,9 @@ public class SubTaskServiceImp implements SubTaskService {
     @Override
     //申请外包：判断有无申请者，判断
     public String outSourcingApply(String ApplicantID, String HelpersID, String subTaskId) {
+        System.out.println("outSourcingApply");
         List<TaskFinishInfoBean> taskFinishInfoBeanApplicant = taskFinishInfoMapper.getSubTaskInfo(subTaskId, ApplicantID);
+        System.out.println(taskFinishInfoBeanApplicant.size() + " size");
         if (taskFinishInfoBeanApplicant.size() == 0) { //没有申请者
             return ServiceUtil.FAILURE+"无此申请者用户";
         }
@@ -111,8 +113,11 @@ public class SubTaskServiceImp implements SubTaskService {
     @Override
     public String outSourcingRecovery(String ApplicantID, String HelpersID, String subTaskId) {
         TaskFinishInfoBean taskFinishInfoBean = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(
-                subTaskId, HelpersID, SubTaskUtil.getTaskDoType(SubTaskUtil.DO_TYPE.OUT_SOURCE));
+                subTaskId, HelpersID, SubTaskUtil.getTaskDoType(SubTaskUtil.DO_TYPE.DO_BY_SELF));
         TaskFinishInfoBean taskFinishInfoBeanUpdate = new TaskFinishInfoBean();
+        if (taskFinishInfoBean.getEmpId() == null) {
+            System.out.println("null");
+        }
         taskFinishInfoBeanUpdate.setEmpId(taskFinishInfoBean.getEmpId());
         taskFinishInfoBeanUpdate.setSubTaskId(taskFinishInfoBean.getSubTaskId());
         taskFinishInfoBeanUpdate.setProjectId(taskFinishInfoBean.getProjectId());

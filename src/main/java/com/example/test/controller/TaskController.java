@@ -17,24 +17,24 @@ import java.util.Date;
 import java.util.List;
 
 class ApplyTask {
-    String ApplicantID;
-    String HelpersID;
+    String applicantID;
+    String helpersID;
     String subTaskId;
 
     public String getApplicantID() {
-        return ApplicantID;
+        return applicantID;
     }
 
     public void setApplicantID(String applicantID) {
-        ApplicantID = applicantID;
+        this.applicantID = applicantID;
     }
 
     public String getHelpersID() {
-        return HelpersID;
+        return helpersID;
     }
 
     public void setHelpersID(String helpersID) {
-        HelpersID = helpersID;
+        this.helpersID = helpersID;
     }
 
     public String getSubTaskId() {
@@ -47,25 +47,25 @@ class ApplyTask {
 }
 
 class ApplyTaskHandOver {
-    String ApplicantID;
-    String HelpersID;
+    String applicantID;
+    String helpersID;
     String subTaskId;
     Date taskOutSourceEndTime;
 
     public String getApplicantID() {
-        return ApplicantID;
+        return applicantID;
     }
 
     public void setApplicantID(String applicantID) {
-        ApplicantID = applicantID;
+        this.applicantID = applicantID;
     }
 
     public String getHelpersID() {
-        return HelpersID;
+        return helpersID;
     }
 
     public void setHelpersID(String helpersID) {
-        HelpersID = helpersID;
+        this.helpersID = helpersID;
     }
 
     public String getSubTaskId() {
@@ -157,40 +157,44 @@ public class TaskController {
 
     @RequestMapping("/outSourcingApply")
     @ResponseBody
-    public JSONResult outSourcingApply(@RequestBody ApplyTask applyTask) throws IOException {
-        System.out.println("test");
-        System.out.println(applyTask.getApplicantID());
-        String msg = subTaskService.outSourcingApply(applyTask.ApplicantID, applyTask.getHelpersID(),
+    public JSONResult outSourcingApply(HttpServletRequest request, @RequestBody ApplyTask applyTask) throws IOException {
+//        System.out.println("test");
+        String userId = JwtUtils.analysis(request);
+        System.out.println("test" + userId);
+        String msg = subTaskService.outSourcingApply(userId, applyTask.getHelpersID(),
                 applyTask.getSubTaskId());
         if (msg == null) {
            return JSONResult.errorMessage("无此用户名");
         } else {
-            notifyService.addNotify(applyTask.ApplicantID, applyTask.HelpersID, "申请外包任务" + applyTask.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
-            String res = applyTask.ApplicantID + "申请外包任务" + applyTask.subTaskId;
+            notifyService.addNotify(userId, applyTask.helpersID, "申请外包任务" + applyTask.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
+            String res = userId + "申请外包任务" + applyTask.subTaskId;
             WebSocketServer.sendInfo(res, applyTask.getHelpersID());
             return JSONResult.ok(msg);
         }
     }
 
+    //由管理员发送
     @RequestMapping("/outSourcingHandover")
     @ResponseBody
-    public JSONResult outSourcingHandover(@RequestBody ApplyTaskHandOver applyTaskHandOver) throws IOException {
+    public JSONResult outSourcingHandover(HttpServletRequest request, @RequestBody ApplyTaskHandOver applyTaskHandOver) throws IOException {
         System.out.println("test");
         System.out.println(applyTaskHandOver.getApplicantID());
-        String msg = subTaskService.outSourcingHandover(applyTaskHandOver.ApplicantID, applyTaskHandOver.getHelpersID(),
-                applyTaskHandOver.getSubTaskId(), applyTaskHandOver.taskOutSourceEndTime);
+        String userId = JwtUtils.analysis(request);
+        System.out.println(applyTaskHandOver.getApplicantID());
+        String msg = subTaskService.outSourcingHandover(applyTaskHandOver.getApplicantID(), applyTaskHandOver.getHelpersID(),
+                applyTaskHandOver.getSubTaskId(), applyTaskHandOver.getTaskOutSourceEndTime());
         if (msg == null) {
             return JSONResult.errorMessage("出现异常");
         } else if (msg.contains(ServiceUtil.SUCCESS)){
             String PId= dataQueryService.getSubTask(applyTaskHandOver.subTaskId).getSubTaskInProject();
-            logService.addLog(PId, applyTaskHandOver.getApplicantID(), "申请" + applyTaskHandOver.HelpersID +
+            logService.addLog(PId, applyTaskHandOver.getApplicantID(), "申请" + applyTaskHandOver.helpersID +
                     "外包"+ applyTaskHandOver.subTaskId +"子任务" );
-            notifyService.addNotify(applyTaskHandOver.ApplicantID, applyTaskHandOver.HelpersID,
+            notifyService.addNotify(applyTaskHandOver.applicantID, applyTaskHandOver.helpersID,
                     "外包任务" + applyTaskHandOver.subTaskId + "申请已完成", NotifyUtil.APPLY_OUT_SOURCE_DONE);
             String res;
-            res = PId + "申请" + applyTaskHandOver.HelpersID + "外包"+ applyTaskHandOver.subTaskId +"子任务";
-            WebSocketServer.sendInfo(res, applyTaskHandOver.ApplicantID);
-            WebSocketServer.sendInfo(res, applyTaskHandOver.HelpersID);
+            res = applyTaskHandOver.applicantID + "申请" + applyTaskHandOver.helpersID + "外包"+ applyTaskHandOver.subTaskId +"子任务成功";
+            WebSocketServer.sendInfo(res, applyTaskHandOver.applicantID);
+            WebSocketServer.sendInfo(res, applyTaskHandOver.helpersID);
             return JSONResult.ok(msg);
         } else {
             return JSONResult.errorMessage(msg);
@@ -201,20 +205,20 @@ public class TaskController {
     @ResponseBody
     public JSONResult outSourcingRecovery(HttpServletRequest request, @RequestBody ApplyTask applyTask) {
         System.out.println("test");
-        System.out.println(applyTask.getApplicantID());
-        String msg = subTaskService.outSourcingRecovery(applyTask.ApplicantID, applyTask.getHelpersID(),
+        String userId = JwtUtils.analysis(request);
+        String msg = subTaskService.outSourcingRecovery(userId, applyTask.getHelpersID(),
                 applyTask.getSubTaskId());
         if (msg == null) {
             return JSONResult.errorMessage("出现异常");
         } else if (msg.contains(ServiceUtil.SUCCESS)) {
-            String PId= dataQueryService.getSubTask(applyTask.subTaskId).getSubTaskInProject();
-            logService.addLog(PId, applyTask.getApplicantID(), "申请回收" +
-                     applyTask.subTaskId +"子任务" );
-            notifyService.addNotify(applyTask.ApplicantID, applyTask.HelpersID,
-                    "外包任务" + applyTask.subTaskId + "申请回收", NotifyUtil.APPLY_OUT_SOURCE_RECOVERY);
+            String PId= dataQueryService.getSubTask(applyTask.getSubTaskId()).getSubTaskInProject();
+            logService.addLog(PId, userId, "申请回收" +
+                     applyTask.getSubTaskId() +"子任务" );
+            notifyService.addNotify(userId, applyTask.getHelpersID(),
+                    "外包任务" + applyTask.getHelpersID() + "申请回收", NotifyUtil.APPLY_OUT_SOURCE_RECOVERY);
             try {
-                String res = applyTask.ApplicantID + "外包任务" + applyTask.subTaskId + "申请回收";
-                WebSocketServer.sendInfo(res, applyTask.HelpersID);
+                String res = userId + "将外包任务" + applyTask.getHelpersID() + "申请回收";
+                WebSocketServer.sendInfo(res, applyTask.getHelpersID());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -228,13 +232,11 @@ public class TaskController {
     @ResponseBody
     public JSONResult subTaskCompleteApply(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
         System.out.println("test");
-        System.out.println(subTaskBean.getSubTaskInProject());
         String userId = JwtUtils.analysis(request);
         String msg = subTaskService.subTaskCompleteApply(subTaskBean.getSubTaskId());
         if (msg == null) {
             return JSONResult.errorMessage("出现异常");
         } else if (msg.contains(ServiceUtil.SUCCESS)) {
-
             //发送给这个项目的管理员
             SubTaskBean taskBean = dataQueryService.getSubTask(subTaskBean.getSubTaskId());
             String proId = taskBean.getSubTaskInProject();
@@ -245,6 +247,7 @@ public class TaskController {
                             "任务" + subTaskBean.getSubTaskId() + "申请完成", NotifyUtil.TASK_DONE);
                     try {
                         String res = userId + "将任务" + subTaskBean.getSubTaskId() + "申请完成";
+                        System.out.println("res "  +res);
                         WebSocketServer.sendInfo(res, employeeBean.getEmpId());
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -272,6 +275,7 @@ public class TaskController {
                     "任务" + subTaskBean.getSubTaskId() + "完成已同意", NotifyUtil.TASK_DONE_AGREE);
             try {
                 String res = userId + "将任务" + subTaskBean.getSubTaskId() + "完成已同意";
+                System.out.println("res "  +res);
                 WebSocketServer.sendInfo(res, receiver.getEmpId());
             } catch (IOException e) {
                 e.printStackTrace();
