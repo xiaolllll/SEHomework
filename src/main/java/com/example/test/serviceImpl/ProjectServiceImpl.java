@@ -101,7 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
 
-        return ServiceUtil.SUCCESS;
+        return ServiceUtil.SUCCESS+taskBean.getSubTaskId();
     }
 
     @Override
@@ -362,7 +362,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"创建项目文件夹文件夹失败";
         }
 
-        return ServiceUtil.SUCCESS;
+        return ServiceUtil.SUCCESS+projectBean.getProjectId();
     }
 
     @Override
