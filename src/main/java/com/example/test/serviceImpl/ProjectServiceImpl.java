@@ -170,6 +170,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"从数据库中删除任务信息失败";
         }
 
+        //todo
         for(SubTaskBean bean:beans){
             if(subTaskServiceImp.judgeBeforeAllTaskHasDone(bean.getSubTaskId())){
                 bean.setSubTaskState(SubTaskUtil.TASK_STATE.UNDONE.ordinal());

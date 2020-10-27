@@ -138,12 +138,12 @@ public class DataQueryServiceImpl implements DataQueryService {
     }
 
     @Override
-    public List<String> getLog(String projectID) {
+    public List<LoggerBean> getLog(String projectID) {
         return loggerMapper.getLogger(projectID);
     }
 
     @Override
-    public List<String> getTaskLog(String taskID) {
+    public List<TaskLoggerBean> getTaskLog(String taskID) {
         return taskLoggerMapper.getLogger(taskID);
     }
 

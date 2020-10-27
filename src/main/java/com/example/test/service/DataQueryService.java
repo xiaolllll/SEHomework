@@ -41,9 +41,9 @@ public interface DataQueryService {
     List<NotifyInfoBean> getEmpNotifyInfo(String empID);//查看员工通知信息
 
     /*查询日志*/
-    List<String> getLog(String projectID);//查询项目日志
+    List<LoggerBean> getLog(String projectID);//查询项目日志
 
     /*查询任务日志*/
-    List<String> getTaskLog(String taskID);//查询任务日志
+    List<TaskLoggerBean> getTaskLog(String taskID);//查询任务日志
 
 }

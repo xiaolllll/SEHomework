@@ -1,9 +1,6 @@
 package com.example.test;
 
-import com.example.test.bean.EmployeeBean;
-import com.example.test.bean.ProFinishInfoBean;
-import com.example.test.bean.ProjectBean;
-import com.example.test.bean.TaskFinishInfoBean;
+import com.example.test.bean.*;
 import com.example.test.service.EmployeeService;
 import com.example.test.service.SubTaskService;
 import com.example.test.serviceImpl.DataQueryServiceImpl;
@@ -20,22 +17,27 @@ import java.util.Date;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class TestSubTaskTests {
 
     @Autowired
     DataQueryServiceImpl subTaskService = new DataQueryServiceImpl();
     @Autowired
     LoginServiceImpl loginService = new LoginServiceImpl();
-
+    @Autowired
+    DataQueryServiceImpl dataQueryService = new DataQueryServiceImpl();
 
     @Test
     public void contextLoads() {
-        EmployeeBean employeeBean = loginService.loginIn("2", "123456");
-        if (employeeBean != null) {
-            System.out.println(employeeBean.getEmpName());
-        } else
-            System.out.println("null");
+        List<TaskLoggerBean> list = dataQueryService.getTaskLog("1");
+        for (TaskLoggerBean loggerBean : list) {
+            System.out.println(loggerBean.getContent());
+        }
+//        EmployeeBean employeeBean = loginService.loginIn("2", "123456");
+//        if (employeeBean != null) {
+//            System.out.println(employeeBean.getEmpName());
+//        } else
+//            System.out.println("null");
 ////        //申请外包成功
 //        ProFinishInfoBean taskFinishInfoBean = subTaskService.getProjectInfo("1", "1");
 //        System.out.println(taskFinishInfoBean.getEmpId());

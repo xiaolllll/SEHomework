@@ -3,13 +3,17 @@ package com.example.test.serviceImpl;
 import com.example.test.bean.*;
 import com.example.test.mapper.*;
 import com.example.test.service.DataQueryService;
+import com.example.test.service.NotifyService;
 import com.example.test.service.SubTaskService;
+import com.example.test.util.NotifyUtil;
 import com.example.test.util.ProjectUtil;
 import com.example.test.util.ServiceUtil;
 import com.example.test.util.SubTaskUtil;
+import com.example.test.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +30,8 @@ public class SubTaskServiceImp implements SubTaskService {
     private EmployeeMapper employeeMapper;
     @Autowired
     private TaskNextMapper taskNextMapper;
+    @Autowired
+    private NotifyService notifyService;
 
     @Override
     //申请外包：判断有无申请者，判断
@@ -148,6 +154,26 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
         subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
         subTaskMapper.updateSubTask(subTaskBean);
+        List<SubTaskBean> beans=subTaskMapper.getNextTaskListByTaskId(subTaskID);
+        int result;
+        for(SubTaskBean bean:beans){
+            if(this.judgeBeforeAllTaskHasDone(bean.getSubTaskId())){
+                bean.setSubTaskState(SubTaskUtil.TASK_STATE.UNDONE.ordinal());
+                result = subTaskMapper.updateSubTask(bean);
+                if(result!=1){
+                    return ServiceUtil.FAILURE+"向数据库更新子任务失败";
+                }
+                EmployeeBean employeeBean=employeeMapper.getEmpInfoByTaskIdDoSelf(bean.getSubTaskId());
+                if(employeeBean!=null) {
+                    notifyService.addNotify(employeeBean.getEmpId(),null,"子任务"+bean.getSubTaskId()+"可以执行", NotifyUtil.NO_REPLY);
+                    try {
+                        WebSocketServer.sendInfo("updateNotify",bean.getSubTaskId());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         return ServiceUtil.SUCCESS;
     }
 
