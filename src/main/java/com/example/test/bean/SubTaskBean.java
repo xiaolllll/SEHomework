@@ -18,15 +18,15 @@ import java.util.Date;
 public class SubTaskBean {
 
     private String subTaskId;
-    private String subTaskName;
-    private String subTaskDesc;
+    private String subTaskName;//
+    private String subTaskDesc;//
     private int SubTaskCanOutSource; //不能外包为0，可以外包为1
-    private int subTaskSkillType;
-    private String subTaskInProject;
+    private int subTaskSkillType;//
+    private String subTaskInProject;//
     private int subTaskState;
-    private Date subTaskStartTime;//开始时间由创建时来决定
+    private Date subTaskStartTime;
     private Date subTaskEndTime;
-    private int totalFileCount;
+    private int totalFileCount;//
     private int hasFinishFileCount;
 
     public SubTaskBean() {

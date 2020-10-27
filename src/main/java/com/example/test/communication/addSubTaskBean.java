@@ -3,11 +3,12 @@ package com.example.test.communication;
 import com.example.test.bean.SubTaskBean;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class addSubTaskBean {
     SubTaskBean taskBean;
-    ArrayList<String> leadingPath;
-    java.util.ArrayList<String> succeedingPath;
+    List<String> leadingPath;
+    java.util.List<String> succeedingPath;
     boolean isChain;
 
     public SubTaskBean getTaskBean() {
@@ -18,7 +19,7 @@ public class addSubTaskBean {
         this.taskBean = taskBean;
     }
 
-    public ArrayList<String> getLeadingPath() {
+    public List<String> getLeadingPath() {
         return leadingPath;
     }
 
@@ -26,7 +27,7 @@ public class addSubTaskBean {
         this.leadingPath = leadingPath;
     }
 
-    public ArrayList<String> getSucceedingPath() {
+    public List<String> getSucceedingPath() {
         return succeedingPath;
     }
 

@@ -108,7 +108,9 @@ public class WebSocketServer {
      * 发送自定义消息
      * */
     public static void sendInfo(String message,@PathParam("userId") String userId) throws IOException {
-        webSocketMap.get(userId).sendMessage(message);
+        if(webSocketMap.containsKey(userId)) {
+            webSocketMap.get(userId).sendMessage(message);
+        }
     }
 
     public static synchronized int getOnlineCount() {

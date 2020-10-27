@@ -32,7 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Autowired
     private SubTaskServiceImp subTaskServiceImp;
     @Override
-    public String addSubTask(SubTaskBean taskBean, ArrayList<String> leadingPath, ArrayList<String> succeedingPath, boolean isChain) {
+    public String addSubTask(SubTaskBean taskBean, List<String> leadingPath, List<String> succeedingPath, boolean isChain) {
         String projectID=taskBean.getSubTaskInProjectId();
         ProjectBean projectBean = projectMapper.getProInfoByProId(projectID);
         if(projectBean == null){
@@ -58,6 +58,7 @@ public class ProjectServiceImpl implements ProjectService {
         taskBean.setSubTaskId(OIDGenerator.getInstance().createSubTaskID());
         taskBean.setSubTaskStartTime(new Date());
         taskBean.setSubTaskState(SubTaskUtil.TASK_STATE.UNDONE.ordinal());
+        taskBean.setHasFinishFileCount(0);
 
         int result = subTaskMapper.insertSubTask(taskBean);
         if(result!=1){
@@ -101,7 +102,7 @@ public class ProjectServiceImpl implements ProjectService {
             }
         }
 
-        return ServiceUtil.SUCCESS;
+        return ServiceUtil.SUCCESS+taskBean.getSubTaskId();
     }
 
     @Override
@@ -373,7 +374,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"创建项目文件夹文件夹失败";
         }
 
-        return ServiceUtil.SUCCESS;
+        return ServiceUtil.SUCCESS+projectBean.getProjectId();
     }
 
     @Override
