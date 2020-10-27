@@ -41,6 +41,24 @@ public class NotifyServiceImpl implements NotifyService {
                 case NotifyUtil.NO_REPLY:
                     notifyInfoBean.setInfoHasRead(true);
                     break;
+                case NotifyUtil.APPLY_OUT_SOURCE:
+                    notifyInfoBean.setInfoHasRead(true);
+                    break;
+                case NotifyUtil.APPLY_OUT_SOURCE_DONE:
+                    notifyInfoBean.setInfoHasRead(true);
+                    break;
+                case NotifyUtil.APPLY_OUT_SOURCE_RECOVERY:
+                    notifyInfoBean.setInfoHasRead(true);
+                    break;
+                case NotifyUtil.TASK_DONE:
+                    notifyInfoBean.setInfoHasRead(true);
+                    break;
+                case NotifyUtil.TASK_DONE_AGREE:
+                    notifyInfoBean.setInfoHasRead(true);
+                    break;
+                case NotifyUtil.TASK_DONE_REFUSE:
+                    notifyInfoBean.setInfoHasRead(true);
+                    break;
                 default:
                     notifyInfoBean.setInfoHasRead(true);
                     return ServiceUtil.FAILURE+"出现未知类型的通知";

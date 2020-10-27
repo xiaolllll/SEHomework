@@ -2,19 +2,14 @@ package com.example.test.controller;
 
 import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.EmployeeBean;
-import com.example.test.bean.UserBean;
 import com.example.test.service.LoginService;
-import com.example.test.service.UserService;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import sun.security.util.PendingException;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -43,7 +38,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST)
-    public JSONResult profile(HttpServletRequest request) throws PendingException, Exception {
+    public JSONResult profile(HttpServletRequest request) throws Exception {
 
         /**
          * 从请求头信息中获取token数据
