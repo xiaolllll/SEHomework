@@ -1,7 +1,6 @@
 package com.example.test.serviceImpl;
 
 import com.example.test.bean.*;
-import com.example.test.component.DocumentManager;
 import com.example.test.component.OIDGenerator;
 import com.example.test.mapper.*;
 import com.example.test.service.NotifyService;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class ProjectServiceImpl implements ProjectService {
     private NotifyService notifyService;
     @Override
     public String addSubTask(SubTaskBean taskBean, List<String> leadingPath, List<String> succeedingPath, boolean isChain) {
-        String projectID=taskBean.getSubTaskInProjectId();
+        String projectID=taskBean.getSubTaskInProject();
         ProjectBean projectBean = projectMapper.getProInfoByProId(projectID);
         if(projectBean == null){
             return ServiceUtil.FAILURE+"未找到子任务所属的项目";
@@ -48,16 +46,18 @@ public class ProjectServiceImpl implements ProjectService {
         projectBean.getProjectState()!=ProjectUtil.PROJECT_STATE.NOT_FINISHED.ordinal()){
             return ServiceUtil.FAILURE+"当前项目状态不支持新增子任务";
         }
-
-        for (String s:leadingPath){
-            if(subTaskMapper.getTaskInfoByProId(s)==null){
-                return ServiceUtil.FAILURE+"数据库中未找到编号为"+s+"的前置任务";
+        if(leadingPath!=null) {
+            for (String s : leadingPath) {
+                if (subTaskMapper.getTaskInfoByProId(s) == null) {
+                    return ServiceUtil.FAILURE + "数据库中未找到编号为" + s + "的前置任务";
+                }
             }
         }
-
-        for (String s:succeedingPath){
-            if(subTaskMapper.getTaskInfoByProId(s)==null){
-                return ServiceUtil.FAILURE+"数据库中未找到编号为"+s+"的后继任务";
+        if(succeedingPath!=null) {
+            for (String s : succeedingPath) {
+                if (subTaskMapper.getTaskInfoByProId(s) == null) {
+                    return ServiceUtil.FAILURE + "数据库中未找到编号为" + s + "的后继任务";
+                }
             }
         }
 
@@ -71,25 +71,28 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"向数据库插入新的子任务失败";
         }
 
-        for (String s:leadingPath){
-            TaskNextBean t1 = new TaskNextBean();
-            t1.setSubTaskId(s);
-            t1.setNextTaskId(taskBean.getSubTaskId());
+        if(leadingPath!=null) {
+            for (String s : leadingPath) {
+                TaskNextBean t1 = new TaskNextBean();
+                t1.setSubTaskId(s);
+                t1.setNextTaskId(taskBean.getSubTaskId());
 
-            result = taskNextMapper.insertTaskNext(t1);
-            if(result != 1){
-                return ServiceUtil.FAILURE+"向数据库中插入子任务之间的联系失败";
+                result = taskNextMapper.insertTaskNext(t1);
+                if (result != 1) {
+                    return ServiceUtil.FAILURE + "向数据库中插入子任务之间的联系失败";
+                }
             }
         }
+        if(succeedingPath!=null) {
+            for (String s : succeedingPath) {
+                TaskNextBean t2 = new TaskNextBean();
+                t2.setSubTaskId(taskBean.getSubTaskId());
+                t2.setNextTaskId(s);
 
-        for (String s:succeedingPath){
-            TaskNextBean t2 = new TaskNextBean();
-            t2.setSubTaskId(taskBean.getSubTaskId());
-            t2.setNextTaskId(s);
-
-            result = taskNextMapper.insertTaskNext(t2);
-            if(result != 1){
-                return ServiceUtil.FAILURE+"向数据库中插入子任务之间的联系失败";
+                result = taskNextMapper.insertTaskNext(t2);
+                if (result != 1) {
+                    return ServiceUtil.FAILURE + "向数据库中插入子任务之间的联系失败";
+                }
             }
         }
 
@@ -107,10 +110,12 @@ public class ProjectServiceImpl implements ProjectService {
 //        }
 
         if(isChain){
-            for (String s:succeedingPath){
-                String temp=restartSubTask(s,true);
-                if(temp.contains(ServiceUtil.FAILURE)){
-                    return ServiceUtil.FAILURE+"子任务"+s+"重启失败。"+"失败信息："+temp;
+            if(succeedingPath!=null) {
+                for (String s : succeedingPath) {
+                    String temp = restartSubTask(s, true);
+                    if (temp.contains(ServiceUtil.FAILURE)) {
+                        return ServiceUtil.FAILURE + "子任务" + s + "重启失败。" + "失败信息：" + temp;
+                    }
                 }
             }
         }
@@ -125,7 +130,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"未找到编号为"+SubTaskID+"的子任务";
         }
 
-        String projectID=subTaskBean.getSubTaskInProjectId();
+        String projectID=subTaskBean.getSubTaskInProject();
         ProjectBean projectBean = projectMapper.getProInfoByProId(projectID);
         if(projectBean == null){
             return ServiceUtil.FAILURE+"未找到子任务所属的项目";
@@ -205,7 +210,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"未找到编号为"+SubTaskID+"的子任务";
         }
 
-        String projectID=subTaskBean.getSubTaskInProjectId();
+        String projectID=subTaskBean.getSubTaskInProject();
         ProjectBean projectBean = projectMapper.getProInfoByProId(projectID);
         if(projectBean == null){
             return ServiceUtil.FAILURE+"未找到子任务所属的项目";
@@ -233,7 +238,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"未找到编号为"+SubTaskID+"的子任务";
         }
 
-        String projectID=subTaskBean.getSubTaskInProjectId();
+        String projectID=subTaskBean.getSubTaskInProject();
         ProjectBean projectBean = projectMapper.getProInfoByProId(projectID);
         if(projectBean == null){
             return ServiceUtil.FAILURE+"未找到子任务所属的项目";
@@ -270,7 +275,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"未找到编号为"+SubTaskID+"的子任务";
         }
 
-        String projectID=subTaskBean.getSubTaskInProjectId();
+        String projectID=subTaskBean.getSubTaskInProject();
         ProjectBean projectBean = projectMapper.getProInfoByProId(projectID);
         if(projectBean == null){
             return ServiceUtil.FAILURE+"未找到子任务所属的项目";
@@ -333,7 +338,7 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"未找到编号为"+SubTaskID+"的子任务";
         }
 
-        String projectID=subTaskBean.getSubTaskInProjectId();
+        String projectID=subTaskBean.getSubTaskInProject();
         ProjectBean projectBean = projectMapper.getProInfoByProId(projectID);
         if(projectBean == null){
             return ServiceUtil.FAILURE+"未找到子任务所属的项目";
@@ -381,7 +386,7 @@ public class ProjectServiceImpl implements ProjectService {
         TaskFinishInfoBean taskFinishInfoBean = new TaskFinishInfoBean();
         taskFinishInfoBean.setEmpId(employeeBean.getEmpId());
         taskFinishInfoBean.setSubTaskId(subTaskBean.getSubTaskId());
-        taskFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProjectId());
+        taskFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProject());
         taskFinishInfoBean.setDoType(SubTaskUtil.DO_TYPE.DO_BY_SELF.ordinal());
 
         int result = taskFinishInfoMapper.insertTaskFinishInfo(taskFinishInfoBean);

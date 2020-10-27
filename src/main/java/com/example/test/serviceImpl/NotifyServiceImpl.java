@@ -84,7 +84,11 @@ public class NotifyServiceImpl implements NotifyService {
 
     @Override
     public String deleteNotify(int NotifyID) {
-        return null;
+        int result=notifyInfoMapper.deleteNotifyInfo(NotifyID);
+        if(result!=1){
+            return ServiceUtil.FAILURE+"数据库删除通知失败";
+        }
+        return ServiceUtil.SUCCESS;
     }
 
 }

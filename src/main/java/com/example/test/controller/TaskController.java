@@ -8,12 +8,9 @@ import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
 import com.example.test.websocket.WebSocketServer;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.server.WebServer;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Date;
@@ -185,7 +182,7 @@ public class TaskController {
         if (msg == null) {
             return JSONResult.errorMessage("出现异常");
         } else if (msg.contains(ServiceUtil.SUCCESS)){
-            String PId= dataQueryService.getSubTask(applyTaskHandOver.subTaskId).getSubTaskInProjectId();
+            String PId= dataQueryService.getSubTask(applyTaskHandOver.subTaskId).getSubTaskInProject();
             logService.addLog(PId, applyTaskHandOver.getApplicantID(), "申请" + applyTaskHandOver.HelpersID +
                     "外包"+ applyTaskHandOver.subTaskId +"子任务" );
             notifyService.addNotify(applyTaskHandOver.ApplicantID, applyTaskHandOver.HelpersID,
@@ -210,7 +207,7 @@ public class TaskController {
         if (msg == null) {
             return JSONResult.errorMessage("出现异常");
         } else if (msg.contains(ServiceUtil.SUCCESS)) {
-            String PId= dataQueryService.getSubTask(applyTask.subTaskId).getSubTaskInProjectId();
+            String PId= dataQueryService.getSubTask(applyTask.subTaskId).getSubTaskInProject();
             logService.addLog(PId, applyTask.getApplicantID(), "申请回收" +
                      applyTask.subTaskId +"子任务" );
             notifyService.addNotify(applyTask.ApplicantID, applyTask.HelpersID,
@@ -231,7 +228,7 @@ public class TaskController {
     @ResponseBody
     public JSONResult subTaskCompleteApply(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
         System.out.println("test");
-        System.out.println(subTaskBean.getSubTaskInProjectId());
+        System.out.println(subTaskBean.getSubTaskInProject());
         String userId = JwtUtils.analysis(request);
         String msg = subTaskService.subTaskCompleteApply(subTaskBean.getSubTaskId());
         if (msg == null) {
@@ -240,7 +237,7 @@ public class TaskController {
 
             //发送给这个项目的管理员
             SubTaskBean taskBean = dataQueryService.getSubTask(subTaskBean.getSubTaskId());
-            String proId = taskBean.getSubTaskInProjectId();
+            String proId = taskBean.getSubTaskInProject();
             List<EmployeeBean> list = dataQueryService.getProjectEmployee(proId);
             for (EmployeeBean employeeBean : list) {
                 if (employeeBean.getEmpType() == 0) { //管理员
@@ -264,7 +261,7 @@ public class TaskController {
     @ResponseBody
     public JSONResult subTaskCompleteConclusion(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
         System.out.println("test");
-        System.out.println(subTaskBean.getSubTaskInProjectId());
+        System.out.println(subTaskBean.getSubTaskInProject());
         String userId = JwtUtils.analysis(request);
         String msg = subTaskService.subTaskCompleteConclusion(subTaskBean.getSubTaskId());
         if (msg == null) {
@@ -288,7 +285,7 @@ public class TaskController {
     @ResponseBody
     public JSONResult subTaskCompleteRejection(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
         System.out.println("test");
-        System.out.println(subTaskBean.getSubTaskInProjectId());
+        System.out.println(subTaskBean.getSubTaskInProject());
         String userId = JwtUtils.analysis(request);
         String msg = subTaskService.subTaskCompleteConclusion(subTaskBean.getSubTaskId());
         if (msg == null) {

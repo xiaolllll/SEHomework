@@ -5,19 +5,16 @@ import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.ProjectBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.communication.*;
-import com.example.test.mapper.ProjectMapper;
-import com.example.test.mapper.SubTaskMapper;
 import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
 import com.example.test.websocket.WebSocketServer;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -39,7 +36,7 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.addSubTask(data.getTaskBean(),data.getLeadingPath(),data.getSucceedingPath(),data.isChain());
         if(result.contains(ServiceUtil.SUCCESS)){
-            String PId=data.getTaskBean().getSubTaskInProjectId();
+            String PId=data.getTaskBean().getSubTaskInProject();
             String TId=result.replace(ServiceUtil.SUCCESS,"");
             logService.addLog(PId,userId,"新增了子任务"+TId);
             taskLogService.addTaskLog(TId,userId,"任务创建");
@@ -56,7 +53,7 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.deleteSubTask(SubTaskID);
         if(result.contains(ServiceUtil.SUCCESS)){
-            String PId=dataQueryService.getSubTask(SubTaskID).getSubTaskInProjectId();
+            String PId=dataQueryService.getSubTask(SubTaskID).getSubTaskInProject();
             logService.addLog(PId,userId,"删除了子任务"+SubTaskID);
 
             EmployeeBean employeeBean=dataQueryService.getSubTaskEmployeeDoSelf(SubTaskID);
@@ -82,7 +79,7 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.modifySubTask(subTaskBean);
         if(result.contains(ServiceUtil.SUCCESS)){
-            logService.addLog(subTaskBean.getSubTaskInProjectId(),userId,"修改了子任务"+subTaskBean.getSubTaskId());
+            logService.addLog(subTaskBean.getSubTaskInProject(),userId,"修改了子任务"+subTaskBean.getSubTaskId());
             taskLogService.addTaskLog(subTaskBean.getSubTaskId(),userId,"修改了此任务");
 
             EmployeeBean employeeBean=dataQueryService.getSubTaskEmployeeDoSelf(subTaskBean.getSubTaskId());
@@ -108,7 +105,7 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.restartSubTask(data.getSubTaskID(),data.isChain());
         if(result.contains(ServiceUtil.SUCCESS)){
-            String PId=dataQueryService.getSubTask(data.getSubTaskID()).getSubTaskInProjectId();
+            String PId=dataQueryService.getSubTask(data.getSubTaskID()).getSubTaskInProject();
             logService.addLog(PId,userId,"重启了任务"+data.getSubTaskID());
             taskLogService.addTaskLog(data.getSubTaskID(),userId,"被重启");
 
@@ -136,7 +133,7 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.forceCompleteSubTask(SubTaskID);
         if(result.contains(ServiceUtil.SUCCESS)){
-            String PId=dataQueryService.getSubTask(SubTaskID).getSubTaskInProjectId();
+            String PId=dataQueryService.getSubTask(SubTaskID).getSubTaskInProject();
             logService.addLog(PId,userId,"强制结束了任务"+SubTaskID);
             taskLogService.addTaskLog(SubTaskID,userId,"被强制结束");
 
@@ -163,7 +160,7 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.setSubTaskPerson(data.getSubTaskID(),data.getEmpID());
         if(result.contains(ServiceUtil.SUCCESS)){
-            String PId=dataQueryService.getSubTask(data.getSubTaskID()).getSubTaskInProjectId();
+            String PId=dataQueryService.getSubTask(data.getSubTaskID()).getSubTaskInProject();
             logService.addLog(PId,userId,"将子任务"+data.getSubTaskID()+"分配给了"+data.getEmpID());
             taskLogService.addTaskLog(data.getSubTaskID(),data.getEmpID(),"任务被分配给"+data.getEmpID());
             return JSONResult.build(200,result,null);
@@ -179,13 +176,15 @@ public class ProjectController {
         String userId = JwtUtils.analysis(request);
         String result=projectService.projectCompleteApply(projectID);
         if(result.contains(ServiceUtil.SUCCESS)){
-//            String MId=dataQueryService.getProject(projectID).getProManagerId();
-//           notifyService.addNotify(MId,userId,"项目"+projectID+"申请结项",NotifyUtil.NO_REPLY);
-//            try {
-//                WebSocketServer.sendInfo("updateNotify",MId);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            List<EmployeeBean> MList=dataQueryService.getManagerInfo();
+            for(EmployeeBean manager:MList){
+                notifyService.addNotify(manager.getEmpId(),userId,"项目"+projectID+"申请结项",NotifyUtil.NO_REPLY);
+                try {
+                    WebSocketServer.sendInfo("项目"+projectID+"申请结项",manager.getEmpId());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+            }
             return JSONResult.build(200,result,null);
         }else {
             System.out.println(result);

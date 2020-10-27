@@ -99,11 +99,11 @@ public class SubTaskBean {
         this.subTaskSkillType = subTaskSkillType;
     }
 
-    public String getSubTaskInProjectId() {
+    public String getSubTaskInProject() {
         return subTaskInProject;
     }
 
-    public void setSubTaskInProjectId(String subTaskInProjectId) {
+    public void setSubTaskInProject(String subTaskInProjectId) {
         this.subTaskInProject = subTaskInProjectId;
     }
 

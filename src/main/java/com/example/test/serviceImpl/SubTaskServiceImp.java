@@ -2,7 +2,6 @@ package com.example.test.serviceImpl;
 
 import com.example.test.bean.*;
 import com.example.test.mapper.*;
-import com.example.test.service.DataQueryService;
 import com.example.test.service.NotifyService;
 import com.example.test.service.SubTaskService;
 import com.example.test.util.NotifyUtil;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -75,17 +73,17 @@ public class SubTaskServiceImp implements SubTaskService {
         System.out.println("test finish count " + subTaskBean.getHasFinishFileCount());
         System.out.println("test total count " + subTaskBean.getTotalFileCount());
         System.out.println("test end time" + subTaskBean.getSubTaskEndTime());
-        System.out.println("test id " + subTaskBean.getSubTaskInProjectId());
+        System.out.println("test id " + subTaskBean.getSubTaskInProject());
         TaskFinishInfoBean taskFinishInfoBean = new TaskFinishInfoBean();
         taskFinishInfoBean.setEmpId(HelpersID);
         taskFinishInfoBean.setSubTaskId(subTaskId);
-        taskFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProjectId());
+        taskFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProject());
         taskFinishInfoBean.setSubTaskOutSourceEndTime(taskOutSourceEndTime);
         taskFinishInfoBean.setDoType(SubTaskUtil.getTaskDoType(SubTaskUtil.DO_TYPE.OUT_SOURCE));
         taskFinishInfoMapper.insertTaskFinishInfo(taskFinishInfoBean);
         ProFinishInfoBean proFinishInfoBean = new ProFinishInfoBean();
         proFinishInfoBean.setEmpId(HelpersID);
-        proFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProjectId());
+        proFinishInfoBean.setProjectId(subTaskBean.getSubTaskInProject());
         proFinishInfoBean.setEmpPosition(ProjectUtil.getTaskDoType(ProjectUtil.EMP_POSITION.OUT_SOURCE_EMP));
         proFinishInfoMapper.insertProjectInfo(proFinishInfoBean);
         SubTaskBean subTaskBeanUpdated = new SubTaskBean();
@@ -94,7 +92,7 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
         subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
         subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
-        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskInProject(subTaskBean.getSubTaskInProject());
         subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.OUT_SOURCE));
         subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
         subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
@@ -128,7 +126,7 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
         subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
         subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
-        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskInProject(subTaskBean.getSubTaskInProject());
         subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.UNDONE));
         subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
         subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
@@ -147,7 +145,7 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
         subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
         subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
-        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskInProject(subTaskBean.getSubTaskInProject());
         subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.TO_BE_CHECKED));
         subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
         subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
@@ -186,7 +184,7 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
         subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
         subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
-        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskInProject(subTaskBean.getSubTaskInProject());
         subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH));
         subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
         subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
@@ -205,7 +203,7 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
         subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
         subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
-        subTaskBeanUpdated.setSubTaskInProjectId(subTaskBean.getSubTaskInProjectId());
+        subTaskBeanUpdated.setSubTaskInProject(subTaskBean.getSubTaskInProject());
         subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.UNDONE));
         subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
         subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());

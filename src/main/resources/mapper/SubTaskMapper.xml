@@ -92,7 +92,7 @@
             subTaskDesc         = #{subTaskDesc},
             SubTaskCanOutSource = #{SubTaskCanOutSource},
             subTaskSkillType    = #{subTaskSkillType},
-            subtaskInProject    = #{subTaskInProjectId},
+            subtaskInProject    = #{subTaskInProject},
             subTaskState        = #{subTaskState},
             subtaskStartTime    = #{subTaskStartTime},
             subTaskEndTime      = #{subTaskEndTime},

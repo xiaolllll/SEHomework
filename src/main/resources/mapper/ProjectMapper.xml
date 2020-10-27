@@ -7,7 +7,7 @@
         <result property="projectName" column="projectName"/>
         <result property="proManagerId" column="proManagerId"/>
         <result property="projectDesc" column="projectDesc"/>
-        <result property="projectState" column="projetState"/>
+        <result property="projectState" column="projectState"/>
         <result property="projectStartTime" column="projectStartTime"/>
         <result property="projectEndTime" column="projectEndTime"/>
     </resultMap>
