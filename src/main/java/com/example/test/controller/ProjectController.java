@@ -4,6 +4,7 @@ import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.communication.addSubTaskBean;
+import com.example.test.communication.setSubTaskPersonBean;
 import com.example.test.service.LogService;
 import com.example.test.service.ProjectService;
 import com.example.test.util.ServiceUtil;
@@ -80,5 +81,18 @@ public class ProjectController {
         }
     }
 
+    @RequestMapping("/setSubTaskPerson")
+    @ResponseBody
+    public JSONResult setSubTaskPerson(HttpServletRequest request, @RequestBody setSubTaskPersonBean data) {
+        String userId = JwtUtils.analysis(request);
+        String result=projectService.setSubTaskPerson(data.getSubTaskID(),data.getEmpID());
+        if(result.contains(ServiceUtil.SUCCESS)){
+            logService.addLog(data.getSubTaskID(),userId,"强制结束了任务"+data.getSubTaskID());
+            return JSONResult.build(200,result,null);
+        }else {
+            System.out.println(result);
+            return JSONResult.build(500,result,null);
+        }
+    }
 
 }
