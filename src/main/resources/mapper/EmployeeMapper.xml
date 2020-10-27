@@ -18,6 +18,12 @@
         WHERE employee.empId = #{empId}
     </select>
 
+    <select id="getManagerInfo" resultType="com.example.test.bean.EmployeeBean">
+        SELECT *
+        FROM employee
+        WHERE employee.empType = 0
+    </select>
+
     <select id="getEmpInfoByEmpName" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
         select *
         from employee

@@ -2,6 +2,7 @@ package com.example.test.serviceImpl;
 
 import com.example.test.bean.*;
 import com.example.test.mapper.*;
+import com.example.test.service.DataQueryService;
 import com.example.test.service.SubTaskService;
 import com.example.test.util.ProjectUtil;
 import com.example.test.util.ServiceUtil;
@@ -9,6 +10,7 @@ import com.example.test.util.SubTaskUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -22,6 +24,8 @@ public class SubTaskServiceImp implements SubTaskService {
     private ProFinishInfoMapper proFinishInfoMapper;
     @Autowired
     private EmployeeMapper employeeMapper;
+    @Autowired
+    private TaskNextMapper taskNextMapper;
 
     @Override
     //申请外包：判断有无申请者，判断
@@ -183,5 +187,18 @@ public class SubTaskServiceImp implements SubTaskService {
         subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
         subTaskMapper.updateSubTask(subTaskBeanUpdated);
         return ServiceUtil.SUCCESS;
+    }
+
+    @Override
+    public boolean judgeBeforeAllTaskHasDone(String subTaskId) {
+        List<TaskNextBean> list = taskNextMapper.getBeforeTaskId(subTaskId);
+        for (TaskNextBean taskNextBean : list) {
+            String str = taskNextBean.getSubTaskId();
+            SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(str);
+            if (subTaskBean.getSubTaskState() != SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

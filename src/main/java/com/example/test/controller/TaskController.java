@@ -2,6 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.EmployeeBean;
+import com.example.test.bean.ProjectBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
@@ -101,12 +102,41 @@ public class TaskController {
     @Autowired
     private NotifyService notifyService;
 
+    @RequestMapping("/getEmpDoingProject")
+    @ResponseBody
+    public JSONResult getEmpDoingProject(HttpServletRequest request) {
+        System.out.println("test");
+        String userId = JwtUtils.analysis(request);
+        System.out.println(userId);
+        List<ProjectBean> list = dataQueryService.getRunProject(userId);
+        if (list == null) {
+            return JSONResult.errorMessage("无此用户名");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+
+    @RequestMapping("/getEmpHasDoneProject")
+    @ResponseBody
+    public JSONResult getEmpHasDoneProject(HttpServletRequest request) {
+        System.out.println("test");
+        String userId = JwtUtils.analysis(request);
+        System.out.println(userId);
+        List<ProjectBean> list = dataQueryService.getCompletedProject(userId);
+        if (list == null) {
+            return JSONResult.errorMessage("无此用户名");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+
     @RequestMapping("/getEmpDoingTask")
     @ResponseBody
-    public JSONResult getEmpDoingTask(@RequestBody EmployeeBean employeeBean) {
+    public JSONResult getEmpDoingTask(HttpServletRequest request) {
         System.out.println("test");
-        System.out.println(employeeBean.getEmpId());
-        List<SubTaskBean> list = dataQueryService.getTaskInfoByEmpIdDoing(employeeBean.getEmpId());
+        String userId = JwtUtils.analysis(request);
+        System.out.println(userId);
+        List<SubTaskBean> list = dataQueryService.getTaskInfoByEmpIdDoing(userId);
         if (list == null) {
             return JSONResult.errorMessage("无此用户名");
         } else {
@@ -116,10 +146,11 @@ public class TaskController {
 
     @RequestMapping("/getEmpHasDoneTask")
     @ResponseBody
-    public JSONResult getEmpHasDoneTask(@RequestBody EmployeeBean employeeBean) {
+    public JSONResult getEmpHasDoneTask(HttpServletRequest request) {
         System.out.println("test");
-        System.out.println(employeeBean.getEmpId());
-        List<SubTaskBean> list = dataQueryService.getTaskInfoByEmpHasDone(employeeBean.getEmpId());
+        String userId = JwtUtils.analysis(request);
+        System.out.println(userId);
+        List<SubTaskBean> list = dataQueryService.getTaskInfoByEmpHasDone(userId);
         if (list == null) {
             return JSONResult.errorMessage("无此用户名");
         } else {
@@ -135,12 +166,10 @@ public class TaskController {
         String msg = subTaskService.outSourcingApply(applyTask.ApplicantID, applyTask.getHelpersID(),
                 applyTask.getSubTaskId());
         if (msg == null) {
-//            String PId= dataQueryService.getSubTask(applyTask.subTaskId).getSubTaskInProjectId();
-//            logService.addLog(PId, applyTask.getApplicantID(), "申请" + applyTask.HelpersID +"外包""子任务" )
-           notifyService.addNotify(applyTask.ApplicantID, applyTask.HelpersID, "申请外包任务" + applyTask.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
-           WebSocketServer.sendInfo("updatedNotify", applyTask.ApplicantID);
            return JSONResult.errorMessage("无此用户名");
         } else {
+            notifyService.addNotify(applyTask.ApplicantID, applyTask.HelpersID, "申请外包任务" + applyTask.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
+            WebSocketServer.sendInfo("updatedNotify", applyTask.getHelpersID());
             return JSONResult.ok(msg);
         }
     }
@@ -161,6 +190,7 @@ public class TaskController {
             notifyService.addNotify(applyTaskHandOver.ApplicantID, applyTaskHandOver.HelpersID,
                     "外包任务" + applyTaskHandOver.subTaskId + "申请已完成", NotifyUtil.APPLY_OUT_SOURCE_DONE);
             WebSocketServer.sendInfo("updatedNotify", applyTaskHandOver.ApplicantID);
+            WebSocketServer.sendInfo("updatedNotify", applyTaskHandOver.HelpersID);
             return JSONResult.ok(msg);
         } else {
             return JSONResult.errorMessage(msg);
@@ -183,7 +213,7 @@ public class TaskController {
             notifyService.addNotify(applyTask.ApplicantID, applyTask.HelpersID,
                     "外包任务" + applyTask.subTaskId + "申请回收", NotifyUtil.APPLY_OUT_SOURCE_RECOVERY);
             try {
-                WebSocketServer.sendInfo("updatedNotify", applyTask.ApplicantID);
+                WebSocketServer.sendInfo("updatedNotify", applyTask.HelpersID);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -203,18 +233,21 @@ public class TaskController {
         if (msg == null) {
             return JSONResult.errorMessage("出现异常");
         } else if (msg.contains(ServiceUtil.SUCCESS)) {
-            List<EmployeeBean> list = dataQueryService.getAllEmployee();
+
             //发送给这个项目的管理员
+            SubTaskBean taskBean = dataQueryService.getSubTask(subTaskBean.getSubTaskId());
+            String proId = taskBean.getSubTaskInProjectId();
+            List<EmployeeBean> list = dataQueryService.getProjectEmployee(proId);
             for (EmployeeBean employeeBean : list) {
                 if (employeeBean.getEmpType() == 0) { //管理员
                     notifyService.addNotify(userId, employeeBean.getEmpId(),
                             "任务" + subTaskBean.getSubTaskId() + "申请完成", NotifyUtil.TASK_DONE);
+                    try {
+                        WebSocketServer.sendInfo("updatedNotify", employeeBean.getEmpId());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-            try {
-                WebSocketServer.sendInfo("updatedNotify", userId);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
             return JSONResult.ok(msg);
         } else {

@@ -7,9 +7,27 @@
         <result property="nextTaskId" column="nextTaskId"/>
     </resultMap>
 
+    <select id="getBeforeTaskId" parameterType="String" resultType="com.example.test.bean.TaskNextBean">
+        SELECT *
+        FROM tasknext
+        WHERE nextTaskId = #{subTaskId}
+    </select>
+
     <insert id="insertTaskNext">
         insert into tasknext (subTaskId, nextTaskId)
         values (#{subTaskId}, #{nextTaskId})
     </insert>
+
+    <delete id="deleteTaskId" parameterType="String">
+        delete
+        from tasknext
+        where subtaskId = #{subTaskId}
+    </delete>
+
+    <delete id="deleteTaskNextId" parameterType="String">
+        delete
+        from tasknext
+        where nextTaskId = #{subTaskNextId}
+    </delete>
 
 </mapper>

@@ -28,6 +28,7 @@ public interface EmployeeMapper {
     int updateEmployee(EmployeeBean employeeBean);
     //删除数据
     int deleteEmployee(String empId);
+    List<EmployeeBean> getManagerInfo(); //查看所有管理员
     List<EmployeeBean> getSkillEmployee(int skillType);//查看具有技能的员工信息
     EmployeeBean getOutSourceTaskEmployee(String subTaskID);//查看一个子任务的外包员工信息
 }

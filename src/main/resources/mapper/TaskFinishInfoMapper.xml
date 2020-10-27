@@ -48,9 +48,16 @@
 
     <delete id="deleteSubTask" parameterType="String">
         delete
-        from subtask
-        where subtask.subtaskId = #{subTaskId}
+        from taskfinishinfo
+        where subtaskId = #{subTaskId}
+            and empId = #{EmpID}
+            and doType = #{doType}
     </delete>
 
+    <delete id="deleteTaskAllInfo" parameterType="String">
+        delete
+        from taskfinishinfo
+        where subtaskId = #{subTaskId}
+    </delete>
 
 </mapper>
