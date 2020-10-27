@@ -14,7 +14,7 @@ public class OIDGenerator {
     private ProjectMapper projectMapper;
     @Autowired
     private SubTaskMapper subTaskMapper;
-    private volatile  static OIDGenerator instance;
+    private volatile static OIDGenerator instance=new OIDGenerator();
     private OIDGenerator() { }
     public static OIDGenerator getInstance()
     {
@@ -30,30 +30,36 @@ public class OIDGenerator {
     public synchronized String createEmployeeID(){
         boolean flag = true;
         String empID;
-        do {
-            empID="EMP"+getRandomString(10);
-            flag = (employeeMapper.getEmpInfoByEmpId(empID)!=null);
-        }while (flag);
+//        do {
+//            empID="EMP"+getRandomString(10);
+//            flag = (employeeMapper.getEmpInfoByEmpId(empID)!=null);
+//        }while (flag);
+        empID="EMP"+getRandomString(10);
         return empID;
     }
 
     public synchronized String createProjectID(){
         boolean flag = true;
         String projectID;
-        do {
-            projectID="PRO"+getRandomString(10);
-            flag = (employeeMapper.getEmpInfoByEmpId(projectID)!=null);
-        }while (flag);
+//        do {
+//            projectID="PRO"+getRandomString(10);
+//            if(projectMapper==null){
+//                System.out.println("bbb");
+//            }
+//            flag = (projectMapper.getProInfoByProId(projectID)!=null);
+//        }while (flag);
+        projectID="PRO"+getRandomString(10);
         return projectID;
     }
 
     public synchronized String createSubTaskID(){
         boolean flag = true;
         String subTaskID;
-        do {
-            subTaskID="TASK"+getRandomString(9);
-            flag = (employeeMapper.getEmpInfoByEmpId(subTaskID)!=null);
-        }while (flag);
+//        do {
+//            subTaskID="TASK"+getRandomString(9);
+//            flag = (subTaskMapper.getTaskInfoByProId(subTaskID)!=null);
+//        }while (flag);
+        subTaskID="TASK"+getRandomString(9);
         return subTaskID;
     }
 

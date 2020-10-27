@@ -88,10 +88,10 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
 
-        DocumentManager documentManager = new DocumentManager();
-        if(!documentManager.createSubTaskFolder(taskBean.getSubTaskInProjectId(),taskBean.getSubTaskId())){
-            return ServiceUtil.FAILURE+"创建子任务文件夹失败";
-        }
+//        DocumentManager documentManager = new DocumentManager();
+//        if(!documentManager.createSubTaskFolder(taskBean.getSubTaskInProjectId(),taskBean.getSubTaskId())){
+//            return ServiceUtil.FAILURE+"创建子任务文件夹失败";
+//        }
 
         if(isChain){
             for (String s:succeedingPath){
@@ -144,10 +144,10 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"从数据库中删除子任务失败";
         }
 
-        DocumentManager documentManager = new DocumentManager();
-        if(!documentManager.deleteSubTaskFolder(subTaskBean.getSubTaskInProjectId(),subTaskBean.getSubTaskId())){
-            return ServiceUtil.FAILURE+"删除子任务文件夹失败";
-        }
+//        DocumentManager documentManager = new DocumentManager();
+//        if(!documentManager.deleteSubTaskFolder(subTaskBean.getSubTaskInProjectId(),subTaskBean.getSubTaskId())){
+//            return ServiceUtil.FAILURE+"删除子任务文件夹失败";
+//        }
         return ServiceUtil.SUCCESS;
     }
 
@@ -358,10 +358,10 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"数据库插入项目信息失败";
         }
 
-        DocumentManager documentManager = new DocumentManager();
-        if(!documentManager.createProjectFolder(projectBean.getProjectId())){
-            return ServiceUtil.FAILURE+"创建项目文件夹文件夹失败";
-        }
+//        DocumentManager documentManager = new DocumentManager();
+//        if(!documentManager.createProjectFolder(projectBean.getProjectId())){
+//            return ServiceUtil.FAILURE+"创建项目文件夹文件夹失败";
+//        }
 
         return ServiceUtil.SUCCESS+projectBean.getProjectId();
     }

@@ -196,6 +196,7 @@ public class ProjectController {
     @RequestMapping("/createProject")
     @ResponseBody
     public JSONResult createProject(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
+        System.out.println("createProject");
         String userId = JwtUtils.analysis(request);
         String result=projectService.createProject(projectBean);
         if(result.contains(ServiceUtil.SUCCESS)){
@@ -299,9 +300,9 @@ public class ProjectController {
         }
     }
 
-    @RequestMapping("/completeProject")
+    @RequestMapping("/modifyProject")
     @ResponseBody
-    public JSONResult completeProject(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
+    public JSONResult modifyProject(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
         String userId = JwtUtils.analysis(request);
         String result=projectService.modifyProject(projectBean);
         if(result.contains(ServiceUtil.SUCCESS)){
@@ -322,9 +323,9 @@ public class ProjectController {
         }
     }
 
-    @RequestMapping("/completeProject")
+    @RequestMapping("/setProjectManager")
     @ResponseBody
-    public JSONResult completeProject(HttpServletRequest request, @RequestBody setProjectManagerBean data) {
+    public JSONResult setProjectManager(HttpServletRequest request, @RequestBody setProjectManagerBean data) {
         String userId = JwtUtils.analysis(request);
         String result=projectService.setProjectManager(data.getProjectID(),data.getEmpID());
         if(result.contains(ServiceUtil.SUCCESS)){

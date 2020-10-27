@@ -8,6 +8,7 @@ public class SubTaskUtil {
     }
 
     public enum TASK_STATE {
+        NOT_ENABLED,//未启用
         UNDONE, //未完成
         OUT_SOURCE, //外包
         TO_BE_CHECKED, //待验收

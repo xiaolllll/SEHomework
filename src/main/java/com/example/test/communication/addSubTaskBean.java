@@ -8,7 +8,7 @@ import java.util.List;
 public class addSubTaskBean {
     SubTaskBean taskBean;
     List<String> leadingPath;
-    java.util.List<String> succeedingPath;
+    List<String> succeedingPath;
     boolean isChain;
 
     public SubTaskBean getTaskBean() {

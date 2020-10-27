@@ -1,6 +1,7 @@
 package com.example.test.serviceImpl;
 
 import com.example.test.bean.EmployeeBean;
+import com.example.test.component.OIDGenerator;
 import com.example.test.mapper.EmployeeMapper;
 import com.example.test.service.EmployeeService;
 import com.example.test.util.ServiceUtil;
@@ -13,6 +14,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeMapper employeeMapper;
     @Override
     public String addEmp(EmployeeBean employeeBean) {
+        employeeBean.setEmpId(OIDGenerator.getInstance().createEmployeeID());
         int result = employeeMapper.insertEmployee(employeeBean);
         if(result==1){
             return ServiceUtil.SUCCESS;
