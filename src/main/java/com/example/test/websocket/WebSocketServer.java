@@ -34,7 +34,6 @@ public class WebSocketServer {
     public void onOpen(Session session,@PathParam("userId") String userId) throws IOException {
         this.session = session;
         this.userId=userId;
-        System.out.println(userId);
         if(webSocketMap.containsKey(userId)){
             webSocketMap.remove(userId);
             webSocketMap.put(userId,this);
@@ -45,7 +44,6 @@ public class WebSocketServer {
             addOnlineCount();
             //在线数加1
         }
-        sendInfo("为五彩",userId);
     }
 
     /**

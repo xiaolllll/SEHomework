@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-@Controller
+@RestController
 @CrossOrigin
 public class LoginController {
 
@@ -32,7 +32,6 @@ public class LoginController {
     @RequestMapping("/loginIn")
     @ResponseBody
     public JSONResult login(@RequestBody EmployeeBean e){
-        System.out.println(e.getEmpId()+e.getEmpPassword());
         EmployeeBean employeeBean=loginService.loginIn(e.getEmpId(),e.getEmpPassword());
         if(employeeBean == null){
             return JSONResult.errorMessage("用户名或密码错误");
@@ -60,15 +59,15 @@ public class LoginController {
             //系统未捕捉到请求头信息
             System.out.println("系统未捕捉到请求头信息");
         }
-        //2.替换Bearer+空格
-        String token = authorization.replace("Bearer ", "");
+//        //2.替换Bearer+空格
+//        String token = authorization.replace("Bearer ", "");
 
         //3.解析token
-        Claims claims = new JwtUtils().parseJwt(token);
+        Claims claims = new JwtUtils().parseJwt(authorization);
         //4.获取claims
         String userId = claims.getId();
-
+        System.out.println("a"+userId);
         //  String userId = "U01";
-        return null;
+        return JSONResult.ok();
     }
 }
