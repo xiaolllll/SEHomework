@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface TaskLoggerMapper {
     //根据项目查询日志
-     List<String> getLogger(String taskId);
+     List<TaskLoggerBean> getLogger(String taskId);
 
     //添加日志
      int addLogger(TaskLoggerBean logger);

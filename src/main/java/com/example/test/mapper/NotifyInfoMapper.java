@@ -21,4 +21,6 @@ import java.util.List;
      int updateNotifyInfo(NotifyInfoBean notifyInfoBean);
 
      int deleteNotifyInfoAllByReceiverID(String receiverID);
+
+     int deleteNotifyInfo(int notifyInfoId);
 }

@@ -68,6 +68,11 @@ public class DataQueryServiceImpl implements DataQueryService {
     }
 
     @Override
+    public List<EmployeeBean> getManagerInfo() {
+        return employeeMapper.getManagerInfo();
+    }
+
+    @Override
     public ProjectBean getProject(String projectID) {
         return projectMapper.getProInfoByProId(projectID);
     }
@@ -132,18 +137,19 @@ public class DataQueryServiceImpl implements DataQueryService {
         return notifyInfoMapper.selectNotifyInfoByNotifyId(NotifyID);
     }
 
+    //查询发送者信息
     @Override
     public List<NotifyInfoBean> getEmpNotifyInfo(String empID) {
         return notifyInfoMapper.getNotifyInfoBySenderID(empID);
     }
 
     @Override
-    public List<String> getLog(String projectID) {
+    public List<LoggerBean> getLog(String projectID) {
         return loggerMapper.getLogger(projectID);
     }
 
     @Override
-    public List<String> getTaskLog(String taskID) {
+    public List<TaskLoggerBean> getTaskLog(String taskID) {
         return taskLoggerMapper.getLogger(taskID);
     }
 

@@ -169,7 +169,8 @@ public class TaskController {
            return JSONResult.errorMessage("无此用户名");
         } else {
             notifyService.addNotify(applyTask.ApplicantID, applyTask.HelpersID, "申请外包任务" + applyTask.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
-            WebSocketServer.sendInfo("updatedNotify", applyTask.getHelpersID());
+            String res = applyTask.ApplicantID + "申请外包任务" + applyTask.subTaskId;
+            WebSocketServer.sendInfo(res, applyTask.getHelpersID());
             return JSONResult.ok(msg);
         }
     }
@@ -189,8 +190,10 @@ public class TaskController {
                     "外包"+ applyTaskHandOver.subTaskId +"子任务" );
             notifyService.addNotify(applyTaskHandOver.ApplicantID, applyTaskHandOver.HelpersID,
                     "外包任务" + applyTaskHandOver.subTaskId + "申请已完成", NotifyUtil.APPLY_OUT_SOURCE_DONE);
-            WebSocketServer.sendInfo("updatedNotify", applyTaskHandOver.ApplicantID);
-            WebSocketServer.sendInfo("updatedNotify", applyTaskHandOver.HelpersID);
+            String res;
+            res = PId + "申请" + applyTaskHandOver.HelpersID + "外包"+ applyTaskHandOver.subTaskId +"子任务";
+            WebSocketServer.sendInfo(res, applyTaskHandOver.ApplicantID);
+            WebSocketServer.sendInfo(res, applyTaskHandOver.HelpersID);
             return JSONResult.ok(msg);
         } else {
             return JSONResult.errorMessage(msg);
@@ -213,7 +216,8 @@ public class TaskController {
             notifyService.addNotify(applyTask.ApplicantID, applyTask.HelpersID,
                     "外包任务" + applyTask.subTaskId + "申请回收", NotifyUtil.APPLY_OUT_SOURCE_RECOVERY);
             try {
-                WebSocketServer.sendInfo("updatedNotify", applyTask.HelpersID);
+                String res = applyTask.ApplicantID + "外包任务" + applyTask.subTaskId + "申请回收";
+                WebSocketServer.sendInfo(res, applyTask.HelpersID);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -243,7 +247,8 @@ public class TaskController {
                     notifyService.addNotify(userId, employeeBean.getEmpId(),
                             "任务" + subTaskBean.getSubTaskId() + "申请完成", NotifyUtil.TASK_DONE);
                     try {
-                        WebSocketServer.sendInfo("updatedNotify", employeeBean.getEmpId());
+                        String res = userId + "将任务" + subTaskBean.getSubTaskId() + "申请完成";
+                        WebSocketServer.sendInfo(res, employeeBean.getEmpId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -267,9 +272,10 @@ public class TaskController {
         } else {
             EmployeeBean receiver = dataQueryService.getSubTaskEmployeeDoSelf(subTaskBean.getSubTaskId());
             notifyService.addNotify(userId, receiver.getEmpId(),
-                    "外包任务" + subTaskBean.getSubTaskId() + "申请回收", NotifyUtil.TASK_DONE_AGREE);
+                    "任务" + subTaskBean.getSubTaskId() + "完成已同意", NotifyUtil.TASK_DONE_AGREE);
             try {
-                WebSocketServer.sendInfo("updatedNotify", receiver.getEmpId());
+                String res = userId + "将任务" + subTaskBean.getSubTaskId() + "完成已同意";
+                WebSocketServer.sendInfo(res, receiver.getEmpId());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -290,9 +296,10 @@ public class TaskController {
         } else {
             EmployeeBean receiver = dataQueryService.getSubTaskEmployeeDoSelf(subTaskBean.getSubTaskId());
             notifyService.addNotify(userId, receiver.getEmpId(),
-                    "外包任务" + subTaskBean.getSubTaskId() + "申请回收", NotifyUtil.TASK_DONE_REFUSE);
+                    "任务" + subTaskBean.getSubTaskId() + "完成已拒绝", NotifyUtil.TASK_DONE_REFUSE);
             try {
-                WebSocketServer.sendInfo("updatedNotify", receiver.getEmpId());
+                String res = userId + "将任务" + subTaskBean.getSubTaskId() + "完成已拒绝";
+                WebSocketServer.sendInfo(res, receiver.getEmpId());
             } catch (IOException e) {
                 e.printStackTrace();
             }

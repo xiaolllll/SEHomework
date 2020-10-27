@@ -13,7 +13,7 @@ public interface LoggerMapper {
      * to do
      */
     //根据任务查询日志
-     List<String> getLogger(String projectId);
+     List<LoggerBean> getLogger(String projectId);
 
     /**
      * to do
