@@ -31,6 +31,14 @@ public class EmployeeBean {
         this.empType = empType;
     }
 
+    public int getEmpSkillType() {
+        return empSkillType;
+    }
+
+    public void setEmpSkillType(int empSkillType) {
+        this.empSkillType = empSkillType;
+    }
+
     public String getEmpId() {
         return empId;
     }
