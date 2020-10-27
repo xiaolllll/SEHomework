@@ -142,7 +142,18 @@ public class ProjectServiceImpl implements ProjectService {
         if(result!=1){
             return ServiceUtil.FAILURE+"从数据库中删除子任务失败";
         }
-
+        result = taskFinishInfoMapper.deleteTaskAllInfo(SubTaskID);
+        if (result!=1) {
+            return ServiceUtil.FAILURE+"从数据库中删除任务参与信息失败";
+        }
+        result = taskNextMapper.deleteTaskId(SubTaskID);
+        if (result!=1) {
+            return ServiceUtil.FAILURE+"从数据库中删除任务信息失败";
+        }
+        result = taskNextMapper.deleteTaskNextId(SubTaskID);
+        if (result!=1) {
+            return ServiceUtil.FAILURE+"从数据库中删除任务信息失败";
+        }
         DocumentManager documentManager = new DocumentManager();
         if(!documentManager.deleteSubTaskFolder(subTaskBean.getSubTaskInProjectId(),subTaskBean.getSubTaskId())){
             return ServiceUtil.FAILURE+"删除子任务文件夹失败";

@@ -12,4 +12,7 @@ public interface SubTaskService {
     String subTaskCompleteApply(String subTaskID);//申请完成子任务
     String subTaskCompleteConclusion(String subTaskID);//接受子任务完成（将子任务状态置为已完成）
     String subTaskCompleteRejection(String subTaskID);//拒绝子任务完成（将子任务置为未完成）
+
+    //判断任务节点图中前面的节点是否已经全部完成
+    boolean judgeBeforeAllTaskHasDone(String subTaskId);
 }

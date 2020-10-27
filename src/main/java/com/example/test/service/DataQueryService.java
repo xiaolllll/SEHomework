@@ -9,7 +9,7 @@ import java.util.List;
 public interface DataQueryService {
     /*员工信息查询*/
     EmployeeBean getEmployee(String empID);//查看单个员工信息
-    List<EmployeeBean> getAllEmployee();//查看所有员工信息
+    List<EmployeeBean> getAllEmployee();//查看所有员get工信息
     List<EmployeeBean> getSkillEmployee(int skillType);//查看具有技能的员工信息
     List<EmployeeBean> getProjectEmployee(String projectID);//查看一个项目的员工信息
     EmployeeBean getSubTaskEmployeeDoSelf(String subTaskId);//查看一个子任务的员工信息

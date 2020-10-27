@@ -36,6 +36,7 @@ public class UploadController {
         System.out.println("test upload");
         String format = sdf.format(new Date());
         String realPath = req.getServletContext().getRealPath("/upload") + format;
+        System.out.println(realPath);
         File folder = new File(realPath);
         if (!folder.exists()) {
             folder.mkdirs();
