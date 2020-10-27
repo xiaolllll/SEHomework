@@ -44,10 +44,16 @@
         where notifyinfo.notifyInfoId = #{notifyInfoId}
     </update>
 
-    <delete id="deleteNotifyInfoAllBySenderID" parameterType="String">
+    <delete id="deleteNotifyInfoAllByReceiverID" parameterType="String">
         delete
         from notifyinfo
         where notifyinfo.receiverId = #{receiverId}
+    </delete>
+
+    <delete id="deleteNotifyInfo" parameterType="int">
+        delete
+        from notifyinfo
+        where notifyinfo.notifyInfoId = #{notifyInfoId}
     </delete>
 
 </mapper>

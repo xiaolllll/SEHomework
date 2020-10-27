@@ -29,10 +29,12 @@ public class TestSubTaskTests {
 
     @Test
     public void contextLoads() {
-        List<TaskLoggerBean> list = dataQueryService.getTaskLog("1");
-        for (TaskLoggerBean loggerBean : list) {
-            System.out.println(loggerBean.getContent());
-        }
+//        List<NotifyInfoBean> list = dataQueryService.getEmpNotifyInfo("1");
+//        for (NotifyInfoBean loggerBean : list) {
+//            System.out.println(loggerBean.getInfo());
+//        }
+        NotifyInfoBean notifyInfoBean = dataQueryService.getNotifyInfo(1);
+        System.out.println(notifyInfoBean.getInfo());
 //        EmployeeBean employeeBean = loginService.loginIn("2", "123456");
 //        if (employeeBean != null) {
 //            System.out.println(employeeBean.getEmpName());

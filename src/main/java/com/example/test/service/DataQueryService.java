@@ -14,6 +14,7 @@ public interface DataQueryService {
     List<EmployeeBean> getProjectEmployee(String projectID);//查看一个项目的员工信息
     EmployeeBean getSubTaskEmployeeDoSelf(String subTaskId);//查看一个子任务的员工信息
     EmployeeBean getOutSourceTaskEmployee(String subTaskID);//查看一个子任务的外包员工信息
+    List<EmployeeBean> getManagerInfo(); //查看所有管理员
 
     /*项目信息查询*/
     ProjectBean getProject(String projectID);//查看单个项目时的信息
