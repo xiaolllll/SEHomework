@@ -1,12 +1,10 @@
 package com.example.test.serviceImpl;
 
 import com.example.test.bean.*;
-import com.example.test.mapper.EmployeeMapper;
-import com.example.test.mapper.ProFinishInfoMapper;
-import com.example.test.mapper.ProjectMapper;
-import com.example.test.mapper.SubTaskMapper;
+import com.example.test.mapper.*;
 import com.example.test.service.DataQueryService;
 import com.example.test.util.ServiceUtil;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +22,14 @@ public class DataQueryServiceImpl implements DataQueryService {
     private ProFinishInfoMapper proFinishInfoMapper;
     @Autowired
     private SubTaskMapper subTaskMapper;
+    @Autowired
+    private TaskFinishInfoMapper taskFinishInfoMapper;
+    @Autowired
+    private NotifyInfoMapper notifyInfoMapper;
+    @Autowired
+    private LoggerMapper loggerMapper;
+    @Autowired
+    private TaskLoggerMapper taskLoggerMapper;
 
     /*员工信息查询*/
     public EmployeeBean getEmployee(String empID) {
@@ -93,7 +99,7 @@ public class DataQueryServiceImpl implements DataQueryService {
 
     @Override
     public SubTaskBean getSubTask(String subTaskID) {
-        return null;
+        return subTaskMapper.getTaskInfoByProId(subTaskID);
     }
 
     @Override
@@ -102,39 +108,43 @@ public class DataQueryServiceImpl implements DataQueryService {
     }
 
     @Override
-    public List<SubTaskBean> getEmpSubTask(String EmpID) {
-//        return subTaskMapper.getTaskInfoByEmpHasDone();
-        return null;
+    public List<SubTaskBean> getTaskInfoByEmpIdDoing(String EmpID) {
+        return subTaskMapper.getTaskInfoByEmpIdDoing(EmpID);
+    }
+
+    @Override
+    public List<SubTaskBean> getTaskInfoByEmpHasDone(String empId) {
+        return subTaskMapper.getTaskInfoByEmpHasDone(empId);
     }
 
     @Override
     public List<SubTaskBean> getProjectEmpSubTask(String projectID, String EmpID) {
-        return null;
+        return subTaskMapper.getProjectEmpSubTask(projectID, EmpID);
     }
 
     @Override
-    public TaskFinishInfoBean getSubTaskInfo(String subTaskID, String EmpID) {
-        return null;
+    public List<TaskFinishInfoBean> getSubTaskInfo(String subTaskID, String EmpID) {
+        return taskFinishInfoMapper.getSubTaskInfo(subTaskID, EmpID);
     }
 
     @Override
-    public NotifyInfoBean getNotifyInfo(String NotifyID) {
-        return null;
+    public NotifyInfoBean getNotifyInfo(int NotifyID) {
+        return notifyInfoMapper.selectNotifyInfoByNotifyId(NotifyID);
     }
 
     @Override
     public List<NotifyInfoBean> getEmpNotifyInfo(String empID) {
-        return null;
+        return notifyInfoMapper.getNotifyInfoBySenderID(empID);
     }
 
     @Override
     public List<String> getLog(String projectID) {
-        return null;
+        return loggerMapper.getLogger(projectID);
     }
 
     @Override
     public List<String> getTaskLog(String taskID) {
-        return null;
+        return taskLoggerMapper.getLogger(taskID);
     }
 
 
