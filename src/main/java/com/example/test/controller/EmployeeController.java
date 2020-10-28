@@ -42,19 +42,17 @@ public class EmployeeController {
         if (list == null) {
             return JSONResult.errorMessage("无此用户名");
         } else {
-            System.out.println(list.get(0).getEmpId()+list.get(1).getEmpId()+list.get(2).getEmpId());
             return JSONResult.ok(list);
         }
     }
 
-    @RequestMapping(value = "/getProjectEmpInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/getProjectEmpInfo", method = RequestMethod.POST)
     @ResponseBody
     public JSONResult getProjectEmpInfo(@RequestBody ProjectBean projectBean) {
         List<EmployeeBean> list = dataQueryService.getProjectEmployee(projectBean.getProjectId());
         if (list == null) {
             return JSONResult.errorMessage("查询项目员工出错");
         } else {
-            System.out.println(list.get(0).getEmpId()+list.get(1).getEmpId()+list.get(2).getEmpId());
             return JSONResult.ok(list);
         }
     }

@@ -123,17 +123,7 @@ public class TaskController {
             return JSONResult.ok(list);
         }
     }
-    //TODO
-//    @RequestMapping("/getLeadingSubTask")
-//    @ResponseBody
-//    public JSONResult getLeadingSubTask(@RequestBody SubTaskBean subTaskBean) {
-//        List<SubTaskBean> list = dataQueryService.
-//        if (list == null) {
-//            return JSONResult.errorMessage("查询项目中的任务出错");
-//        } else {
-//            return JSONResult.ok(list);
-//        }
-//    }
+
 
     @RequestMapping("/getEmpHasDoneProject")
     @ResponseBody
@@ -330,6 +320,8 @@ public class TaskController {
         }
     }
 
+    @RequestMapping("/getBeforeTaskId")
+    @ResponseBody
     public JSONResult getBeforeTaskId(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
         System.out.println("test");
         System.out.println(subTaskBean.getSubTaskInProject());

@@ -45,6 +45,19 @@ public class ProjectController {
         }
     }
 
+
+    //TODO
+//    @RequestMapping("/getProjectFinishInfo")
+//    @ResponseBody
+//    public JSONResult getProjectFinishInfo(@RequestBody ProjectBean projectBean) {
+//        List<ProFinishInfoBean> list = dataQueryService.get
+//        if (list == null) {
+//            return JSONResult.errorMessage("项目列表为空");
+//        } else {
+//            return JSONResult.ok(list);
+//        }
+//    }
+
     @RequestMapping("/addSubTask")
     @ResponseBody
     public JSONResult addSubTask(HttpServletRequest request, @RequestBody addSubTaskBean data) {
