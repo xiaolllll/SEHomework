@@ -442,7 +442,26 @@ public class ProjectController {
         if(list == null){
             return JSONResult.errorMessage("无此项目信息");
         }else {
-            return JSONResult.ok(list);
+            List<String> contents =  new ArrayList<>();
+            for (LoggerBean taskLoggerBean1 : list) {
+                contents.add(taskLoggerBean1.getContent());
+            }
+            return JSONResult.ok(contents);
+        }
+    }
+
+    @RequestMapping("/getTaskLog")
+    @ResponseBody
+    public JSONResult getTaskLog(HttpServletRequest request, @RequestBody TaskLoggerBean taskLoggerBean) {
+        List<TaskLoggerBean> list=dataQueryService.getTaskLog(taskLoggerBean.getSubTaskId());
+        if(list == null){
+            return JSONResult.errorMessage("无此任务信息");
+        }else {
+            List<String> contents =  new ArrayList<>();
+            for (TaskLoggerBean taskLoggerBean1 : list) {
+                contents.add(taskLoggerBean1.getContent());
+            }
+            return JSONResult.ok(contents);
         }
     }
 }
