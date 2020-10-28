@@ -2,6 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.EmployeeBean;
+import com.example.test.bean.ProFinishInfoBean;
 import com.example.test.bean.ProjectBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.communication.*;
@@ -43,6 +44,19 @@ public class ProjectController {
             return JSONResult.ok(list);
         }
     }
+
+
+    //TODO
+//    @RequestMapping("/getProjectFinishInfo")
+//    @ResponseBody
+//    public JSONResult getProjectFinishInfo(@RequestBody ProjectBean projectBean) {
+//        List<ProFinishInfoBean> list = dataQueryService.get
+//        if (list == null) {
+//            return JSONResult.errorMessage("项目列表为空");
+//        } else {
+//            return JSONResult.ok(list);
+//        }
+//    }
 
     @RequestMapping("/addSubTask")
     @ResponseBody
