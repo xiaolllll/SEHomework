@@ -79,13 +79,6 @@ public class EmployeeBean {
         this.empDoingProCount = empDoingProCount;
     }
 
-//    public int getEmpSkillType() {
-//        return empSkillType;
-//    }
-
-//    public void setEmpSkillType(int empSkillType) {
-//        this.empSkillType = empSkillType;
-//    }
 
     public int getEmpType() {
         return empType;

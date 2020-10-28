@@ -426,10 +426,8 @@ public class ProjectController {
 
     @RequestMapping("/getProjectInfoById")
     @ResponseBody
-    public JSONResult getProjectInfoById(HttpServletRequest request, @RequestBody String proId) {
-        System.out.println("请求");
-        List<ProFinishInfoBean> list=dataQueryService.getProjectInfoById(proId);
-        System.out.println(list);
+    public JSONResult getProjectInfoById(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
+        List<ProFinishInfoBean> list=dataQueryService.getProjectInfoById(projectBean.getProjectId());
         if(list == null){
             return JSONResult.errorMessage("无此项目信息");
         }else {

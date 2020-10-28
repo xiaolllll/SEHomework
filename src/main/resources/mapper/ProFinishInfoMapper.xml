@@ -21,7 +21,7 @@
         WHERE projectId = #{projectId}
     </select>
 
-    <select id="getProjectInfoEmpPos" parameterType="String" resultType="com.example.test.bean.ProFinishInfoBean">
+    <select id="getProjectInfoEmpPos" resultType="com.example.test.bean.ProFinishInfoBean">
         SELECT *
         FROM profinishinfo
         WHERE projectId = #{projectId}

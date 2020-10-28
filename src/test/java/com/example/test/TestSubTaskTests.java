@@ -34,7 +34,7 @@ public class TestSubTaskTests {
     NotifyServiceImpl notifyService = new NotifyServiceImpl();
     @Test
     public void contextLoads() {
-        System.out.println(notifyService.deleteHasRead("1"));
+        System.out.println(dataQueryService.getProjectInfoById("PRO9H060AHMWH").get(0).getEmpId());
         //System.out.println(projectService.addSubTask());
 //        EmployeeBean employeeBean = loginService.loginIn("2", "123456");
 //        if (employeeBean != null) {

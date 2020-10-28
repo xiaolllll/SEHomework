@@ -15,6 +15,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public String addEmp(EmployeeBean employeeBean) {
         employeeBean.setEmpId(OIDGenerator.getInstance().createEmployeeID());
+        employeeBean.setEmpPassword("123456");
+        employeeBean.setEmpFinishProCount(0);
+        employeeBean.setEmpDoingProCount(0);
+        employeeBean.setEmpType(1);
         int result = employeeMapper.insertEmployee(employeeBean);
         if(result==1){
             return ServiceUtil.SUCCESS;

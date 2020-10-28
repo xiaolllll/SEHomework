@@ -567,7 +567,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         int result;
 
-        if(proFinishInfoMapper.getProjectInfoEmpPos(empID,projectID,ProjectUtil.EMP_POSITION.NORMAL_EMP.ordinal())==null) {
+        if(proFinishInfoMapper.getProjectInfoEmpPos(projectID,empID,ProjectUtil.EMP_POSITION.NORMAL_EMP.ordinal())==null) {
             result = proFinishInfoMapper.insertProjectInfo(p1);
             if (result != 1) {
                 return ServiceUtil.FAILURE + "数据库项目参与信息插入失败";

@@ -37,8 +37,7 @@
         SELECT *
         FROM subtask,
              taskfinishinfo
-        where subtask.subtaskId = taskfinishinfo.subtaskId
-          and taskfinishinfo.projectId = #{projectID}
+        where subtask.subtaskInProject = #{projectID}
     </select>
 
     <select id="getProjectEmpSubTask" resultType="com.example.test.bean.SubTaskBean">
