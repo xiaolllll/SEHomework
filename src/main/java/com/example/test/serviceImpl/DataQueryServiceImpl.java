@@ -138,6 +138,11 @@ public class DataQueryServiceImpl implements DataQueryService {
     }
 
     @Override
+    public List<TaskFinishInfoBean> getHasFinishTaskFinishInfoByProIDEmpID(String proID, String EmpID) {
+        return taskFinishInfoMapper.getHasFinishTaskFinishInfoByProIDEmpID(proID, EmpID);
+    }
+
+    @Override
     public NotifyInfoBean getNotifyInfo(int NotifyID) {
         return notifyInfoMapper.selectNotifyInfoByNotifyId(NotifyID);
     }

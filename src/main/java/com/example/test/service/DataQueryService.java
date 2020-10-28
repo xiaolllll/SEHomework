@@ -37,6 +37,7 @@ public interface DataQueryService {
 
     /*查看子任务参与信息*/
     List<TaskFinishInfoBean> getSubTaskInfo(String subTaskID,String EmpID);
+    List<TaskFinishInfoBean> getHasFinishTaskFinishInfoByProIDEmpID(String proID,String EmpID);
 
     /*查看通知信息*/
     NotifyInfoBean getNotifyInfo(int NotifyID);//查看单个通知信息

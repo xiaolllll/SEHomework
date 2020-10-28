@@ -32,6 +32,12 @@
             );
     </select>
 
+    <select id="getHasFinishTaskFinishInfoByProIDEmpID" resultType="com.example.test.bean.TaskFinishInfoBean">
+        SELECT * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
+                                                AND taskfinishinfo.`subtaskId` = subtask.`subtaskId` AND subtask.`subtaskState` = 3
+                                                and taskfinishinfo.empId = #{EmpID}
+    </select>
+
     <insert id="insertTaskFinishInfo">
         insert into taskfinishinfo (empId, subTaskId, projectId, doType,
                                     subTaskOutSourceEndTime)

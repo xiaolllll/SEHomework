@@ -21,6 +21,8 @@ public interface TaskFinishInfoMapper {
 
     List<TaskFinishInfoBean> getHasFinishHasNotOutSourceTaskFinishInfoByProID(@Param("proID") String proID);
 
+    List<TaskFinishInfoBean> getHasFinishTaskFinishInfoByProIDEmpID(@Param("proID") String proID, @Param("EmpID") String EmpID);
+
     int deleteTaskFinishInfo(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID, @Param("doType") int doType);
 
     int deleteTaskAllInfo(String subTaskId);
