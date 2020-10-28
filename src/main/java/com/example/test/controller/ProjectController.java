@@ -149,6 +149,7 @@ public class ProjectController {
     @ResponseBody
     public JSONResult forceCompleteSubTask(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
         String userId = JwtUtils.analysis(request);
+        System.out.println("test"+userId);
         String result=projectService.forceCompleteSubTask(subTaskBean.getSubTaskId());
         if(result.contains(ServiceUtil.SUCCESS)){
             String PId=dataQueryService.getSubTask(subTaskBean.getSubTaskId()).getSubTaskInProject();
