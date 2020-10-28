@@ -434,4 +434,15 @@ public class ProjectController {
             return JSONResult.ok(list);
         }
     }
+
+    @RequestMapping("/getLog")
+    @ResponseBody
+    public JSONResult getLog(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
+        List<LoggerBean> list=dataQueryService.getLog(projectBean.getProjectId());
+        if(list == null){
+            return JSONResult.errorMessage("无此项目信息");
+        }else {
+            return JSONResult.ok(list);
+        }
+    }
 }
