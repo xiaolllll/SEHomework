@@ -621,6 +621,16 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         for(String s:empIDs){
+            EmployeeBean employeeBean=employeeMapper.getEmpInfoByEmpId(s);
+            employeeBean.setEmpDoingProCount(employeeBean.getEmpDoingProCount()+1);
+
+            int result = employeeMapper.updateEmployee(employeeBean);
+            if(result!=1){
+                return ServiceUtil.FAILURE+"数据库更新员工正在做的项目数量错误";
+            }
+        }
+
+        for(String s:empIDs){
             ProFinishInfoBean p = new ProFinishInfoBean();
             p.setEmpId(s);
             p.setProjectId(projectID);
