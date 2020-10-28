@@ -13,6 +13,8 @@ public interface ProFinishInfoMapper {
      /*查看项目参与信息*/
      List<ProFinishInfoBean> getProjectInfo(@Param("projectId") String projectId, @Param("empId") String empId);
 
+     List<ProFinishInfoBean> getProjectInfoById(String projectId);
+
      ProFinishInfoBean getProjectInfoEmpPos(@Param("projectId") String projectId,
                                             @Param("empId") String empId, @Param("empPosition") int empPosition);
 

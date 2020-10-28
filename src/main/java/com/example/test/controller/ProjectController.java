@@ -2,6 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.EmployeeBean;
+import com.example.test.bean.ProFinishInfoBean;
 import com.example.test.bean.ProjectBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.communication.*;
@@ -400,6 +401,18 @@ public class ProjectController {
         }else {
             System.out.println(result);
             return JSONResult.build(500,result,null);
+        }
+    }
+
+    @RequestMapping("/getProjectInfoById")
+    @ResponseBody
+    public JSONResult getProjectInfoById(HttpServletRequest request, @RequestBody String proId) {
+        List<ProFinishInfoBean> result=dataQueryService.getProjectInfoById(proId);
+        if(result == null){
+            return JSONResult.errorMessage("无此项目信息");
+        }else {
+            System.out.println(result);
+            return JSONResult.ok(result);
         }
     }
 }

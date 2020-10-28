@@ -15,6 +15,12 @@
             and empId = #{empId}
     </select>
 
+    <select id="getProjectInfoById" parameterType="String" resultType="com.example.test.bean.ProFinishInfoBean">
+        SELECT *
+        FROM profinishinfo
+        WHERE projectId = #{projectId}
+    </select>
+
     <select id="getProjectInfoEmpPos" parameterType="String" resultType="com.example.test.bean.ProFinishInfoBean">
         SELECT *
         FROM profinishinfo

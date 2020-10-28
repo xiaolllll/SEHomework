@@ -103,6 +103,11 @@ public class DataQueryServiceImpl implements DataQueryService {
     }
 
     @Override
+    public List<ProFinishInfoBean> getProjectInfoById(String projectID) {
+        return proFinishInfoMapper.getProjectInfoById(projectID);
+    }
+
+    @Override
     public SubTaskBean getSubTask(String subTaskID) {
         return subTaskMapper.getTaskInfoByProId(subTaskID);
     }
