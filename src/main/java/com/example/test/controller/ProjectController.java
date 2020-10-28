@@ -464,4 +464,15 @@ public class ProjectController {
             return JSONResult.ok(contents);
         }
     }
+
+    @RequestMapping("/getSubTask")
+    @ResponseBody
+    public JSONResult getSubTask(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
+        SubTaskBean list=dataQueryService.getSubTask(subTaskBean.getSubTaskId());
+        if(list == null){
+            return JSONResult.errorMessage("无此任务信息");
+        }else {
+            return JSONResult.ok(list);
+        }
+    }
 }
