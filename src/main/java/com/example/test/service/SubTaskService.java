@@ -1,6 +1,9 @@
 package com.example.test.service;
 
+import com.example.test.bean.SubTaskBean;
+
 import java.util.Date;
+import java.util.List;
 
 public interface SubTaskService {
     /*外包任务*/
@@ -15,4 +18,7 @@ public interface SubTaskService {
 
     //判断任务节点图中前面的节点是否已经全部完成
     boolean judgeBeforeAllTaskHasDone(String subTaskId);
+
+    //获取所有前置任务节点
+    List<String> getBeforeTaskId(String subTaskId);
 }

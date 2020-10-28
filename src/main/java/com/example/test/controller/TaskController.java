@@ -8,7 +8,6 @@ import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
 import com.example.test.websocket.WebSocketServer;
-import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -331,5 +330,16 @@ public class TaskController {
         }
     }
 
+    public JSONResult getBeforeTaskId(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
+        System.out.println("test");
+        System.out.println(subTaskBean.getSubTaskInProject());
+        String userId = JwtUtils.analysis(request);
+        List<String> msg = subTaskService.getBeforeTaskId(subTaskBean.getSubTaskId());
+        if (msg == null) {
+            return JSONResult.errorMessage("出现异常");
+        } else {
+            return JSONResult.ok(msg);
+        }
+    }
 
 }

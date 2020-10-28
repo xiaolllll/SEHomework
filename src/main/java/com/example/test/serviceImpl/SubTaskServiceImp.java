@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -230,4 +231,16 @@ public class SubTaskServiceImp implements SubTaskService {
         }
         return true;
     }
+
+    @Override
+    public List<String> getBeforeTaskId(String subTaskId) {
+        List<TaskNextBean> list = taskNextMapper.getBeforeTaskId(subTaskId);
+        List<String> stringList = new ArrayList<>();
+        for (TaskNextBean taskNextBean : list) {
+            stringList.add(taskNextBean.getSubTaskId());
+        }
+        return stringList;
+    }
+
+
 }
