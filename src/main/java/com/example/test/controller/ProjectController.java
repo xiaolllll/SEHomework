@@ -1,10 +1,7 @@
 package com.example.test.controller;
 
 import com.example.test.Jwt.JwtUtils;
-import com.example.test.bean.EmployeeBean;
-import com.example.test.bean.ProFinishInfoBean;
-import com.example.test.bean.ProjectBean;
-import com.example.test.bean.SubTaskBean;
+import com.example.test.bean.*;
 import com.example.test.communication.*;
 import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
@@ -15,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -411,7 +409,16 @@ public class ProjectController {
                 e.printStackTrace();
             }
             return JSONResult.build(200,result,null);
-        }else {
+        }
+        else if(result.contains(ServiceUtil.TAG)){
+            List<TaskFinishInfoBean> taskFinishInfoBeans=dataQueryService.getHasFinishTaskFinishInfoByProIDEmpID(data.getProjectID(),data.getEmpID());
+            List<String> list = new ArrayList<String>();
+            for (TaskFinishInfoBean t:taskFinishInfoBeans){
+                list.add(t.getSubTaskId());
+            }
+            return JSONResult.build(201,result,list);
+        }
+        else {
             System.out.println(result);
             return JSONResult.build(500,result,null);
         }
@@ -420,12 +427,13 @@ public class ProjectController {
     @RequestMapping("/getProjectInfoById")
     @ResponseBody
     public JSONResult getProjectInfoById(HttpServletRequest request, @RequestBody String proId) {
-        List<ProFinishInfoBean> result=dataQueryService.getProjectInfoById(proId);
-        if(result == null){
+        System.out.println("请求");
+        List<ProFinishInfoBean> list=dataQueryService.getProjectInfoById(proId);
+        System.out.println(list);
+        if(list == null){
             return JSONResult.errorMessage("无此项目信息");
         }else {
-            System.out.println(result);
-            return JSONResult.ok(result);
+            return JSONResult.ok(list);
         }
     }
 }

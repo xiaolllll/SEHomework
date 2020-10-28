@@ -653,6 +653,11 @@ public class ProjectServiceImpl implements ProjectService {
             return ServiceUtil.FAILURE+"未找到编号为"+empID+"的员工";
         }
 
+        List<TaskFinishInfoBean> taskFinishInfoBeans=taskFinishInfoMapper.getHasFinishTaskFinishInfoByProIDEmpID(projectID, empID);
+        if(taskFinishInfoBeans!=null){
+            return ServiceUtil.FAILURE+"该员工在本项目中已有完成任务不能删除"+ServiceUtil.TAG;
+        }
+
         proFinishInfoMapper.deleteProjectInfoManager(projectID,empID);
         proFinishInfoMapper.deleteProjectInfoEmp(projectID,empID);
 
