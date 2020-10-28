@@ -24,7 +24,7 @@ public class LogServiceImpl implements LogService {
 
         EmployeeBean employeeBean = employeeMapper.getEmpInfoByEmpId(empID);
         String empName="";
-        if(employeeBean!=null){
+        if(employeeBean==null){
             System.out.println("LogServiceImpl addLog 找不到操作人");
             empName = employeeBean.getEmpName();
         }

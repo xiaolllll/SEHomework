@@ -8,6 +8,7 @@ import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
 import com.example.test.websocket.WebSocketServer;
+import com.sun.xml.internal.bind.v2.TODO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -112,6 +113,28 @@ public class TaskController {
             return JSONResult.ok(list);
         }
     }
+
+    @RequestMapping("/getProjectSubTask")
+    @ResponseBody
+    public JSONResult getProjectSubTask(@RequestBody ProjectBean projectBean) {
+        List<SubTaskBean> list = dataQueryService.getProjectSubTask(projectBean.getProjectId());
+        if (list == null) {
+            return JSONResult.errorMessage("查询项目中的任务出错");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+    //TODO
+//    @RequestMapping("/getLeadingSubTask")
+//    @ResponseBody
+//    public JSONResult getLeadingSubTask(@RequestBody SubTaskBean subTaskBean) {
+//        List<SubTaskBean> list = dataQueryService.
+//        if (list == null) {
+//            return JSONResult.errorMessage("查询项目中的任务出错");
+//        } else {
+//            return JSONResult.ok(list);
+//        }
+//    }
 
     @RequestMapping("/getEmpHasDoneProject")
     @ResponseBody
@@ -303,4 +326,6 @@ public class TaskController {
             return JSONResult.ok(msg);
         }
     }
+
+
 }

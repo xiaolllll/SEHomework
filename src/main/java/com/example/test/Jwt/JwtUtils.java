@@ -68,6 +68,7 @@ public class JwtUtils {
         String authorization = request.getHeader("Authorization");
         if (StringUtils.isEmpty(authorization)) {
             System.out.println("系统未捕捉到请求头信息");
+            return null;
         }
         Claims claims = new JwtUtils().parseJwt(authorization);
         String userId = claims.getId();

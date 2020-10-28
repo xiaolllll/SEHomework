@@ -30,6 +30,20 @@ public class ProjectController {
     private DataQueryService dataQueryService;
     @Autowired
     private NotifyService notifyService;
+
+    @RequestMapping("/getAllProject")
+    @ResponseBody
+    public JSONResult getEmpDoingProject(HttpServletRequest request) {
+        String userId = JwtUtils.analysis(request);
+        System.out.println(userId);
+        List<ProjectBean> list = dataQueryService.getAllProject();
+        if (list == null) {
+            return JSONResult.errorMessage("项目列表为空");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+
     @RequestMapping("/addSubTask")
     @ResponseBody
     public JSONResult addSubTask(HttpServletRequest request, @RequestBody addSubTaskBean data) {
@@ -102,7 +116,6 @@ public class ProjectController {
         }
     }
 
-    //TODO
     @RequestMapping("/restartSubTask")
     @ResponseBody
     public JSONResult restartSubTask(HttpServletRequest request, @RequestBody restartSubTaskBean data) {

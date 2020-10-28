@@ -27,7 +27,7 @@ public class TaskLogServiceImpl implements TaskLogService {
 
         EmployeeBean employeeBean = employeeMapper.getEmpInfoByEmpId(empID);
         String empName="";
-        if(employeeBean!=null){
+        if(employeeBean==null){
             System.out.println("TaskLogServiceImpl addTaskLog 找不到操作人");
             empName = employeeBean.getEmpName();
         }
