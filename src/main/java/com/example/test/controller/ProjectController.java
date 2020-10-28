@@ -45,19 +45,6 @@ public class ProjectController {
         }
     }
 
-
-    //TODO
-//    @RequestMapping("/getProjectFinishInfo")
-//    @ResponseBody
-//    public JSONResult getProjectFinishInfo(@RequestBody ProjectBean projectBean) {
-//        List<ProFinishInfoBean> list = dataQueryService.get
-//        if (list == null) {
-//            return JSONResult.errorMessage("项目列表为空");
-//        } else {
-//            return JSONResult.ok(list);
-//        }
-//    }
-
     @RequestMapping("/addSubTask")
     @ResponseBody
     public JSONResult addSubTask(HttpServletRequest request, @RequestBody addSubTaskBean data) {
@@ -419,8 +406,8 @@ public class ProjectController {
 
     @RequestMapping("/getProjectInfoById")
     @ResponseBody
-    public JSONResult getProjectInfoById(HttpServletRequest request, @RequestBody String proId) {
-        List<ProFinishInfoBean> result=dataQueryService.getProjectInfoById(proId);
+    public JSONResult getProjectInfoById(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
+        List<ProFinishInfoBean> result=dataQueryService.getProjectInfoById(projectBean.getProjectId());
         if(result == null){
             return JSONResult.errorMessage("无此项目信息");
         }else {

@@ -2,6 +2,7 @@ package com.example.test.controller;
 
 import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.ProjectBean;
+import com.example.test.bean.SubTaskBean;
 import com.example.test.service.DataQueryService;
 import com.example.test.service.EmployeeService;
 import com.example.test.service.LoginService;
@@ -43,6 +44,17 @@ public class EmployeeController {
             return JSONResult.errorMessage("无此用户名");
         } else {
             return JSONResult.ok(list);
+        }
+    }
+
+    @RequestMapping(value = "/getSubTaskEmpDoSelf", method = RequestMethod.POST)
+    @ResponseBody
+    public JSONResult getSubTaskEmpDoSelf(@RequestBody SubTaskBean subTaskBean) {
+         EmployeeBean employeeBean= dataQueryService.getSubTaskEmployeeDoSelf(subTaskBean.getSubTaskId());
+        if (employeeBean == null) {
+            return JSONResult.errorMessage("该项目无人负责");
+        } else {
+            return JSONResult.ok(employeeBean);
         }
     }
 

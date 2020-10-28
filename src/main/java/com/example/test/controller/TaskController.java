@@ -4,6 +4,7 @@ import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.ProjectBean;
 import com.example.test.bean.SubTaskBean;
+import com.example.test.bean.TaskLoggerBean;
 import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
@@ -98,6 +99,28 @@ public class TaskController {
     private LogService logService;
     @Autowired
     private NotifyService notifyService;
+
+    @RequestMapping("/getSubTask")
+    @ResponseBody
+    public JSONResult getSubTask(SubTaskBean subTaskBean) {
+        SubTaskBean bean = dataQueryService.getSubTask(subTaskBean.getSubTaskId());
+        if (bean == null) {
+            return JSONResult.errorMessage("无此任务");
+        } else {
+            return JSONResult.ok(bean);
+        }
+    }
+
+    @RequestMapping("/getSubTaskLog")
+    @ResponseBody
+    public JSONResult getSubTaskLog(SubTaskBean subTaskBean) {
+        List<TaskLoggerBean> list = dataQueryService.getTaskLog(subTaskBean.getSubTaskId());
+        if (list == null) {
+            return JSONResult.errorMessage("查询任务日志失败");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
 
     @RequestMapping("/getEmpDoingProject")
     @ResponseBody
