@@ -16,7 +16,7 @@ public class TaskFileServiceImpl implements TaskFileService {
     TaskFileListMapper taskFileListMapper;
 
     @Override
-    public List<String> getFileList(String taskId) {
+    public List<TaskFileListBean> getFileList(String taskId) {
         return taskFileListMapper.getFileList(taskId);
     }
 
@@ -24,4 +24,11 @@ public class TaskFileServiceImpl implements TaskFileService {
     public int addTaskFileList(TaskFileListBean taskFileListBean) {
         return taskFileListMapper.addTaskFileList(taskFileListBean);
     }
+
+    @Override
+    public int deleteTaskFileList(TaskFileListBean taskFileListBean) {
+        return taskFileListMapper.deleteTaskFileList(taskFileListBean);
+    }
+
+
 }

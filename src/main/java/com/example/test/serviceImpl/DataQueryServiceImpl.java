@@ -138,8 +138,18 @@ public class DataQueryServiceImpl implements DataQueryService {
     }
 
     @Override
+    public List<TaskFinishInfoBean> getSubTaskInfoByTaskId(String subTaskID) {
+        return taskFinishInfoMapper.getSubTaskInfoByTaskId(subTaskID);
+    }
+
+    @Override
     public List<TaskFinishInfoBean> getHasFinishTaskFinishInfoByProIDEmpID(String proID, String EmpID) {
         return taskFinishInfoMapper.getHasFinishTaskFinishInfoByProIDEmpID(proID, EmpID);
+    }
+
+    @Override
+    public List<TaskFinishInfoBean> getTaskFinishInfoByProIDEmpID(String proID, String EmpID) {
+        return taskFinishInfoMapper.getTaskFinishInfoByProIDEmpID(proID, EmpID);
     }
 
     @Override

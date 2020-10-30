@@ -35,8 +35,7 @@
 
     <select id="getProjectSubTask" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
         SELECT *
-        FROM subtask,
-             taskfinishinfo
+        FROM subtask
         where subtask.subtaskInProject = #{projectID}
     </select>
 

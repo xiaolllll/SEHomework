@@ -18,4 +18,9 @@
         values (#{subTaskId}, #{filePath})
     </insert>
 
+    <delete id="deleteTaskFileList">
+        delete from
+        taskfilelsit where filePath = #{filePath}
+    </delete>
+
 </mapper>

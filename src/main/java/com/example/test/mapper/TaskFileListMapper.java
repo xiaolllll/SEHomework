@@ -9,8 +9,11 @@ import java.util.List;
 @Mapper
 public interface TaskFileListMapper {
     //查询
-     List<String> getFileList(String taskId);
+     List<TaskFileListBean> getFileList(String taskId);
 
     //添加
      int addTaskFileList(TaskFileListBean taskFileListBean);
+
+     //删除
+     int deleteTaskFileList(TaskFileListBean taskFileListBean);
 }

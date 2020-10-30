@@ -39,19 +39,17 @@
     </select>
 
     <select id="getProInfoByEmpIdDoing" parameterType="String" resultType="com.example.test.bean.ProjectBean">
-        SELECT * FROM project, taskfinishinfo, subtask
-        WHERE project.`projectId` = subtask.`subtaskInProject`
-          AND subtask.subtaskid = taskfinishinfo.`subtaskId`
-          AND taskfinishinfo.`empId` = #{empId}
-          AND subtask.`subtaskState` = 0
+        SELECT * FROM project, profinishinfo
+        WHERE project.`projectId` = profinishinfo.`projectId`
+          AND profinishinfo.`empId` = #{empId}
+          AND project.`projectstate` = 1
     </select>
 
     <select id="getProInfoByEmpHasDone" parameterType="String" resultType="com.example.test.bean.ProjectBean">
-        SELECT * FROM project, taskfinishinfo, subtask
-        WHERE project.`projectId` = subtask.`subtaskInProject`
-          AND subtask.subtaskid = taskfinishinfo.`subtaskId`
-          AND taskfinishinfo.`empId` = #{empId}
-          AND subtask.`subtaskState` = 3
+        SELECT * FROM project, profinishinfo
+        WHERE project.`projectId` = profinishinfo.`projectId`
+          AND profinishinfo.`empId` = #{empId}
+          AND project.`projectstate` = 3
     </select>
 
     <select id="getEmpProject" parameterType="String" resultType="com.example.test.bean.ProjectBean">

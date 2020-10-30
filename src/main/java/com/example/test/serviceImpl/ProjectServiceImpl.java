@@ -568,6 +568,7 @@ public class ProjectServiceImpl implements ProjectService {
         int result;
 
         if(proFinishInfoMapper.getProjectInfoEmpPos(projectID,empID,ProjectUtil.EMP_POSITION.NORMAL_EMP.ordinal())==null) {
+
             result = proFinishInfoMapper.insertProjectInfo(p1);
             if (result != 1) {
                 return ServiceUtil.FAILURE + "数据库项目参与信息插入失败";
@@ -621,16 +622,6 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         for(String s:empIDs){
-            EmployeeBean employeeBean=employeeMapper.getEmpInfoByEmpId(s);
-            employeeBean.setEmpDoingProCount(employeeBean.getEmpDoingProCount()+1);
-
-            int result = employeeMapper.updateEmployee(employeeBean);
-            if(result!=1){
-                return ServiceUtil.FAILURE+"数据库更新员工正在做的项目数量错误";
-            }
-        }
-
-        for(String s:empIDs){
             ProFinishInfoBean p = new ProFinishInfoBean();
             p.setEmpId(s);
             p.setProjectId(projectID);
@@ -664,7 +655,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         List<TaskFinishInfoBean> taskFinishInfoBeans=taskFinishInfoMapper.getHasFinishTaskFinishInfoByProIDEmpID(projectID, empID);
-        if(taskFinishInfoBeans!=null){
+        if(!taskFinishInfoBeans.isEmpty()){
             return ServiceUtil.FAILURE+"该员工在本项目中已有完成任务不能删除"+ServiceUtil.TAG;
         }
 

@@ -1,9 +1,8 @@
 package com.example.test.controller;
 
 import com.example.test.Jwt.JwtUtils;
-import com.example.test.bean.EmployeeBean;
-import com.example.test.bean.ProjectBean;
-import com.example.test.bean.SubTaskBean;
+import com.example.test.bean.*;
+import com.example.test.communication.getProjectAndSubTaskBean;
 import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -106,10 +106,53 @@ public class TaskController {
         String userId = JwtUtils.analysis(request);
         System.out.println(userId);
         List<ProjectBean> list = dataQueryService.getRunProject(userId);
+//        System.out.println(list.size());
+//        if (list.size() > 0) {
+//            System.out.println(list.get(0).getProjectDesc());
+//        }
         if (list == null) {
             return JSONResult.errorMessage("无此用户名");
         } else {
             return JSONResult.ok(list);
+        }
+    }
+
+
+    @RequestMapping("/getEmpDoingProjectEmpId")
+    @ResponseBody
+    public JSONResult getEmpDoingProjectEmpId(HttpServletRequest request, @RequestBody EmployeeBean employeeBean) {
+        System.out.println("test");
+        String userId = employeeBean.getEmpId();
+        System.out.println(userId);
+        List<ProjectBean> list = dataQueryService.getRunProject(userId);
+//        System.out.println(list.size());
+//        if (list.size() > 0) {
+//            System.out.println(list.get(0).getProjectDesc());
+//        }
+        if (list == null) {
+            return JSONResult.errorMessage("无此用户名");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+
+    @RequestMapping("/getEmpDoingProjectAndSubTaskEmpId")
+    @ResponseBody
+    public JSONResult getEmpDoingProjectAndSubTaskEmpId(HttpServletRequest request, @RequestBody EmployeeBean employeeBean) {
+        String userId = employeeBean.getEmpId();
+        List<getProjectAndSubTaskBean> resultList=new ArrayList<getProjectAndSubTaskBean>();
+        List<ProjectBean> list = dataQueryService.getRunProject(userId);
+        for (ProjectBean pt:list){
+            List<SubTaskBean> sublist = dataQueryService.getProjectSubTask(pt.getProjectId());
+            getProjectAndSubTaskBean result=new getProjectAndSubTaskBean();
+            result.setProjectBean(pt);
+            result.setList(sublist);
+            resultList.add(result);
+        }
+        if (list == null) {
+            return JSONResult.errorMessage("无此用户名");
+        } else {
+            return JSONResult.ok(resultList);
         }
     }
 
@@ -124,12 +167,54 @@ public class TaskController {
         }
     }
 
+//    @RequestMapping("/getProjectAndSubTask")
+//    @ResponseBody
+//    public JSONResult getProjectAndSubTask() {
+//        List<ProjectBean>
+//        ProjectBean p1=dataQueryService.getProject(projectBean.getProjectId());
+//        List<SubTaskBean> list = dataQueryService.getProjectSubTask(projectBean.getProjectId());
+//        getProjectAndSubTaskBean result=new getProjectAndSubTaskBean();
+//        result.setProjectBean(p1);
+//        result.setList(list);
+//        if (list == null) {
+//            return JSONResult.errorMessage("查询项目中的任务出错");
+//        } else {
+//            return JSONResult.ok(result);
+//        }
+//    }
+
+    @RequestMapping("/getTaskByProIdEmpId")
+    @ResponseBody
+    public JSONResult getTaskByProIdEmpId(@RequestBody ProFinishInfoBean proFinishInfoBean) {
+        List<TaskFinishInfoBean> list = dataQueryService.getTaskFinishInfoByProIDEmpID(proFinishInfoBean.getProjectId(),
+                proFinishInfoBean.getEmpId());
+        if (list == null) {
+            return JSONResult.errorMessage("查询出错");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+
 
     @RequestMapping("/getEmpHasDoneProject")
     @ResponseBody
     public JSONResult getEmpHasDoneProject(HttpServletRequest request) {
         System.out.println("test");
         String userId = JwtUtils.analysis(request);
+        System.out.println(userId);
+        List<ProjectBean> list = dataQueryService.getCompletedProject(userId);
+        if (list == null) {
+            return JSONResult.errorMessage("无此用户名");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+
+    @RequestMapping("/getEmpHasDoneProjectEmpId")
+    @ResponseBody
+    public JSONResult getEmpHasDoneProjectEmpId(HttpServletRequest request, @RequestBody EmployeeBean employeeBean) {
+        System.out.println("test");
+        String userId = employeeBean.getEmpId();
         System.out.println(userId);
         List<ProjectBean> list = dataQueryService.getCompletedProject(userId);
         if (list == null) {
@@ -153,11 +238,39 @@ public class TaskController {
         }
     }
 
+    @RequestMapping("/getEmpDoingTaskEmpId")
+    @ResponseBody
+    public JSONResult getEmpDoingTaskEmpId(HttpServletRequest request, @RequestBody EmployeeBean employeeBean) {
+        System.out.println("test");
+        String userId = employeeBean.getEmpId();
+        System.out.println(userId);
+        List<SubTaskBean> list = dataQueryService.getTaskInfoByEmpIdDoing(userId);
+        if (list == null) {
+            return JSONResult.errorMessage("无此用户名");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+
     @RequestMapping("/getEmpHasDoneTask")
     @ResponseBody
     public JSONResult getEmpHasDoneTask(HttpServletRequest request) {
         System.out.println("test");
         String userId = JwtUtils.analysis(request);
+        System.out.println(userId);
+        List<SubTaskBean> list = dataQueryService.getTaskInfoByEmpHasDone(userId);
+        if (list == null) {
+            return JSONResult.errorMessage("无此用户名");
+        } else {
+            return JSONResult.ok(list);
+        }
+    }
+
+    @RequestMapping("/getEmpHasDoneTaskEmpId")
+    @ResponseBody
+    public JSONResult getEmpHasDoneTaskEmpId(HttpServletRequest request, @RequestBody EmployeeBean employeeBean) {
+        System.out.println("test");
+        String userId = employeeBean.getEmpId();
         System.out.println(userId);
         List<SubTaskBean> list = dataQueryService.getTaskInfoByEmpHasDone(userId);
         if (list == null) {

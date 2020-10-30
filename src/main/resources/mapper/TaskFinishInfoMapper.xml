@@ -17,6 +17,12 @@
           and empId = #{EmpID}
     </select>
 
+    <select id="getSubTaskInfoByTaskId" resultType="com.example.test.bean.TaskFinishInfoBean">
+        SELECT *
+        FROM taskfinishinfo
+        WHERE subtaskId = #{subTaskID}
+    </select>
+
     <select id="getSubTaskInfoByTaskIdEmpIdDoType" resultType="com.example.test.bean.TaskFinishInfoBean">
         SELECT *
         FROM taskfinishinfo
@@ -34,7 +40,15 @@
 
     <select id="getHasFinishTaskFinishInfoByProIDEmpID" resultType="com.example.test.bean.TaskFinishInfoBean">
         SELECT * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
-                                                AND taskfinishinfo.`subtaskId` = subtask.`subtaskId` AND subtask.`subtaskState` = 3
+                                                AND taskfinishinfo.`subtaskId` = subtask.`subtaskId`
+                                                AND subtask.`subtaskState` = 3
+                                                and taskfinishinfo.empId = #{EmpID}
+    </select>
+
+
+    <select id="getTaskFinishInfoByProIDEmpID" resultType="com.example.test.bean.TaskFinishInfoBean">
+        SELECT * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
+                                                AND taskfinishinfo.`subtaskId` = subtask.`subtaskId`
                                                 and taskfinishinfo.empId = #{EmpID}
     </select>
 

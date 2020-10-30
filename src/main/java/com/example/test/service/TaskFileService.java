@@ -6,9 +6,11 @@ import java.util.List;
 
 public interface TaskFileService {
     //查询
-    List<String> getFileList(String taskId);
+    List<TaskFileListBean> getFileList(String taskId);
 
     //添加
     int addTaskFileList(TaskFileListBean taskFileListBean);
 
+    //
+    int deleteTaskFileList(TaskFileListBean taskFileListBean);
 }

@@ -12,6 +12,9 @@ import java.util.List;
 public interface TaskFinishInfoMapper {
     List<TaskFinishInfoBean> getSubTaskInfo(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID);
 
+    List<TaskFinishInfoBean> getSubTaskInfoByTaskId(@Param("subTaskID") String subTaskID);
+
+
     TaskFinishInfoBean getSubTaskInfoByTaskIdEmpIdDoType(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID,
                                                          @Param("doType") int doType);
 
@@ -22,6 +25,8 @@ public interface TaskFinishInfoMapper {
     List<TaskFinishInfoBean> getHasFinishHasNotOutSourceTaskFinishInfoByProID(@Param("proID") String proID);
 
     List<TaskFinishInfoBean> getHasFinishTaskFinishInfoByProIDEmpID(@Param("proID") String proID, @Param("EmpID") String EmpID);
+
+    List<TaskFinishInfoBean> getTaskFinishInfoByProIDEmpID(@Param("proID") String proID, @Param("EmpID") String EmpID);
 
     int deleteTaskFinishInfo(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID, @Param("doType") int doType);
 

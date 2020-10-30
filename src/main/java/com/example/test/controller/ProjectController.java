@@ -424,6 +424,18 @@ public class ProjectController {
         }
     }
 
+    @RequestMapping("/getProject")
+    @ResponseBody
+    public JSONResult getProject(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
+        ProjectBean result=dataQueryService.getProject(projectBean.getProjectId());
+        if(result == null){
+            return JSONResult.errorMessage("无此项目");
+        }else {
+            return JSONResult.ok(result);
+        }
+    }
+
+
     @RequestMapping("/getProjectInfoById")
     @ResponseBody
     public JSONResult getProjectInfoById(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
@@ -475,4 +487,20 @@ public class ProjectController {
             return JSONResult.ok(list);
         }
     }
+
+    @RequestMapping("/getSubTaskInfoByTaskId")
+    @ResponseBody
+    public JSONResult getSubTaskInfoByTaskId(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
+        List<TaskFinishInfoBean> list=dataQueryService.getSubTaskInfoByTaskId(subTaskBean.getSubTaskId());
+        System.out.println(list.size());
+        if (list.size() > 0) {
+            System.out.println(list.get(0).getEmpId());
+        }
+        if(list == null){
+            return JSONResult.errorMessage("无此任务信息");
+        }else {
+            return JSONResult.ok(list);
+        }
+    }
+
 }
