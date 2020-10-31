@@ -1,9 +1,13 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
   datasource:
     name: sehomework  #数据库名
     url: jdbc:mysql://localhost:3306/sehomework?serverTimezone=UTC&useUnicode=true&zeroDateTimeBehavior=convertToNull&autoReconnect=true&characterEncoding=utf-8 #url
     username: root  #用户名
-    password: 1234  #密码
+    password: 20001114  #密码
     driver-class-name: com.mysql.cj.jdbc.Driver  #数据库链接驱动
 
 

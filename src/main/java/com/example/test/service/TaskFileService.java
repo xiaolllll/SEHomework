@@ -8,6 +8,8 @@ public interface TaskFileService {
     //查询
     List<TaskFileListBean> getFileList(String taskId);
 
+    List<TaskFileListBean> getFileListByEmpIdTaskId(String empId, String taskId);
+
     //添加
     int addTaskFileList(TaskFileListBean taskFileListBean);
 

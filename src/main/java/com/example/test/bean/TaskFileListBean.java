@@ -1,6 +1,7 @@
 package com.example.test.bean;
 
 public class TaskFileListBean {
+    private String empId;
     private String subTaskId;
     private String filePath;
 
@@ -10,6 +11,14 @@ public class TaskFileListBean {
     public TaskFileListBean(String subTaskId, String filePath) {
         this.subTaskId = subTaskId;
         this.filePath = filePath;
+    }
+
+    public String getEmpId() {
+        return empId;
+    }
+
+    public void setEmpId(String empId) {
+        this.empId = empId;
     }
 
     public String getSubTaskId() {

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface SubTaskService {
     /*外包任务*/
-    String outSourcingApply(String ApplicantID,String HelpersID,String subTaskId);//申请外包
+    String outSourcingApply(String ApplicantID,String HelpersID,String subTaskId, Date taskOutSourceEndTime);//申请外包
     String outSourcingHandover(String ApplicantID, String HelpersID, String subTaskId, Date taskOutSourceEndTime);//外包信息交接
     String outSourcingRecovery(String ApplicantID,String HelpersID,String subTaskId);//外包回收
     /*完成子任务*/

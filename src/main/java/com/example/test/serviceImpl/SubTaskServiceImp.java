@@ -34,7 +34,7 @@ public class SubTaskServiceImp implements SubTaskService {
 
     @Override
     //申请外包：判断有无申请者，判断
-    public String outSourcingApply(String ApplicantID, String HelpersID, String subTaskId) {
+    public String outSourcingApply(String ApplicantID, String HelpersID, String subTaskId, Date taskOutSourceEndTime) {
         System.out.println("outSourcingApply");
         List<TaskFinishInfoBean> taskFinishInfoBeanApplicant = taskFinishInfoMapper.getSubTaskInfo(subTaskId, ApplicantID);
         System.out.println(taskFinishInfoBeanApplicant.size() + " size");
@@ -63,8 +63,8 @@ public class SubTaskServiceImp implements SubTaskService {
     @Override
     //外包信息交接
     public String outSourcingHandover(String ApplicantID, String HelpersID, String subTaskId, Date taskOutSourceEndTime) {
-        if (!outSourcingApply(ApplicantID, HelpersID, subTaskId).equals(ServiceUtil.SUCCESS)) {
-            return outSourcingApply(ApplicantID, HelpersID, subTaskId);
+        if (!outSourcingApply(ApplicantID, HelpersID, subTaskId, taskOutSourceEndTime).equals(ServiceUtil.SUCCESS)) {
+            return outSourcingApply(ApplicantID, HelpersID, subTaskId, taskOutSourceEndTime);
         }
         SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskId);
         System.out.println("test id " + subTaskBean.getSubTaskId());

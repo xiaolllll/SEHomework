@@ -40,7 +40,7 @@
     </select>
 
     <select id="getProjectEmpSubTask" resultType="com.example.test.bean.SubTaskBean">
-        SELECT *
+        SELECT distinct *
         FROM subtask,
              taskfinishinfo
         where subtask.subtaskId = taskfinishinfo.subtaskId
@@ -67,7 +67,7 @@
     </select>
 
     <select id="getNextTaskListByTaskId" parameterType="String" resultType="com.example.test.bean.SubTaskBean">
-        SELECT *
+        SELECT distinct *
         FROM subtask,
              tasknext
         WHERE tasknext.nextTaskId = subtask.subtaskId

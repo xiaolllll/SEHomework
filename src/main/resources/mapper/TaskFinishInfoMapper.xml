@@ -31,7 +31,7 @@
     </select>
 
     <select id="getHasFinishHasNotOutSourceTaskFinishInfoByProID" resultType="com.example.test.bean.TaskFinishInfoBean">
-        SELECT * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
+        SELECT distinct * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
                                                 AND taskfinishinfo.`subtaskId` = subtask.`subtaskId` AND subtask.`subtaskState` = 3
                                                 AND  subtask.subtaskid NOT IN (
                 SELECT taskfinishinfo.`subtaskId` FROM taskfinishinfo WHERE taskfinishinfo.`doType` = 2
@@ -39,7 +39,7 @@
     </select>
 
     <select id="getHasFinishTaskFinishInfoByProIDEmpID" resultType="com.example.test.bean.TaskFinishInfoBean">
-        SELECT * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
+        SELECT distinct * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
                                                 AND taskfinishinfo.`subtaskId` = subtask.`subtaskId`
                                                 AND subtask.`subtaskState` = 3
                                                 and taskfinishinfo.empId = #{EmpID}
@@ -47,7 +47,7 @@
 
 
     <select id="getTaskFinishInfoByProIDEmpID" resultType="com.example.test.bean.TaskFinishInfoBean">
-        SELECT * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
+        SELECT distinct * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
                                                 AND taskfinishinfo.`subtaskId` = subtask.`subtaskId`
                                                 and taskfinishinfo.empId = #{EmpID}
     </select>

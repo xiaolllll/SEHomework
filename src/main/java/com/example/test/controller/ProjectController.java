@@ -32,7 +32,7 @@ public class ProjectController {
 
     @RequestMapping("/getAllProject")
     @ResponseBody
-    public JSONResult getEmpDoingProject(HttpServletRequest request) {
+    public JSONResult getAllProject(HttpServletRequest request) {
         String userId = JwtUtils.analysis(request);
         System.out.println(userId);
         List<ProjectBean> list = dataQueryService.getAllProject();

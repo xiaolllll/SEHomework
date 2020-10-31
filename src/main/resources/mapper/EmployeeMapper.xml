@@ -36,7 +36,7 @@
     </select>
 
     <select id="getEmpInfoByProId" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
-        SELECT *
+        SELECT distinct *
         FROM employee,
              profinishinfo
         WHERE profinishinfo.projectId = #{proId}
@@ -44,7 +44,7 @@
     </select>
 
     <select id="getEmpInfoByTaskIdDoSelf" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
-        SELECT *
+        SELECT distinct *
         FROM employee,
              taskfinishinfo
         WHERE taskfinishinfo.subtaskId = #{taskId}
@@ -53,7 +53,7 @@
     </select>
 
     <select id="getEmpInfoByTaskIdOutSource" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
-        SELECT *
+        SELECT distinct *
         FROM employee,
              taskfinishinfo
         WHERE taskfinishinfo.subtaskId = #{taskId}
@@ -63,7 +63,7 @@
 
 
     <select id="getEmpInfoByTaskId" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
-        SELECT *
+        SELECT distinct *
         FROM employee,
              taskfinishinfo
         WHERE taskfinishinfo.subtaskId = #{taskId}
@@ -77,7 +77,7 @@
     </select>
 
     <select id="getOutSourceTaskEmployee" parameterType="String" resultType="com.example.test.bean.EmployeeBean">
-        SELECT *
+        SELECT distinct *
         FROM employee,
              taskfinishinfo
         WHERE taskfinishinfo.doType = 1 # 外包

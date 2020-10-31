@@ -5,6 +5,7 @@
     <resultMap id="taskFileListEntity" type="com.example.test.bean.TaskFileListBean">
         <result property="subTaskId" column="subTaskId"/>
         <result property="filePath" column="filePath"/>
+        <result property="empId" column="empId"/>
     </resultMap>
 
     <select id="getFileList" parameterType="String" resultType="com.example.test.bean.TaskFileListBean">
@@ -13,9 +14,16 @@
         WHERE subtaskId = #{taskId}
     </select>
 
+    <select id="getFileListByEmpIdTaskId" parameterType="String" resultType="com.example.test.bean.TaskFileListBean">
+        SELECT *
+        FROM taskfilelsit
+        WHERE subtaskId = #{taskId}
+        and empId = #{empId}
+    </select>
+
     <insert id="addTaskFileList">
-        insert into taskfilelsit (subTaskId, filePath)
-        values (#{subTaskId}, #{filePath})
+        insert into taskfilelsit (subTaskId, filePath, empId)
+        values (#{subTaskId}, #{filePath}, #{empId})
     </insert>
 
     <delete id="deleteTaskFileList">

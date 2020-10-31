@@ -22,7 +22,7 @@ public class EmployeeController {
     DataQueryService dataQueryService;
     @Autowired
     EmployeeService employeeService;
-    @RequestMapping(value = "/getEmpInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/getEmpInfo", method = RequestMethod.POST)
     @ResponseBody
     public JSONResult getEmpInfo(@RequestBody EmployeeBean employeeBean) {
         System.out.println("test");

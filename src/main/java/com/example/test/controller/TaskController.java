@@ -94,8 +94,10 @@ public class TaskController {
     DataQueryService dataQueryService;
     @Autowired
     SubTaskService subTaskService;
+//    @Autowired
+//    private LogService logService;
     @Autowired
-    private LogService logService;
+    private TaskLogService taskLogService;
     @Autowired
     private NotifyService notifyService;
 
@@ -282,18 +284,18 @@ public class TaskController {
 
     @RequestMapping("/outSourcingApply")
     @ResponseBody
-    public JSONResult outSourcingApply(HttpServletRequest request, @RequestBody ApplyTask applyTask) throws IOException {
+    public JSONResult outSourcingApply(HttpServletRequest request, @RequestBody ApplyTaskHandOver applyTaskHandOver) throws IOException {
 //        System.out.println("test");
         String userId = JwtUtils.analysis(request);
         System.out.println("test" + userId);
-        String msg = subTaskService.outSourcingApply(userId, applyTask.getHelpersID(),
-                applyTask.getSubTaskId());
+        String msg = subTaskService.outSourcingApply(userId, applyTaskHandOver.getHelpersID(),
+                applyTaskHandOver.getSubTaskId(), applyTaskHandOver.taskOutSourceEndTime);
         if (msg == null) {
            return JSONResult.errorMessage("无此用户名");
         } else {
-            notifyService.addNotify(userId, applyTask.helpersID, "申请外包任务" + applyTask.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
-            String res = userId + "申请外包任务" + applyTask.subTaskId;
-            WebSocketServer.sendInfo(res, applyTask.getHelpersID());
+            notifyService.addNotify(userId, applyTaskHandOver.helpersID, "申请外包任务" + applyTaskHandOver.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
+            String res = userId + "向你申请外包任务" + applyTaskHandOver.subTaskId;
+            WebSocketServer.sendInfo(res, applyTaskHandOver.getHelpersID());
             return JSONResult.ok(msg);
         }
     }
@@ -312,7 +314,7 @@ public class TaskController {
             return JSONResult.errorMessage("出现异常");
         } else if (msg.contains(ServiceUtil.SUCCESS)){
             String PId= dataQueryService.getSubTask(applyTaskHandOver.subTaskId).getSubTaskInProject();
-            logService.addLog(PId, applyTaskHandOver.getApplicantID(), "申请" + applyTaskHandOver.helpersID +
+            taskLogService.addTaskLog(PId, applyTaskHandOver.getApplicantID(), "申请" + applyTaskHandOver.helpersID +
                     "外包"+ applyTaskHandOver.subTaskId +"子任务" );
             notifyService.addNotify(applyTaskHandOver.applicantID, applyTaskHandOver.helpersID,
                     "外包任务" + applyTaskHandOver.subTaskId + "申请已完成", NotifyUtil.APPLY_OUT_SOURCE_DONE);
@@ -337,7 +339,7 @@ public class TaskController {
             return JSONResult.errorMessage("出现异常");
         } else if (msg.contains(ServiceUtil.SUCCESS)) {
             String PId= dataQueryService.getSubTask(applyTask.getSubTaskId()).getSubTaskInProject();
-            logService.addLog(PId, userId, "申请回收" +
+            taskLogService.addTaskLog(PId, userId, "申请回收" +
                      applyTask.getSubTaskId() +"子任务" );
             notifyService.addNotify(userId, applyTask.getHelpersID(),
                     "外包任务" + applyTask.getHelpersID() + "申请回收", NotifyUtil.APPLY_OUT_SOURCE_RECOVERY);

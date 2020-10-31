@@ -33,10 +33,14 @@ public class UploadController {
     @RequestMapping("/upload")
     @ResponseBody
     public String uploadFile(@RequestBody MultipartFile file,  HttpServletRequest req) throws IOException {
+        if (file == null) {
+            return "文件提交失败！";
+        }
         System.out.println("test upload");
         String format = sdf.format(new Date());
         String realPath = req.getServletContext().getRealPath("/upload") + format;
         System.out.println(realPath);
+//        realPath = "D:\\javaweb\\SEHomework\\src\\main\\resources\\fileSet";
         File folder = new File(realPath);
         if (!folder.exists()) {
             folder.mkdirs();
