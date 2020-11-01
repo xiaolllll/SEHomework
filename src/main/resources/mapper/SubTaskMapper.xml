@@ -6,7 +6,7 @@
         <id property="subTaskId" column="subtaskId"/>
         <result property="subTaskName" column="subtaskName"/>
         <result property="subTaskDesc" column="subtaskDesc"/>
-        <result property="SubTaskCanOutSource" column="subtaskCanOutSource"/>
+        <result property="subTaskCanOutSource" column="subtaskCanOutSource"/>
         <result property="subTaskSkillType" column="subtaskSkillType"/>
         <result property="subTaskInProject" column="subtaskInProject"/>
         <result property="subTaskState" column="subtaskState"/>
@@ -75,10 +75,10 @@
     </select>
 
     <insert id="insertSubTask">
-        insert into subtask (subTaskId, subTaskName, subTaskDesc, SubTaskCanOutSource, subTaskSkillType,
+        insert into subtask (subTaskId, subTaskName, subTaskDesc, subTaskCanOutSource, subTaskSkillType,
                              subtaskInProject, subTaskState, subtaskStartTime, subTaskEndTime, totalFileCount,
                              hasFinishFileCount)
-        values (#{subTaskId}, #{subTaskName}, #{subTaskDesc}, #{SubTaskCanOutSource},
+        values (#{subTaskId}, #{subTaskName}, #{subTaskDesc}, #{subTaskCanOutSource},
                 #{subTaskSkillType}, #{subTaskInProject}, #{subTaskState},
                 #{subTaskStartTime}, #{subTaskEndTime}, #{totalFileCount}, #{hasFinishFileCount})
     </insert>
@@ -88,7 +88,7 @@
         <set>
             subTaskName         = #{subTaskName},
             subTaskDesc         = #{subTaskDesc},
-            SubTaskCanOutSource = #{SubTaskCanOutSource},
+            subTaskCanOutSource = #{subTaskCanOutSource},
             subTaskSkillType    = #{subTaskSkillType},
             subtaskInProject    = #{subTaskInProject},
             subTaskState        = #{subTaskState},

@@ -20,7 +20,7 @@ public class SubTaskBean {
     private String subTaskId;
     private String subTaskName;//
     private String subTaskDesc;//
-    private int SubTaskCanOutSource; //不能外包为0，可以外包为1
+    private int subTaskCanOutSource; //不能外包为0，可以外包为1
     private int subTaskSkillType;//
     private String subTaskInProject;//
     private int subTaskState;
@@ -36,7 +36,7 @@ public class SubTaskBean {
         this.subTaskId = subTaskId;
         this.subTaskName = subTaskName;
         this.subTaskDesc = subTaskDesc;
-        SubTaskCanOutSource = subTaskCanOutSource;
+        this.subTaskCanOutSource = subTaskCanOutSource;
         this.subTaskSkillType = subTaskSkillType;
         this.subTaskInProject = subTaskInProjectId;
         this.subTaskState = subTaskState;
@@ -49,7 +49,7 @@ public class SubTaskBean {
         this.subTaskId = subTaskId;
         this.subTaskName = subTaskName;
         this.subTaskDesc = subTaskDesc;
-        SubTaskCanOutSource = subTaskCanOutSource;
+        this.subTaskCanOutSource = subTaskCanOutSource;
         this.subTaskSkillType = subTaskSkillType;
         this.subTaskInProject = subTaskInProjectId;
         this.subTaskState = subTaskState;
@@ -84,11 +84,11 @@ public class SubTaskBean {
     }
 
     public int getSubTaskCanOutSource() {
-        return SubTaskCanOutSource;
+        return subTaskCanOutSource;
     }
 
     public void setSubTaskCanOutSource(int subTaskCanOutSource) {
-        SubTaskCanOutSource = subTaskCanOutSource;
+        this.subTaskCanOutSource = subTaskCanOutSource;
     }
 
     public int getSubTaskSkillType() {

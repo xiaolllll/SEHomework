@@ -60,6 +60,7 @@ public class ProjectController {
     @ResponseBody
     public JSONResult addSubTask(HttpServletRequest request, @RequestBody addSubTaskBean data) {
         String userId = JwtUtils.analysis(request);
+        System.out.println("外包"+data.getTaskBean().getSubTaskCanOutSource());
         String result=projectService.addSubTask(data.getTaskBean(),data.getLeadingPath(),data.getSucceedingPath(),data.isChain());
         if(result.contains(ServiceUtil.SUCCESS)){
             String PId=data.getTaskBean().getSubTaskInProject();
