@@ -4,6 +4,7 @@ import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.*;
 import com.example.test.communication.getProjectAndSubTaskBean;
 import com.example.test.mapper.SubTaskMapper;
+import com.example.test.mapper.TaskFileListMapper;
 import com.example.test.mapper.TaskFinishInfoMapper;
 import com.example.test.service.*;
 import com.example.test.util.NotifyUtil;
@@ -107,6 +108,8 @@ public class TaskController {
     private SubTaskMapper subTaskMapper;
     @Autowired
     private TaskFinishInfoMapper taskFinishInfoMapper;
+    @Autowired
+    private TaskFileListMapper taskFileListMapper;
 
     @RequestMapping("/getEmpDoingProject")
     @ResponseBody
@@ -330,7 +333,10 @@ public class TaskController {
             taskFinishInfoBean.setEmpId(applyTaskHandOver.helpersID);
             taskFinishInfoBean.setDoType(2);
             taskFinishInfoMapper.insertTaskFinishInfo(taskFinishInfoBean);
-            
+            TaskFinishInfoBean apply = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(applyTaskHandOver.getSubTaskId(),
+                    applyTaskHandOver.getApplicantID(), 0);
+            apply.setDoType(1);//外包
+            taskFinishInfoMapper.updateTaskFinishInfo(apply);
             taskLogService.addTaskLog(PId, applyTaskHandOver.getApplicantID(), "申请" + applyTaskHandOver.helpersID +
                     "外包"+ applyTaskHandOver.subTaskId +"子任务" );
             notifyService.addNotify(applyTaskHandOver.applicantID, applyTaskHandOver.helpersID,
@@ -358,6 +364,14 @@ public class TaskController {
             SubTaskBean taskBean = dataQueryService.getSubTask(applyTask.getSubTaskId());
             taskBean.setSubTaskState(1); //未完成
             subTaskMapper.updateSubTask(taskBean);
+            TaskFinishInfoBean apply = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(applyTask.getSubTaskId(),
+                    applyTask.getApplicantID(), 1);
+            apply.setDoType(0);//未完成
+            taskFinishInfoMapper.updateTaskFinishInfo(apply);
+            TaskFinishInfoBean helper = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(applyTask.getSubTaskId(),
+                    applyTask.getHelpersID(), 1);
+            helper.setDoType(2);//外包完成
+            taskFinishInfoMapper.updateTaskFinishInfo(helper);
             String PId= dataQueryService.getSubTask(applyTask.getSubTaskId()).getSubTaskInProject();
             taskLogService.addTaskLog(PId, userId, "申请回收" +
                      applyTask.getSubTaskId() +"子任务" );
@@ -472,6 +486,20 @@ public class TaskController {
         System.out.println(subTaskBean.getSubTaskInProject());
         String userId = JwtUtils.analysis(request);
         List<String> msg = subTaskService.getBeforeTaskId(subTaskBean.getSubTaskId());
+        if (msg == null) {
+            return JSONResult.errorMessage("出现异常");
+        } else {
+            return JSONResult.ok(msg);
+        }
+    }
+
+    @RequestMapping("/getTaskFileByEmpId")
+    @ResponseBody
+    public JSONResult getTaskFileByEmpId(HttpServletRequest request, @RequestBody EmployeeBean employeeBean) {
+        System.out.println("test");
+        System.out.println(employeeBean.getEmpId());
+        String userId = JwtUtils.analysis(request);
+        List<TaskFileListBean> msg = taskFileListMapper.getFileListByEmpId(employeeBean.getEmpId());
         if (msg == null) {
             return JSONResult.errorMessage("出现异常");
         } else {

@@ -5,6 +5,7 @@ import com.example.test.bean.ProFinishInfoBean;
 import com.example.test.bean.SubTaskBean;
 import com.example.test.bean.TaskFileListBean;
 import com.example.test.communication.updateFileListBean;
+import com.example.test.mapper.SubTaskMapper;
 import com.example.test.service.LogService;
 import com.example.test.service.TaskFileService;
 import com.example.test.service.TaskLogService;
@@ -24,6 +25,8 @@ public class TaskFileController {
     TaskFileService taskFileService;
     @Autowired
     TaskLogService taskLogService;
+    @Autowired
+    SubTaskMapper subTaskMapper;
 
     @RequestMapping("/getFileList")
     @ResponseBody
@@ -69,6 +72,20 @@ public class TaskFileController {
             return JSONResult.errorMessage("添加失败");
         }else {
             System.out.println(result);
+            SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(taskFileListBean.getSubTaskId());
+            System.out.println("sout" + taskFileListBean.getSubTaskId());
+            int count = subTaskBean.getHasFinishFileCount();
+            if (count >= subTaskBean.getTotalFileCount()) {
+                return JSONResult.errorMessage("全部文件已经提交了呐~");
+            }
+            TaskFileListBean t2=new TaskFileListBean();
+            t2.setSubTaskId(taskFileListBean.getSubTaskId());
+            t2.setFilePath(taskFileListBean.getFilePath());
+            t2.setEmpId(empId);
+            taskFileService.addTaskFileList(t2);
+            subTaskBean.setHasFinishFileCount(count + 1);
+            System.out.println(subTaskBean.getHasFinishFileCount());
+            subTaskMapper.updateSubTask(subTaskBean);
             taskLogService.addTaskLog(taskFileListBean.getSubTaskId(), empId,
                     empId + "上传" + taskFileListBean.getFilePath() + "文件");
             return JSONResult.ok(result);

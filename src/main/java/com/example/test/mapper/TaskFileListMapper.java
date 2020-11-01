@@ -11,6 +11,7 @@ import java.util.List;
 public interface TaskFileListMapper {
     //查询
      List<TaskFileListBean> getFileList(String taskId);
+     List<TaskFileListBean> getFileListByEmpId(String empId);
      List<TaskFileListBean> getFileListByEmpIdTaskId(@Param("empId") String empId,
                                                      @Param("taskId") String taskId);
 

@@ -14,6 +14,12 @@
         WHERE subtaskId = #{taskId}
     </select>
 
+    <select id="getFileListByEmpId" parameterType="String" resultType="com.example.test.bean.TaskFileListBean">
+        SELECT *
+        FROM taskfilelsit
+        WHERE empId = #{empId}
+    </select>
+
     <select id="getFileListByEmpIdTaskId" parameterType="String" resultType="com.example.test.bean.TaskFileListBean">
         SELECT *
         FROM taskfilelsit
