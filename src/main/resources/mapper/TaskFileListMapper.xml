@@ -6,6 +6,7 @@
         <result property="subTaskId" column="subTaskId"/>
         <result property="filePath" column="filePath"/>
         <result property="empId" column="empId"/>
+        <result property="commitDate" column="commitDate"/>
     </resultMap>
 
     <select id="getFileList" parameterType="String" resultType="com.example.test.bean.TaskFileListBean">
@@ -28,8 +29,8 @@
     </select>
 
     <insert id="addTaskFileList">
-        insert into taskfilelsit (subTaskId, filePath, empId)
-        values (#{subTaskId}, #{filePath}, #{empId})
+        insert into taskfilelsit (subTaskId, filePath, empId, commitDate)
+        values (#{subTaskId}, #{filePath}, #{empId}, #{commitDate})
     </insert>
 
     <delete id="deleteTaskFileList">

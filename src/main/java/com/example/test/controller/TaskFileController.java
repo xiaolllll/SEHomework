@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -66,6 +67,7 @@ public class TaskFileController {
     public JSONResult addTaskFileList(HttpServletRequest req, @RequestBody TaskFileListBean taskFileListBean) {
         String empId = JwtUtils.analysis(req);
         taskFileListBean.setEmpId(empId);
+        taskFileListBean.setCommitDate(new Date());
         int result=taskFileService.addTaskFileList(taskFileListBean);
         System.out.println(result);
         if(result != 1){
@@ -82,6 +84,7 @@ public class TaskFileController {
             t2.setSubTaskId(taskFileListBean.getSubTaskId());
             t2.setFilePath(taskFileListBean.getFilePath());
             t2.setEmpId(empId);
+            t2.setCommitDate(new Date());
             taskFileService.addTaskFileList(t2);
             subTaskBean.setHasFinishFileCount(count + 1);
             System.out.println(subTaskBean.getHasFinishFileCount());
@@ -104,6 +107,7 @@ public class TaskFileController {
         t2.setSubTaskId(data.getSubTaskId());
         t2.setFilePath(data.getNewFilePath());
         t2.setEmpId(empId);
+        t2.setCommitDate(new Date());
 
 
         taskFileService.deleteTaskFileList(t1);

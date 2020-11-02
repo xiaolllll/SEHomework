@@ -1,9 +1,12 @@
 package com.example.test.bean;
 
+import java.util.Date;
+
 public class TaskFileListBean {
     private String empId;
     private String subTaskId;
     private String filePath;
+    private Date commitDate;
 
     public TaskFileListBean() {
     }
@@ -35,5 +38,13 @@ public class TaskFileListBean {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public Date getCommitDate() {
+        return commitDate;
+    }
+
+    public void setCommitDate(Date commitDate) {
+        this.commitDate = commitDate;
     }
 }
