@@ -11,7 +11,7 @@ import java.util.List;
 
     NotifyInfoBean selectNotifyInfoByNotifyId(int notifyId);
     //根据接受者Id查询信息
-     NotifyInfoBean getNotifyInfoByReceiverID(String receiverId);
+    List<NotifyInfoBean> getNotifyInfoByReceiverID(String receiverId);
 
      List<NotifyInfoBean> getNotifyInfoBySenderID(String empID);//查看员工通知信息
 

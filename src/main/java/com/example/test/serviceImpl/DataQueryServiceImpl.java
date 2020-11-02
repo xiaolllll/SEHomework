@@ -160,7 +160,7 @@ public class DataQueryServiceImpl implements DataQueryService {
     //查询发送者信息
     @Override
     public List<NotifyInfoBean> getEmpNotifyInfo(String empID) {
-        return notifyInfoMapper.getNotifyInfoBySenderID(empID);
+        return notifyInfoMapper.getNotifyInfoByReceiverID(empID);
     }
 
     @Override

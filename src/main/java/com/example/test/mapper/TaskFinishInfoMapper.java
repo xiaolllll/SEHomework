@@ -18,6 +18,9 @@ public interface TaskFinishInfoMapper {
     TaskFinishInfoBean getSubTaskInfoByTaskIdEmpIdDoType(@Param("subTaskID") String subTaskID, @Param("EmpID") String EmpID,
                                                          @Param("doType") int doType);
 
+    TaskFinishInfoBean getSubTaskInfoByTaskIdDoType(@Param("subTaskID") String subTaskID,
+                                                         @Param("doType") int doType);
+
     int insertTaskFinishInfo(TaskFinishInfoBean taskFinishInfoBean);
 
     int updateTaskFinishInfo(TaskFinishInfoBean taskFinishInfoBean);

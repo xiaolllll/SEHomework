@@ -465,8 +465,8 @@ public class ProjectController {
 
     @RequestMapping("/getTaskLog")
     @ResponseBody
-    public JSONResult getTaskLog(HttpServletRequest request, @RequestBody TaskLoggerBean taskLoggerBean) {
-        List<TaskLoggerBean> list=dataQueryService.getTaskLog(taskLoggerBean.getSubTaskId());
+    public JSONResult getTaskLog(HttpServletRequest request, @RequestBody SubTaskBean subTaskBean) {
+        List<TaskLoggerBean> list=dataQueryService.getTaskLog(subTaskBean.getSubTaskId());
         if(list == null){
             return JSONResult.errorMessage("无此任务信息");
         }else {

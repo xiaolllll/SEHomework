@@ -30,6 +30,12 @@
           and empId = #{EmpID} and doType = #{doType}
     </select>
 
+    <select id="getSubTaskInfoByTaskIdDoType" resultType="com.example.test.bean.TaskFinishInfoBean">
+        SELECT *
+        FROM taskfinishinfo
+        WHERE subtaskId = #{subTaskID} and doType = #{doType}
+    </select>
+
     <select id="getHasFinishHasNotOutSourceTaskFinishInfoByProID" resultType="com.example.test.bean.TaskFinishInfoBean">
         SELECT distinct * FROM taskfinishinfo, subtask WHERE taskfinishinfo.projectId = #{proID}
                                                 AND taskfinishinfo.`subtaskId` = subtask.`subtaskId` AND subtask.`subtaskState` = 3
@@ -66,10 +72,10 @@
         where taskfinishinfo.subtaskId = #{subTaskId}
     </update>
 
-    <delete id="deleteTaskFinishInfo" parameterType="String">
+    <delete id="deleteTaskFinishInfo">
         delete
         from taskfinishinfo
-        where subtaskId = #{subTaskId}
+        where subtaskId = #{subTaskID}
             and empId = #{EmpID}
             and doType = #{doType}
     </delete>
