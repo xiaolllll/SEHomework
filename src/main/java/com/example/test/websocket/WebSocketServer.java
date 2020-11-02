@@ -107,7 +107,7 @@ public class WebSocketServer {
     /**
      * 发送自定义消息
      * */
-    public static void sendInfo(String message,@PathParam("userId") String userId) throws IOException {
+    public static void sendInfo(String message, String userId) throws IOException {
         if(webSocketMap.containsKey(userId)) {
             webSocketMap.get(userId).sendMessage(message);
         }

@@ -181,22 +181,35 @@ public class SubTaskServiceImp implements SubTaskService {
         return ServiceUtil.SUCCESS;
     }
 
+    @Autowired
+    private SubTaskService subTaskServiceImp;
+
     @Override
     public String subTaskCompleteConclusion(String subTaskID) {
         SubTaskBean subTaskBean = subTaskMapper.getTaskInfoByProId(subTaskID);
         SubTaskBean subTaskBeanUpdated = new SubTaskBean();
-        subTaskBeanUpdated.setSubTaskId(subTaskBean.getSubTaskId());
-        subTaskBeanUpdated.setSubTaskName(subTaskBean.getSubTaskName());
-        subTaskBeanUpdated.setSubTaskDesc(subTaskBean.getSubTaskDesc());
-        subTaskBeanUpdated.setSubTaskCanOutSource(subTaskBean.getSubTaskCanOutSource());
-        subTaskBeanUpdated.setSubTaskSkillType(subTaskBean.getSubTaskSkillType());
-        subTaskBeanUpdated.setSubTaskInProject(subTaskBean.getSubTaskInProject());
-        subTaskBeanUpdated.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH));
-        subTaskBeanUpdated.setSubTaskStartTime(subTaskBean.getSubTaskStartTime());
-        subTaskBeanUpdated.setSubTaskEndTime(subTaskBean.getSubTaskEndTime());
-        subTaskBean.setTotalFileCount(subTaskBean.getTotalFileCount());
-        subTaskBean.setHasFinishFileCount(subTaskBean.getHasFinishFileCount());
-        subTaskMapper.updateSubTask(subTaskBeanUpdated);
+        subTaskBean.setSubTaskState(SubTaskUtil.getTaskState(SubTaskUtil.TASK_STATE.HAS_FINISH));
+        subTaskMapper.updateSubTask(subTaskBean);
+        List<SubTaskBean> beans=subTaskMapper.getNextTaskListByTaskId(subTaskID);
+        int result;
+        for(SubTaskBean bean:beans){
+            if(subTaskServiceImp.judgeBeforeAllTaskHasDone(bean.getSubTaskId())){
+                bean.setSubTaskState(SubTaskUtil.TASK_STATE.UNDONE.ordinal());
+                result = subTaskMapper.updateSubTask(bean);
+                if(result!=1){
+                    return ServiceUtil.FAILURE+"向数据库更新子任务失败";
+                }
+                EmployeeBean employeeBean=employeeMapper.getEmpInfoByTaskIdDoSelf(bean.getSubTaskId());
+                if(employeeBean!=null) {
+                    notifyService.addNotify(employeeBean.getEmpId(),null,"子任务"+bean.getSubTaskId()+"可以执行", NotifyUtil.NO_REPLY);
+                    try {
+                        WebSocketServer.sendInfo("子任务"+bean.getSubTaskId()+"可以执行",bean.getSubTaskId());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
         return ServiceUtil.SUCCESS;
     }
 

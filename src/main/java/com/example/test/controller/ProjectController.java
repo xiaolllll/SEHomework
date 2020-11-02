@@ -361,7 +361,7 @@ public class ProjectController {
         String result=projectService.setProjectManager(data.getProjectID(),data.getEmpID());
         if(result.contains(ServiceUtil.SUCCESS)){
             logService.addLog(data.getProjectID(),userId,"项目已修改被交给"+data.getEmpID());
-                notifyService.addNotify(data.getEmpID(),userId,"被任命为"+data.getEmpID()+"的负责人",NotifyUtil.NO_REPLY);
+                notifyService.addNotify(data.getEmpID(),userId,"被任命为"+data.getProjectID()+"的负责人",NotifyUtil.NO_REPLY);
                 try {
                     WebSocketServer.sendInfo("被任命为"+data.getEmpID()+"的负责人",data.getEmpID());
                 } catch (IOException e) {

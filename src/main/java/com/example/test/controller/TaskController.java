@@ -119,10 +119,13 @@ public class TaskController {
         String userId = JwtUtils.analysis(request);
         System.out.println(userId);
         List<ProjectBean> list = dataQueryService.getRunProject(userId);
-//        System.out.println(list.size());
-//        if (list.size() > 0) {
+        System.out.println(list.size());
+        if (list.size() > 0) {
+            for (ProjectBean projectBean : list) {
+                System.out.println(projectBean.getProjectId());
+            }
 //            System.out.println(list.get(0).getProjectDesc());
-//        }
+        }
         if (list == null) {
             return JSONResult.errorMessage("无此用户名");
         } else {
@@ -444,15 +447,18 @@ public class TaskController {
             taskBean.setSubTaskState(3);
             subTaskMapper.updateSubTask(taskBean);
             String proId = taskBean.getSubTaskInProject();
-            List<EmployeeBean> list = dataQueryService.getProjectEmployee(proId);
-            for (EmployeeBean employeeBean : list) {
-                if (employeeBean.getEmpType() == 0) { //管理员
-                    notifyService.addNotify(employeeBean.getEmpId(),userId,
-                            subTaskBean.getSubTaskId() + "任务" + "申请完成", NotifyUtil.TASK_DONE);
+//            List<EmployeeBean> list = dataQueryService.getProjectEmployee(proId);
+            List<ProFinishInfoBean> proFinishInfoBeans = dataQueryService.getProjectInfoById(proId);
+            for (ProFinishInfoBean proFinishInfoBean: proFinishInfoBeans) {
+                if (proFinishInfoBean.getEmpPosition() == 0) {
+                    System.out.println("subTaskCompleteApply测试 任务Id" + subTaskBean.getSubTaskId());
+                    System.out.println("项目负责人：" + proFinishInfoBean.getEmpId());
+                    notifyService.addNotify(proFinishInfoBean.getEmpId(),userId,
+                            subTaskBean.getSubTaskId() + "任务" + "等待验收", NotifyUtil.TASK_DONE);
                     try {
-                        String res = userId + "将任务" + subTaskBean.getSubTaskId() + "申请完成";
+                        String res = userId + "将任务" + subTaskBean.getSubTaskId() + "等待验收";
                         System.out.println("res "  +res);
-                        WebSocketServer.sendInfo(res, employeeBean.getEmpId());
+                        WebSocketServer.sendInfo(res, proFinishInfoBean.getEmpId());
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
