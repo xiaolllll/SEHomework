@@ -1,18 +1,13 @@
 package com.example.test.controller;
 
-import com.example.test.Jwt.JwtUtils;
 import com.example.test.bean.EmployeeBean;
 import com.example.test.bean.NotifyInfoBean;
 import com.example.test.service.DataQueryService;
 import com.example.test.service.NotifyService;
-import com.example.test.util.NotifyUtil;
 import com.example.test.util.ServiceUtil;
-import com.example.test.websocket.WebSocketServer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -24,8 +19,8 @@ public class NotifyController {
     private DataQueryService dataQueryService;
     @RequestMapping("/deleteNotify")
     @ResponseBody
-    public JSONResult deleteNotify( @RequestBody int NotifyID) {
-        String result=notifyService.deleteNotify(NotifyID);
+    public JSONResult deleteNotify( @RequestBody NotifyInfoBean notifyInfoBean) {
+        String result=notifyService.deleteNotify(notifyInfoBean.getNotifyInfoId());
         if(result.contains(ServiceUtil.SUCCESS)){
             return JSONResult.build(200,result,null);
         }else {
