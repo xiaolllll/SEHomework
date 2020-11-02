@@ -303,7 +303,7 @@ public class TaskController {
         if (msg == null) {
            return JSONResult.errorMessage("无此用户名");
         } else {
-            notifyService.addNotify(userId, applyTaskHandOver.helpersID, "申请外包任务" + applyTaskHandOver.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
+            notifyService.addNotify(applyTaskHandOver.helpersID, userId, "申请外包任务" + applyTaskHandOver.subTaskId, NotifyUtil.APPLY_OUT_SOURCE);
             String res = userId + "向你申请外包任务" + applyTaskHandOver.subTaskId;
             WebSocketServer.sendInfo(res, applyTaskHandOver.getHelpersID());
             return JSONResult.ok(msg);
@@ -333,10 +333,10 @@ public class TaskController {
             taskFinishInfoBean.setEmpId(applyTaskHandOver.helpersID);
             taskFinishInfoBean.setDoType(2);
             taskFinishInfoMapper.insertTaskFinishInfo(taskFinishInfoBean);
-            TaskFinishInfoBean apply = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(applyTaskHandOver.getSubTaskId(),
-                    applyTaskHandOver.getApplicantID(), 0);
-            apply.setDoType(1);//外包
-            taskFinishInfoMapper.updateTaskFinishInfo(apply);
+//            TaskFinishInfoBean apply = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(applyTaskHandOver.getSubTaskId(),
+//                    applyTaskHandOver.getApplicantID(), 0);
+//            apply.setDoType(1);//外包
+//            taskFinishInfoMapper.updateTaskFinishInfo(apply);
             taskLogService.addTaskLog(PId, applyTaskHandOver.getApplicantID(), "申请" + applyTaskHandOver.helpersID +
                     "外包"+ applyTaskHandOver.subTaskId +"子任务" );
             notifyService.addNotify(applyTaskHandOver.applicantID, applyTaskHandOver.helpersID,
@@ -344,7 +344,33 @@ public class TaskController {
             String res;
             res = applyTaskHandOver.applicantID + "申请" + applyTaskHandOver.helpersID + "外包"+ applyTaskHandOver.subTaskId +"子任务成功";
             WebSocketServer.sendInfo(res, applyTaskHandOver.applicantID);
-            WebSocketServer.sendInfo(res, applyTaskHandOver.helpersID);
+//            WebSocketServer.sendInfo(res, applyTaskHandOver.helpersID);
+            return JSONResult.ok(msg);
+        } else {
+            return JSONResult.errorMessage(msg);
+        }
+    }
+
+    @RequestMapping("/outSourcingReject")
+    @ResponseBody
+    public JSONResult outSourcingReject(HttpServletRequest request, @RequestBody ApplyTaskHandOver applyTaskHandOver) throws IOException {
+        System.out.println("test");
+        System.out.println(applyTaskHandOver.getApplicantID());
+        String userId = JwtUtils.analysis(request);
+        System.out.println(applyTaskHandOver.getApplicantID());
+        String msg = subTaskService.outSourcingHandover(applyTaskHandOver.getApplicantID(), applyTaskHandOver.getHelpersID(),
+                applyTaskHandOver.getSubTaskId(), applyTaskHandOver.getTaskOutSourceEndTime());
+        if (msg == null) {
+            return JSONResult.errorMessage("出现异常");
+        } else if (msg.contains(ServiceUtil.SUCCESS)){
+            String PId= dataQueryService.getSubTask(applyTaskHandOver.subTaskId).getSubTaskInProject();
+            taskLogService.addTaskLog(PId, applyTaskHandOver.getApplicantID(), "申请" + applyTaskHandOver.helpersID +
+                    "外包"+ applyTaskHandOver.subTaskId +"子任务已拒绝" );
+            notifyService.addNotify(applyTaskHandOver.applicantID, applyTaskHandOver.helpersID,
+                    "外包任务" + applyTaskHandOver.subTaskId + "申请已拒绝", NotifyUtil.APPLY_OUT_SOURCE_DONE);
+            String res;
+            res = applyTaskHandOver.applicantID + "申请" + applyTaskHandOver.helpersID + "外包"+ applyTaskHandOver.subTaskId +"子任务已拒绝";
+            WebSocketServer.sendInfo(res, applyTaskHandOver.applicantID);
             return JSONResult.ok(msg);
         } else {
             return JSONResult.errorMessage(msg);
@@ -364,10 +390,10 @@ public class TaskController {
             SubTaskBean taskBean = dataQueryService.getSubTask(applyTask.getSubTaskId());
             taskBean.setSubTaskState(1); //未完成
             subTaskMapper.updateSubTask(taskBean);
-            TaskFinishInfoBean apply = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(applyTask.getSubTaskId(),
-                    applyTask.getApplicantID(), 1);
-            apply.setDoType(0);//未完成
-            taskFinishInfoMapper.updateTaskFinishInfo(apply);
+//            TaskFinishInfoBean apply = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(applyTask.getSubTaskId(),
+//                    applyTask.getApplicantID(), 1);
+//            apply.setDoType(0);//未完成
+//            taskFinishInfoMapper.updateTaskFinishInfo(apply);
             TaskFinishInfoBean helper = taskFinishInfoMapper.getSubTaskInfoByTaskIdEmpIdDoType(applyTask.getSubTaskId(),
                     applyTask.getHelpersID(), 1);
             helper.setDoType(2);//外包完成
@@ -375,7 +401,7 @@ public class TaskController {
             String PId= dataQueryService.getSubTask(applyTask.getSubTaskId()).getSubTaskInProject();
             taskLogService.addTaskLog(PId, userId, "申请回收" +
                      applyTask.getSubTaskId() +"子任务" );
-            notifyService.addNotify(userId, applyTask.getHelpersID(),
+            notifyService.addNotify( applyTask.getHelpersID(),userId,
                     "外包任务" + applyTask.getHelpersID() + "申请回收", NotifyUtil.APPLY_OUT_SOURCE_RECOVERY);
             try {
                 String res = userId + "将外包任务" + applyTask.getHelpersID() + "申请回收";
@@ -408,7 +434,7 @@ public class TaskController {
             List<EmployeeBean> list = dataQueryService.getProjectEmployee(proId);
             for (EmployeeBean employeeBean : list) {
                 if (employeeBean.getEmpType() == 0) { //管理员
-                    notifyService.addNotify(userId, employeeBean.getEmpId(),
+                    notifyService.addNotify(employeeBean.getEmpId(),userId,
                             subTaskBean.getSubTaskId() + "任务" + "申请完成", NotifyUtil.TASK_DONE);
                     try {
                         String res = userId + "将任务" + subTaskBean.getSubTaskId() + "申请完成";
@@ -439,7 +465,7 @@ public class TaskController {
             taskBean.setSubTaskState(4);
             subTaskMapper.updateSubTask(taskBean);
             EmployeeBean receiver = dataQueryService.getSubTaskEmployeeDoSelf(subTaskBean.getSubTaskId());
-            notifyService.addNotify(userId, receiver.getEmpId(),
+            notifyService.addNotify(receiver.getEmpId(),userId,
                     "任务" + subTaskBean.getSubTaskId() + "完成已同意", NotifyUtil.TASK_DONE_AGREE);
             try {
                 String res = userId + "将任务" + subTaskBean.getSubTaskId() + "完成已同意";
@@ -467,7 +493,7 @@ public class TaskController {
             taskBean.setSubTaskState(1);//未完成
             subTaskMapper.updateSubTask(taskBean);
             EmployeeBean receiver = dataQueryService.getSubTaskEmployeeDoSelf(subTaskBean.getSubTaskId());
-            notifyService.addNotify(userId, receiver.getEmpId(),
+            notifyService.addNotify(receiver.getEmpId(),userId,
                     "任务" + subTaskBean.getSubTaskId() + "完成已拒绝", NotifyUtil.TASK_DONE_REFUSE);
             try {
                 String res = userId + "将任务" + subTaskBean.getSubTaskId() + "完成已拒绝";
@@ -500,6 +526,25 @@ public class TaskController {
         System.out.println(employeeBean.getEmpId());
         String userId = JwtUtils.analysis(request);
         List<TaskFileListBean> msg = taskFileListMapper.getFileListByEmpId(employeeBean.getEmpId());
+        if (msg == null) {
+            return JSONResult.errorMessage("出现异常");
+        } else {
+            return JSONResult.ok(msg);
+        }
+    }
+
+    @RequestMapping("/getTaskFileByProId")
+    @ResponseBody
+    public JSONResult getTaskFileByProId(HttpServletRequest request, @RequestBody ProjectBean projectBean) {
+        System.out.println("getTaskFileByProId");
+        System.out.println(projectBean.getProjectId());
+        String userId = JwtUtils.analysis(request);
+        List<SubTaskBean> subTaskBeans = subTaskMapper.getProjectSubTask(projectBean.getProjectId());
+        List<TaskFileListBean> msg = new ArrayList<>();
+        for (SubTaskBean subTaskBean: subTaskBeans) {
+            String subTaskId = subTaskBean.getSubTaskId();
+            msg.addAll(taskFileListMapper.getFileList(subTaskId));
+        }
         if (msg == null) {
             return JSONResult.errorMessage("出现异常");
         } else {
